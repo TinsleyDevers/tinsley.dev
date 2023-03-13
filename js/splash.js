@@ -1,5 +1,5 @@
-const splash = document.getElementById("splash");
-const splashText = document.getElementById("splash-text");
+const splash = document.querySelector(".splash");
+const splashText = document.querySelector(".splash-text");
 const typingIndicator = document.createElement("span");
 typingIndicator.classList.add("typing-indicator");
 typingIndicator.textContent = "_";

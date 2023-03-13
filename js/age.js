@@ -1,5 +1,5 @@
 const birthDate = new Date(2003, 3, 30);
-const ageText = document.getElementById("age-text");
+const ageText = document.querySelector(".age-text");
 
 function updateAge() {
   const now = new Date();

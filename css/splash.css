@@ -1,4 +1,4 @@
-#splash {
+.splash {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -11,7 +11,7 @@
   background-color: rgba(0, 0, 0, 0.75);
 }
 
-#splash-text {
+.splash-text {
   color: white;
   font-size: 48px;
   font-weight: bold;
@@ -20,7 +20,7 @@
   line-height: 1;
 }
 
-#splash-text .typing-indicator {
+.splash-text .typing-indicator {
   display: inline-block;
   width: 12px;
   height: 48px;
