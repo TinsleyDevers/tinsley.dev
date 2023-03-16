@@ -18,7 +18,7 @@ function updateAge() {
       currentAge = endAge;
     }
     ageText.textContent = `I'm a ${currentAge.toFixed(9)} year-old developer.`;
-  }, 10);
+  }, 10); /* change the currentAge.toFixed(#) to change the number of decimal places */
 }
 
 updateAge();

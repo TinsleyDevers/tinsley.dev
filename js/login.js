@@ -4,8 +4,21 @@ const loginButton = document.getElementById("login-button");
 
 loginButton.addEventListener("click", () => {
   if (usernameInput.value === "hackerman" && passwordInput.value === "leave") {
-    window.location.href = "#";
+    window.location.href = "page2.html";
   } else {
-    alert("Incorrect username or password.");
+    usernameInput.classList.add("invalid-input");
+    passwordInput.classList.add("invalid-input");
+    usernameInput.style.color = "red";
+    passwordInput.style.color = "red";
+    loginButton.style.color = "red";
+    setTimeout(() => {
+      usernameInput.classList.remove("invalid-input");
+      passwordInput.classList.remove("invalid-input");
+      usernameInput.style.color = "white";
+      passwordInput.style.color = "white";
+      loginButton.style.color = "white";
+    }, 1000);
   }
 });
+
+/* stealing my admin password and username???? i will report you to the police. */

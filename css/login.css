@@ -8,12 +8,13 @@
 #login-container input[type="text"],
 #login-container input[type="password"] {
   margin-right: 5px;
-  outline: 2px solid white;
   border: none;
+  outline: 2px solid white;
   color: white;
   background-color: transparent;
   font-size: 16px;
   padding: 5px;
+  transition: border-color 0.5s ease;
 }
 
 #password-input {
@@ -31,4 +32,28 @@
   color: white;
   font-size: 24px;
   cursor: pointer;
+  transition: color 0.5s ease;
+}
+
+.invalid-input {
+  outline: 2px solid red !important;
+  animation: shake 0.5s linear;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(-5px, 0);
+  }
+  50% {
+    transform: translate(0);
+  }
+  75% {
+    transform: translate(5px, 0);
+  }
+  100% {
+    transform: translate(0);
+  }
 }
