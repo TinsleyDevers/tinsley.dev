@@ -4,7 +4,7 @@ const loginButton = document.getElementById("login-button");
 
 loginButton.addEventListener("click", () => {
   if (usernameInput.value === "hackerman" && passwordInput.value === "leave") {
-    window.location.href = "page2.html";
+    window.location.href = "#";
   } else {
     usernameInput.classList.add("invalid-input");
     passwordInput.classList.add("invalid-input");
