@@ -1,4 +1,4 @@
-const usernameInput = document.getElementById("username-input");
+/* const usernameInput = document.getElementById("username-input");
 const passwordInput = document.getElementById("password-input");
 const loginButton = document.getElementById("login-button");
 
@@ -19,6 +19,6 @@ loginButton.addEventListener("click", () => {
       loginButton.style.color = "white";
     }, 1000);
   }
-});
+}); */
 
-/* stealing my admin password and username???? i will report you to the police. */
+/*stealing my user & pass?!?!??*/

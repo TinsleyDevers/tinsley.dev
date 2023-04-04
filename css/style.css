@@ -38,6 +38,29 @@ h4 {
   }
 }
 
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 600px;
+}
+
+@media (max-width: 600px) {
+  .content-wrapper {
+    min-width: 280px;
+  }
+}
+
+.construction-text {
+  font-size: 14px;
+  text-align: center;
+  color: rgb(65, 64, 64, 0.4);
+}
+
 .footer-text {
   position: absolute;
   bottom: 20px;
@@ -79,4 +102,12 @@ h4 {
 
 .footer-links a:hover::before {
   width: 100%;
+}
+
+.age-text,
+.construction-text,
+.footer-text,
+.footer-links {
+  opacity: 0;
+  transition: opacity 1s;
 }

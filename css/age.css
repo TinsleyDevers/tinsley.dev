@@ -1,10 +1,8 @@
 .age-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: auto;
   font-size: 36px;
   font-weight: bold;
   text-align: center;
   color: white;
+  margin-bottom: 5px;
 }
