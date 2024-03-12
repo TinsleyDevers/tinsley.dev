@@ -1,4 +1,4 @@
-const birthDate = new Date(2003, 3, 30);
+const birthDate = new Date(2003, 4, 30);
 const ageText = document.querySelector(".age-text");
 
 function updateAge() {
