@@ -59,6 +59,7 @@ h4 {
   font-size: 14px;
   text-align: center;
   color: rgb(65, 64, 64, 0.4);
+  cursor: default;
 }
 
 .footer-text {
@@ -69,6 +70,7 @@ h4 {
   font-size: 12px;
   text-align: center;
   color: white;
+  cursor: default;
 }
 
 .footer-links {
