@@ -1,3 +1,13 @@
+:root {
+  font-family: Inter, sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1; /* fix for Chrome */
+}
+@supports (font-variation-settings: normal) {
+  :root {
+    font-family: InterVariable, sans-serif;
+  }
+}
+
 body {
   overflow: hidden;
   background-color: rgb(7, 10, 18);
@@ -27,7 +37,7 @@ h4 {
   position: absolute;
   width: 2px;
   height: 2px;
-  background-color: white;
+  background-color: rgb(243, 245, 255);
   border-radius: 50%;
   animation: blink 2.5s infinite;
 }
@@ -58,7 +68,7 @@ h4 {
 .construction-text {
   font-size: 14px;
   text-align: center;
-  color: rgb(65, 64, 64, 0.4);
+  color: rgb(148, 163, 184, 0.4);
   cursor: default;
 }
 
@@ -69,7 +79,7 @@ h4 {
   transform: translateX(-50%);
   font-size: 12px;
   text-align: center;
-  color: white;
+  color: #dfe5ef;
   cursor: default;
 }
 
@@ -80,12 +90,12 @@ h4 {
   transform: translateX(-50%);
   font-size: 10px;
   text-align: center;
-  color: white;
+  color: #dfe5ef;
 }
 
 .footer-links a {
   margin: 0 5px;
-  color: white;
+  color: #dfe5ef;
   text-decoration: none;
   position: relative;
 }
@@ -98,12 +108,18 @@ h4 {
   transform: translateX(-50%);
   width: 0;
   height: 1px;
-  background-color: white;
+  background-color: #dfe5ef;
   transition: width 0.2s ease-out;
 }
 
 .footer-links a:hover::before {
   width: 100%;
+}
+
+.age-number {
+  display: inline-block;
+  width: 250px; /* Adjust this width as needed */
+  text-align: left;
 }
 
 .age-text,

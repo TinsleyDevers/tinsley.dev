@@ -1,5 +1,6 @@
 const birthDate = new Date(2003, 4, 30);
 const ageText = document.querySelector(".age-text");
+const ageNumber = document.querySelector(".age-number");
 
 function updateAge() {
   const now = new Date();
@@ -17,7 +18,7 @@ function updateAge() {
       clearInterval(roll);
       currentAge = endAge;
     }
-    ageText.textContent = `I'm a ${currentAge.toFixed(9)} year-old developer.`;
+    ageNumber.textContent = `${currentAge.toFixed(9)}`;
   }, 10); /* change the currentAge.toFixed(#) to change the number of decimal places */
 }
 
