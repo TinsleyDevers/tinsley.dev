@@ -10,7 +10,7 @@ function typeText(text, index = 0) {
   splashText.textContent = text.substring(0, index);
   splashText.appendChild(typingIndicator);
 
- typingTimeout = setTimeout(() => {
+  typingTimeout = setTimeout(() => {
     if (index < text.length) {
       typeText(text, index + 1);
     } else {
@@ -26,10 +26,16 @@ function typeText(text, index = 0) {
               document.querySelector(".construction-text");
             const footerText = document.querySelector(".footer-text");
             const footerLinks = document.querySelector(".footer-links");
+            const mouseCircle = document.querySelector("#mouseCircle");
+            const scrollIndicator = document.querySelector(
+              ".scroll-down-indicator"
+            );
             ageText.style.opacity = "1";
             constructionText.style.opacity = "1";
             footerText.style.opacity = "1";
             footerLinks.style.opacity = "1";
+            mouseCircle.style.opacity = "1";
+            scrollIndicator.style.opacity = "1";
           }
           splash.style.opacity = opacity;
           opacity -= 0.01;
