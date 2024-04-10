@@ -5,7 +5,7 @@ function parallaxEffect() {
     const scrollIndicator = document.querySelector(".scroll-down-indicator");
     const headname = document.querySelector(".headname");
 
-    const headnameSpeed = 0.8;
+    const headnameSpeed = 0.5;
     const ageTextSpeed = 0.47;
     const constructionTextSpeed = 0.51;
     const scrollIndicatorSpeed = 0.28;
