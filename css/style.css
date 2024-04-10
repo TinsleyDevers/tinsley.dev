@@ -69,7 +69,6 @@ h4 {
   font-size: 14px;
   text-align: center;
   color: rgb(148, 163, 184, 0.4);
-  cursor: default;
 }
 
 .footer-text {
@@ -80,7 +79,6 @@ h4 {
   font-size: 12px;
   text-align: center;
   color: #dfe5ef;
-  cursor: default;
 }
 
 .footer-links {
@@ -128,4 +126,25 @@ h4 {
 .footer-links {
   opacity: 0;
   transition: opacity 1s;
+}
+
+#mouseCircle {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background-color: rgba(49, 99, 180, 0.5);
+  pointer-events: none;
+  filter: blur(200px);
+  z-index: -1;
+  animation: rotateCircle 25s linear infinite;
+}
+
+@keyframes rotateCircle {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
