@@ -6,6 +6,8 @@ typingIndicator.classList.add("typing-indicator");
 typingIndicator.textContent = "_";
 let typingTimeout;
 
+document.body.style.overflowY = "hidden";
+
 function typeText(text, index = 0) {
   splashText.textContent = text.substring(0, index);
   splashText.appendChild(typingIndicator);
@@ -20,22 +22,14 @@ function typeText(text, index = 0) {
           if (opacity <= 0) {
             clearInterval(fadeOutInterval);
             document.body.removeChild(splash);
+            document.body.style.overflowY = "scroll";
 
-            const ageText = document.querySelector(".age-text");
-            const constructionText =
-              document.querySelector(".construction-text");
-            const footerText = document.querySelector(".footer-text");
-            const footerLinks = document.querySelector(".footer-links");
-            const mouseCircle = document.querySelector("#mouseCircle");
-            const scrollIndicator = document.querySelector(
-              ".scroll-down-indicator"
+            const contentElements = document.querySelectorAll(
+              ".headname, .age-text, .construction-text, .footer-text, .footer-links, #mouseCircle, .scroll-down-indicator"
             );
-            ageText.style.opacity = "1";
-            constructionText.style.opacity = "1";
-            footerText.style.opacity = "1";
-            footerLinks.style.opacity = "1";
-            mouseCircle.style.opacity = "1";
-            scrollIndicator.style.opacity = "1";
+            contentElements.forEach((el) => {
+              el.style.opacity = "1";
+            });
           }
           splash.style.opacity = opacity;
           opacity -= 0.01;
