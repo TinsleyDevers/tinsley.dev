@@ -206,7 +206,7 @@ h4 {
 }
 
 .projects-header {
-  margin-top: 1000px;
+  margin-top: 1400px;
   margin-bottom: 100px;
   text-align: center;
   color: rgb(223, 229, 239);
@@ -226,6 +226,11 @@ P {
 
 .project {
   margin-bottom: 80px;
+}
+
+.empty-space {
+  color: rgb(255, 255, 255, 0); /* transparent */
+  margin-top: 100px;
 }
 
 /* DISABLED ON MOBILE FOR NOW */
