@@ -1,7 +1,6 @@
 # Website Portfolio
 My website src!
 (work in progress, website isn't done yet just wanted to get something out there).<br>
-(recently updated the src code and it's not functioning properly on certain viewports. Fixing this is one of my top priorites).
 
 https://tinsley.dev
 
