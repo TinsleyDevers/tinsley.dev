@@ -13,7 +13,7 @@ function createStars() {
 function setRandomPosition(star) {
   star.style.top = `${Math.random() * 100}%`;
   star.style.left = `${Math.random() * 100}%`;
-  star.style.animationDelay = `${Math.random() * 1.25}s`;
+  star.style.animationDelay = `${Math.random() * 2.5}s`;
 }
 
 createStars();
