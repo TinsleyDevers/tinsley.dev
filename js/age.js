@@ -1,4 +1,4 @@
-const birthDate = new Date(2003, 3, 30);
+const birthDate = new Date(2003, 3, 30); // date is in zero-based indexing.
 const ageText = document.querySelector(".age-text");
 const ageNumber = document.querySelector(".age-number");
 
