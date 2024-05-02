@@ -6,18 +6,14 @@ function createStars() {
     star.classList.add("star");
     starContainer.appendChild(star);
     setRandomPosition(star);
-    const blinkDuration = 2.5;
-    star.addEventListener('animationiteration', () => {
-      const delay = parseFloat(star.style.animationDelay) || 0;
-      setTimeout(() => setRandomPosition(star), (delay + blinkDuration / 2) * 1000);
-    });
+    star.addEventListener('animationiteration', () => setRandomPosition(star));
   }
 }
 
 function setRandomPosition(star) {
   star.style.top = `${Math.random() * 100}%`;
   star.style.left = `${Math.random() * 100}%`;
-  star.style.animationDelay = `${Math.random() * 2.5}s`;
+  star.style.animationDelay = `${Math.random() * 1.25}s`;
 }
 
 createStars();
