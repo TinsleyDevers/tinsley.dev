@@ -4,16 +4,11 @@ function createStars() {
   for (let i = 0; i < starCount; i++) {
     const star = document.createElement("div");
     star.classList.add("star");
+    star.style.top = `${Math.random() * 100}%`;
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.animationDelay = `${Math.random() * 5}s`;
     starContainer.appendChild(star);
-    setRandomPosition(star);
-    star.addEventListener('animationiteration', () => setRandomPosition(star));
   }
-}
-
-function setRandomPosition(star) {
-  star.style.top = `${Math.random() * 100}%`;
-  star.style.left = `${Math.random() * 100}%`;
-  star.style.animationDelay = `${Math.random() * 2.5}s`;
 }
 
 createStars();
