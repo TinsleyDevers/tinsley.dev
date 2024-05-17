@@ -8,14 +8,19 @@
   }
 }
 
-body::-webkit-scrollbar {
+.scrollable {
+  height: 100vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollable::-webkit-scrollbar {
   display: none;
 }
 
 body {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow-y: auto;
+  overflow: hidden;
   background-color: rgb(7, 10, 18);
 }
 
@@ -84,6 +89,7 @@ h4 {
 }
 
 .scroll-down-indicator {
+  pointer-events: none;
   position: absolute;
   left: 50.15%;
   bottom: 14%;

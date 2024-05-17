@@ -6,8 +6,6 @@ typingIndicator.classList.add("typing-indicator");
 typingIndicator.textContent = "_";
 let typingTimeout;
 
-document.body.style.overflowY = "hidden";
-
 function typeText(text, index = 0) {
   splashText.textContent = text.substring(0, index);
   splashText.appendChild(typingIndicator);
@@ -22,7 +20,13 @@ function typeText(text, index = 0) {
           if (opacity <= 0) {
             clearInterval(fadeOutInterval);
             document.body.removeChild(splash);
-            document.body.style.overflowY = "scroll";
+
+            const scrollableContent = document.createElement("div");
+            scrollableContent.classList.add("scrollable");
+            while (document.body.firstChild) {
+              scrollableContent.appendChild(document.body.firstChild);
+            }
+            document.body.appendChild(scrollableContent);
 
             const contentElements = document.querySelectorAll(
               ".headname, .age-text, .construction-text, .footer-text, .footer-links, #mouseCircle, .scroll-down-indicator"
@@ -30,6 +34,8 @@ function typeText(text, index = 0) {
             contentElements.forEach((el) => {
               el.style.opacity = "1";
             });
+
+            parallaxEffect();
           }
           splash.style.opacity = opacity;
           opacity -= 0.01;
