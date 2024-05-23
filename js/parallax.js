@@ -8,17 +8,17 @@ function parallaxEffect() {
     const headname = document.querySelector(".headname");
 
     const headnameSpeed = 0.5;
-    const ageTextSpeed = 0.53;
-    const constructionTextSpeed = 0.48;
+    const ageTextSpeed = 0.47;
+    const constructionTextSpeed = 0.52;
     const scrollIndicatorSpeed = 0.7;
 
     function updateParallax() {
       const scrollY = scrollableContent.scrollTop;
 
       headname.style.transform = `translateY(${scrollY * headnameSpeed}px)`;
-      ageText.style.transform = `translateY(${-scrollY * ageTextSpeed}px)`;
+      ageText.style.transform = `translateY(${scrollY * ageTextSpeed}px)`;
       constructionText.style.transform = `translateY(${
-        -scrollY * constructionTextSpeed
+        scrollY * constructionTextSpeed
       }px)`;
       scrollIndicator.style.transform = `translateY(${
         -scrollY * scrollIndicatorSpeed

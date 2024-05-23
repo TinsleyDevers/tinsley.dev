@@ -69,8 +69,8 @@ h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: absolute;
-  top: 50%;
+  position: relative;
+  top: 44%;
   left: 50%;
   transform: translate(-50%, -50%);
   min-width: 600px;
