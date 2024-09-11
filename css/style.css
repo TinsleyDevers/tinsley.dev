@@ -92,7 +92,7 @@ h4 {
   pointer-events: none;
   position: absolute;
   left: 50.15%;
-  bottom: 14%;
+  bottom: 15%;
   transform: translate(-50%, -50%);
   z-index: 1;
 }
@@ -132,20 +132,20 @@ h4 {
 
 .footer-text {
   position: fixed;
-  bottom: 20px;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   color: rgb(223, 229, 239);
 }
 
 .footer-links {
   position: fixed;
-  bottom: 5px;
+  bottom: 20px;
   left: 49.85%;
   transform: translateX(-50%);
-  font-size: 10px;
+  font-size: 12px;
   text-align: center;
   color: rgb(223, 229, 239);
 }
