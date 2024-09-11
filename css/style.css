@@ -132,7 +132,7 @@ h4 {
 
 .footer-text {
   position: fixed;
-  bottom: 40px;
+  bottom: 35px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 14px;
@@ -142,7 +142,7 @@ h4 {
 
 .footer-links {
   position: fixed;
-  bottom: 20px;
+  bottom: 15px;
   left: 49.85%;
   transform: translateX(-50%);
   font-size: 12px;
