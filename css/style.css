@@ -150,14 +150,16 @@ h4 {
   color: rgb(223, 229, 239);
 }
 
-.footer-links a {
+.footer-links a,
+.project a {
   margin: 0 5px;
   color: rgb(223, 229, 239);
   text-decoration: none;
   position: relative;
 }
 
-.footer-links a::before {
+.footer-links a::before,
+.project a::before {
   content: "";
   position: absolute;
   bottom: 0;
@@ -169,7 +171,8 @@ h4 {
   transition: width 0.2s ease-out;
 }
 
-.footer-links a:hover::before {
+.footer-links a:hover::before,
+.project a:hover::before {
   width: 100%;
 }
 
