@@ -1,4 +1,3 @@
-// mousecircle.js
 const mouseCircle = document.getElementById("mouseCircle");
 
 document.addEventListener("mousemove", function (e) {

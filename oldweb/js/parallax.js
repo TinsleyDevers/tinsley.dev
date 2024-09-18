@@ -1,4 +1,3 @@
-// parallax.js
 function parallaxEffect() {
   const scrollableContent = document.querySelector(".scrollable");
 
