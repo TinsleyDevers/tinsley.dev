@@ -20,8 +20,6 @@ console.log(
   );  
 
 // old website
-console.log('Logo element:', logo);
-
 document.addEventListener("DOMContentLoaded", function () {
     const requiredClicks = 5;
     let clickCount = 0;
