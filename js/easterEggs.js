@@ -1,47 +1,76 @@
-// easterEgg.js
+// easterEggs.js
 
+(() => {
+  // console message
+  const displayConsoleMessage = () => {
+    const message = `
+  %c
+       CONTACT ME
+     ----------------------------------------
+       .   *   .           *       *  .  *   .
+    *      .      .  *  .  +     *  .     +
+   . Tinsley *        *        .     *        *
+       *  .    +   *   .    .  +     .     *    *
+    *        .     +  *  .     *        .      +
+       .  +    .   *   .    .     *        *
+    *       .        *  +  .     .   Devers . *
+       *        .  +     *        *        .   +
+    .     *        .     +  *       *        .
+  
+  Hey There! I'm glad you liked the site. Want to see what's going on? Check out the repo at https://github.com/TinsleyDevers/tinsley.dev
+  
+  Also, you can contact me via tinsley.devers@gmail.com if you have any questions!
+      `;
 
-// console message
-console.log(
-    "%c\n" +
-    "     CONTACT ME\n" +
-    "   ----------------------------------------\n" +
-    "     .   *   .           *       *  .  *   .\n" +
-    "  *      .      .  *  .  +     *  .     +\n" +
-    " . Tinsley *        *        .     *        *\n" +
-    "     *  .    +   *   .    .  +     .     *    *\n" +
-    "  *        .     +  *  .     *        .      +\n" +
-    "     .  +    .   *   .    .     *        *\n" +
-    "  *       .        *  +  .     .   Devers . *\n" +
-    "     *        .  +     *        *        .   +\n" +
-    "  .     *        .     +  *       *        .\n" +
-    "\nHey There! I'm glad you liked the site. Want to see what's going on? Check out the repo at https://github.com/TinsleyDevers/tinsley.dev\n\nAlso, you can contact me via tinsley.devers@gmail.com if you have any questions!",
-    "font-family:inherit; font-size: 12px"
-  );  
+    const styles = "font-family:inherit; font-size: 12px";
 
-// old website
-document.addEventListener("DOMContentLoaded", function () {
-    const requiredClicks = 5;
+    console.info(message, styles);
+  };
+
+  const initEasterEgg = () => {
+    displayConsoleMessage();
+    initClickEasterEgg();
+  };
+
+  // old website
+  const initClickEasterEgg = () => {
+    const REQUIRED_CLICKS = 5;
+    const RESET_TIMEOUT = 5000;
     let clickCount = 0;
     let clickTimeout;
 
-    const logo = document.getElementById('logo');
+    const logo = document.getElementById("logo");
 
-    function resetClickCount() {
-        clickCount = 0;
+    if (!logo) {
+      console.error("Element with ID 'logo' not found.");
+      return;
     }
 
-    logo.addEventListener('click', function () {
-        clickCount++;
+    const resetClickCount = () => {
+      clickCount = 0;
+    };
 
-        if (clickCount === requiredClicks) {
-            window.location.href = './oldweb/index.html';
-        }
+    const handleLogoClick = () => {
+      clickCount++;
 
+      if (clickCount === REQUIRED_CLICKS) {
+        redirectToOldWebsite();
+        resetClickCount();
         clearTimeout(clickTimeout);
-        clickTimeout = setTimeout(resetClickCount, 5000); // reset after 5 seconds of inactivity
-    });
-});
+        return;
+      }
 
+      clearTimeout(clickTimeout);
+      clickTimeout = setTimeout(resetClickCount, RESET_TIMEOUT);
+    };
 
-// more coming soon...
+    const redirectToOldWebsite = () => {
+      const oldWebsiteURL = "./oldweb/index.html";
+      window.location.href = oldWebsiteURL;
+    };
+
+    logo.addEventListener("click", handleLogoClick);
+  };
+
+  document.addEventListener("DOMContentLoaded", initEasterEgg);
+})();

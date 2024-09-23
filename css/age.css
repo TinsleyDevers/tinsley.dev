@@ -1,9 +1,8 @@
 /* age.css */
 .age-text {
-  width: auto;
-  font-size: 36px;
+  font-size: 2.25rem;
   font-weight: bold;
   text-align: center;
   color: var(--text-color);
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
 }

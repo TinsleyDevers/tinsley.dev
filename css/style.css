@@ -1,7 +1,14 @@
 /* style.css */
 
+/* ===================================================================
+   :root CSS
+=================================================================== */
 :root {
-  --font-family: 'Inter', sans-serif;
+  /* Fonts */
+  --font-family: "Inter", sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1;
+
+  /* Colors */
   --bg-color: rgb(7, 10, 18);
   --text-color: rgb(223, 229, 239);
   --accent-color: rgb(89, 151, 250);
@@ -9,17 +16,23 @@
   --cursor-color: rgba(239, 229, 223, 0.9);
   --cursor-trail-color: rgba(59, 130, 246, 0.5);
   --cursor-hover-color: rgba(255, 255, 255, 1);
+
+  /* Cursor */
   --cursor-active-scale: 0.8;
-  font-feature-settings: "liga" 1, "calt" 1;
 }
 
+/* ===================================================================
+   Body Styles
+=================================================================== */
 body {
-  overflow: hidden;
-  background-color: var(--bg-color);
   font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow: hidden;
   scroll-behavior: smooth;
   position: relative;
   z-index: 1;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 body.custom-cursor-enabled {
@@ -54,13 +67,70 @@ body.content-visible nav {
   pointer-events: auto;
 }
 
+/* Light Mode Styles */
+body.light-mode {
+  --bg-color: rgb(239, 239, 239);
+  --text-color: rgb(28, 28, 28);
+  --secondary-text-color: rgb(85, 85, 85);
+  --accent-color: rgb(89, 151, 250);
+}
+
+body.light-mode nav {
+  background-color: rgba(239, 239, 239, 0.9);
+}
+
+body.light-mode .project,
+body.light-mode #experience .experience-item,
+body.light-mode #skills .skill-item,
+body.light-mode #education .education-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(28, 28, 28, 0.1);
+}
+
+body.light-mode .project:hover,
+body.light-mode #experience .experience-item:hover,
+body.light-mode #skills .skill-item:hover,
+body.light-mode #education .education-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 20px rgba(28, 28, 28, 0.2);
+}
+
+body.light-mode .skill-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(28, 28, 28, 0.1);
+}
+
+body.light-mode .skill-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(28, 28, 28, 0.1);
+}
+
+body.light-mode .contact-form-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(28, 28, 28, 0.1);
+  box-shadow: 0 5px 15px rgba(28, 28, 28, 0.1);
+}
+
+body.light-mode .form-group input,
+body.light-mode .form-group textarea {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+body.light-mode .form-group input:focus,
+body.light-mode .form-group textarea:focus {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ===================================================================
+   Background Stars
+=================================================================== */
 #stars {
   position: fixed;
-  width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
-  z-index: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -73,14 +143,17 @@ body.content-visible nav {
   animation: blink 2.5s infinite;
 }
 
+/* ===================================================================
+   Navigation Bar
+=================================================================== */
 nav {
   position: fixed;
-  width: 100%;
-  background-color: rgba(7, 10, 18, 0.9);
   top: 0;
   left: 0;
+  width: 100%;
+  background-color: rgba(7, 10, 18, 0.9);
   z-index: 1000;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out, background-color 0.3s;
 }
 
 .nav-container {
@@ -88,15 +161,21 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 15px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--text-color);
+  cursor: default;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-}
-
-.nav-links li {
-  margin: 0 15px;
+  gap: 15px;
 }
 
 .nav-links a {
@@ -104,6 +183,7 @@ nav {
   text-decoration: none;
   font-size: 16px;
   position: relative;
+  transition: color 0.3s;
 }
 
 .nav-links a::before {
@@ -130,6 +210,7 @@ nav {
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .nav-buttons button:hover {
@@ -137,34 +218,125 @@ nav {
   color: var(--bg-color);
 }
 
-.logo {
-  font-size: 20px;
-  font-weight: bold;
-  color: var(--text-color);
-  cursor: default;
+/* ===================================================================
+   Mouse Stuff
+=================================================================== */
+#mouseCircle,
+#customCursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1003;
 }
 
-.logo a, .logo a:visited {
-  color: inherit;
-  text-decoration: none;
+#mouseCircle {
+  width: 400px;
+  height: 400px;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background-color: rgba(59, 130, 246, 0.5);
+  filter: blur(200px);
+  transform: translate(-50%, -50%);
+  animation: rotateCircle 25s linear infinite;
+  z-index: 999;
 }
 
+@keyframes rotateCircle {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+#customCursor {
+  left: 0;
+  top: 0;
+  z-index: 1002;
+}
+
+#cursorInner,
+#cursorOuter {
+  transition: transform 0.15s ease-out, background-color 0.15s ease-out,
+    box-shadow 0.15s ease-out;
+}
+
+#cursorInner {
+  width: 8px;
+  height: 8px;
+  background: var(--cursor-color);
+  border-radius: 50%;
+  z-index: 1004;
+  box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+}
+
+#cursorOuter {
+  width: 30px;
+  height: 30px;
+  background: var(--cursor-trail-color);
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+  mix-blend-mode: difference;
+  z-index: 1003;
+}
+
+#cursorInner.hover,
+#cursorOuter.hover {
+  background-color: var(--cursor-hover-color);
+  box-shadow: 0 0 15px var(--cursor-hover-color),
+    0 0 30px var(--cursor-hover-color);
+}
+
+#cursorInner.active,
+#cursorOuter.active {
+  transform: scale(var(--cursor-active-scale));
+}
+
+#cursorInner::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--cursor-trail-color);
+  opacity: 0.6;
+}
+
+/* Hide Cursor and Mouse Circle */
+body.hide-cursor #customCursor,
+body.hide-cursor #mouseCircle {
+  display: none;
+}
+
+/* ===================================================================
+   Scrollable
+=================================================================== */
 .scrollable {
   margin-top: 80px;
   height: calc(100vh - 80px);
   overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  position: relative;
+  z-index: 1;
 }
 
 .scrollable::-webkit-scrollbar {
-  display: none;
+  display: none; /* Safari and Chrome */
+}
+
+/* ===================================================================
+   About
+=================================================================== */
+#about {
+  padding: 50px 20px;
+  text-align: center;
+  color: var(--text-color);
 }
 
 h1.headname {
-  text-align: center;
   font-size: 48px;
-  color: var(--text-color);
   margin-top: 50px;
 }
 
@@ -178,23 +350,20 @@ h1.headname {
 .age-text {
   font-size: 36px;
   font-weight: bold;
-  text-align: center;
-  color: var(--text-color);
   margin-bottom: 10px;
 }
 
 .construction-text {
   font-size: 18px;
-  text-align: center;
   color: var(--secondary-text-color);
 }
 
 .scroll-down-indicator {
-  pointer-events: none;
   position: absolute;
   left: 50%;
   bottom: 15%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+  pointer-events: none;
   z-index: 1;
 }
 
@@ -217,28 +386,53 @@ h1.headname {
   animation-delay: -0.4s;
 }
 
-@keyframes animate {
-  0% {
-      opacity: 0;
-      transform: rotate(45deg) translate(-20px, -20px);
-  }
-  50% {
-      opacity: 1;
-  }
-  100% {
-      opacity: 0;
-      transform: rotate(45deg) translate(20px, 20px);
-  }
+/* ===================================================================
+   Skills
+=================================================================== */
+#skills {
+  padding: 50px 20px;
+  text-align: center;
 }
 
-.projects-header {
-  margin-top: 100px;
-  text-align: center;
+#skills .section-header h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+.skills-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.skill-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 16px;
   color: var(--text-color);
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+.skill-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===================================================================
+   Projects
+=================================================================== */
+#projects {
+  padding: 50px 20px;
+  text-align: center;
 }
 
 .projects-header h2 {
   font-size: 36px;
+  margin-bottom: 40px;
 }
 
 .projects {
@@ -246,18 +440,17 @@ h1.headname {
   flex-wrap: wrap;
   justify-content: center;
   padding: 20px;
+  gap: 15px;
 }
 
 .project {
   background-color: rgba(255, 255, 255, 0.05);
   padding: 20px;
-  margin: 15px;
   border-radius: 10px;
-  text-align: left;
   max-width: 300px;
   flex: 1 1 calc(33% - 40px);
   box-sizing: border-box;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
   cursor: default;
   position: relative;
 }
@@ -280,6 +473,7 @@ h1.headname {
   color: var(--text-color);
   text-decoration: none;
   position: relative;
+  transition: color 0.3s;
 }
 
 .project a::before {
@@ -298,26 +492,211 @@ h1.headname {
   width: 100%;
 }
 
-.footer-text {
+/* ===================================================================
+   Experience
+=================================================================== */
+#experience {
+  padding: 50px 20px;
   text-align: center;
+}
+
+#experience .section-header h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+.experience-header h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+.experience-item {
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+.experience-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.experience-item h3 {
+  margin-top: 0;
+  color: var(--accent-color);
+}
+
+.experience-item h4 {
+  margin: 5px 0;
+  color: var(--secondary-text-color);
+}
+
+.experience-item p {
+  color: var(--secondary-text-color);
+}
+
+/* ===================================================================
+   Education
+=================================================================== */
+#education {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+#education .section-header h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+.education-item {
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+.education-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.education-item h3 {
+  margin-top: 0;
+  color: var(--accent-color);
+}
+
+.education-item h4 {
+  margin: 5px 0;
+  color: var(--secondary-text-color);
+}
+
+.education-item p {
+  color: var(--secondary-text-color);
+}
+
+/* ===================================================================
+   Contact
+=================================================================== */
+#contact {
+  padding: 50px 20px;
+}
+
+.contact-form-container {
+  max-width: 800px;
+  margin: 0 auto 50px auto;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.contact-form-container h2 {
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: 30px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px 15px;
+  border: 1px solid var(--secondary-text-color);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: 16px;
+  resize: vertical;
+  transition: background-color 0.3s, border 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+.submit-button {
+  padding: 12px 20px;
+  background-color: var(--accent-color);
+  border: none;
+  border-radius: 5px;
+  color: var(--bg-color);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: rgb(80, 136, 225);
+}
+
+.form-feedback {
+  margin-top: 15px;
   font-size: 14px;
+  text-align: center;
+}
+
+.form-feedback .success {
+  color: #28a745; /* Green */
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.form-feedback .error {
+  color: #dc3545; /* Red */
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* ===================================================================
+   Footer
+=================================================================== */
+footer {
+  text-align: center;
   color: var(--text-color);
   margin-top: 50px;
+  padding-bottom: 20px;
+}
+
+.footer-text {
+  font-size: 14px;
 }
 
 .footer-links {
-  text-align: center;
   font-size: 12px;
-  color: var(--text-color);
   margin-top: 3px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
 }
 
 .footer-links a {
-  margin: 0 5px;
   color: var(--text-color);
   text-decoration: none;
   position: relative;
+  transition: color 0.3s;
 }
 
 .footer-links a::before {
@@ -336,145 +715,145 @@ h1.headname {
   width: 100%;
 }
 
-body.light-mode {
-  --bg-color: rgb(239, 239, 239);
-  --text-color: rgb(28, 28, 28);
-  --secondary-text-color: rgb(85, 85, 85);
-  --accent-color: rgb(89, 151, 250);
+/* ===================================================================
+   Thank-You Page Style
+=================================================================== */
+.thank-you-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  text-align: center;
 }
 
-body.light-mode nav {
-  background-color: rgba(239, 239, 239, 0.9);
+.thank-you-container h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
 }
 
-body.hide-cursor #customCursor,
-body.hide-cursor #mouseCircle {
-  display: none;
+.thank-you-container p {
+  font-size: 18px;
+  margin-bottom: 30px;
 }
 
-#mouseCircle {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  background-color: rgba(59, 130, 246, 0.5);
-  pointer-events: none;
-  filter: blur(200px);
-  transform: translate(-50%, -50%);
-  animation: rotateCircle 25s linear infinite;
-  z-index: 2;
+.return-button {
+  padding: 10px 20px;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
 
-@keyframes rotateCircle {
+.return-button:hover {
+  background-color: rgb(80, 136, 225);
+}
+
+/* ===================================================================
+   Custom Animations
+=================================================================== */
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
   from {
-      transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0;
   }
   to {
-      transform: translate(-50%, -50%) rotate(360deg);
+    opacity: 1;
   }
 }
 
-#customCursor {
-  position: fixed;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-  z-index: 10000;
-}
-
-#cursorInner {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: var(--cursor-color);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 10002;
-  box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
-}
-
-#cursorOuter {
-  position: fixed;
-  width: 30px;
-  height: 30px;
-  background: var(--cursor-trail-color);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 10001;
-  backdrop-filter: blur(5px);
-  mix-blend-mode: difference;
-}
-
-#cursorInner.hover,
-#cursorOuter.hover {
-  background-color: var(--cursor-hover-color);
-  box-shadow: 0 0 15px var(--cursor-hover-color), 0 0 30px var(--cursor-hover-color);
-}
-
-#cursorInner.active,
-#cursorOuter.active {
-  transform: scale(var(--cursor-active-scale));
-}
-
-#cursorInner::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: var(--cursor-trail-color);
-  animation: cursorTrail 0.5s ease-out infinite;
-  opacity: 0.6;
-}
-
-#cursorInner,
-#cursorOuter {
-  transition: transform 0.15s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
-}
-
-#constellationCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* will work on this later */
+/* ===================================================================
+   FIX LATER - Responsive Styles
+=================================================================== */
 @media (max-width: 1024px) {
   .projects {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .project {
-      flex: 1 1 100%;
-      max-width: 90%;
+    flex: 1 1 100%;
+    max-width: 90%;
+  }
+
+  #experience .experience-item,
+  #skills .skill-item,
+  #education .education-item {
+    max-width: 90%;
   }
 }
 
 @media (max-width: 600px) {
   nav .nav-container {
-      flex-direction: column;
-      align-items: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 20px;
   }
 
-  nav .nav-links {
-      flex-direction: column;
-      margin-top: 10px;
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
   }
 
   .nav-buttons {
-      margin-top: 10px;
+    margin-top: 10px;
   }
 
-  #mouseCircle {
-      display: none;
-  }
-
+  #mouseCircle,
   #customCursor {
-      display: none;
+    display: none;
   }
+
+  #skills .skills-list {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .skill-item {
+    width: 80%;
+    text-align: center;
+  }
+
+  .contact-form-container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+  }
+}
+
+.headname,
+.age-text,
+.construction-text,
+.scroll-down-indicator {
+  will-change: transform;
 }

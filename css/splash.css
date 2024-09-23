@@ -1,17 +1,41 @@
 /* splash.css */
+
+:root {
+  --splash-background-color: rgba(0, 0, 0, 0.9);
+  --splash-text-color: #ffffff;
+  --splash-text-font-size: 3rem;
+  --splash-text-font-weight: bold;
+  --splash-text-margin-bottom: 1.25rem;
+  --splash-text-line-height: 1;
+  --typing-indicator-width: 0.75rem;
+  --typing-indicator-height: 3rem;
+  --typing-indicator-margin-left: 0.3125rem;
+  --typing-indicator-animation-duration: 1s;
+  --typing-indicator-animation-iteration: infinite;
+  --blink-animation-name: blink;
+  --blink-animation-duration: 1s;
+  --blink-animation-iteration: infinite;
+  --splash-transition-property: opacity;
+  --splash-transition-duration: 1s;
+  --splash-transition-timing-function: ease;
+  --splash-z-index: 9999;
+}
+
 .splash {
   position: fixed;
-  width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: var(--splash-background-color);
   opacity: 1;
-  transition: opacity 1s;
+  transition: var(--splash-transition-property)
+    var(--splash-transition-duration) var(--splash-transition-timing-function);
+  z-index: var(--splash-z-index);
+  pointer-events: none;
 }
 
 .splash.fade-out {
@@ -19,24 +43,48 @@
 }
 
 .splash-text {
-  color: white;
-  font-size: 48px;
-  font-weight: bold;
+  color: var(--splash-text-color);
+  font-size: var(--splash-text-font-size);
+  font-weight: var(--splash-text-font-weight);
   text-align: center;
-  margin-bottom: 20px;
-  line-height: 1;
+  margin-bottom: var(--splash-text-margin-bottom);
+  line-height: var(--splash-text-line-height);
 }
 
 .splash-text .typing-indicator {
   display: inline-block;
-  width: 12px;
-  height: 48px;
-  margin-left: 5px;
-  animation: blink 1s infinite;
+  width: var(--typing-indicator-width);
+  height: var(--typing-indicator-height);
+  margin-left: var(--typing-indicator-margin-left);
+  animation: var(--blink-animation-name) var(--blink-animation-duration)
+    var(--blink-animation-iteration);
+  vertical-align: middle;
+  background-color: currentColor;
 }
 
 @keyframes blink {
-  50% {
-      opacity: 0;
+  0%,
+  100% {
+    opacity: 1;
   }
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --splash-text-font-size: 2rem;
+    --typing-indicator-width: 0.5rem;
+    --typing-indicator-height: 2rem;
+    --typing-indicator-margin-left: 0.2rem;
+  }
+
+  .splash-text {
+    margin-bottom: 1rem;
+  }
+}
+
+.splash-text .typing-indicator {
+  will-change: opacity;
 }

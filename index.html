@@ -1,113 +1,299 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>{tinsley.dev}</title>
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/splash.css" />
     <link rel="stylesheet" href="css/age.css" />
-</head>
-<body class="content-hidden">
+    <meta
+      name="description"
+      content="Tinsley Devers - Professional Web Developer Portfolio"
+    />
+    <meta
+      name="keywords"
+      content="Web Developer, Portfolio, JavaScript, Python, C++, Projects, Skills"
+    />
+    <meta name="author" content="Tinsley Devers" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body class="content-hidden">
     <div id="stars"></div>
 
     <!-- Splash Screen -->
     <div class="splash">
-        <div class="splash-text"></div>
+      <div class="splash-text"></div>
     </div>
 
     <!-- Navigation Bar -->
     <nav>
-        <div class="nav-container">
-            <div class="logo"><span id="logo">{tinsley.dev}</span></div>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="nav-buttons">
-                <button id="toggleLightMode">Light Mode</button>
-                <button id="toggleCursor">Toggle Cursor</button>
-            </div>
+      <div class="nav-container">
+        <div class="logo">
+          <span id="logo">{tinsley.dev}</span>
         </div>
+        <ul class="nav-links">
+          <li><a href="#about" aria-label="About Section">About</a></li>
+          <li><a href="#skills" aria-label="Skills Section">Skills</a></li>
+          <li>
+            <a href="#projects" aria-label="Projects Section">Projects</a>
+          </li>
+          <li>
+            <a href="#experience" aria-label="Experience Section">Experience</a>
+          </li>
+          <li>
+            <a href="#education" aria-label="Education Section">Education</a>
+          </li>
+          <li><a href="#contact" aria-label="Contact Section">Contact</a></li>
+        </ul>
+        <div class="nav-buttons">
+          <button id="toggleLightMode">Light Mode</button>
+          <button id="toggleCursor">Toggle Cursor</button>
+        </div>
+      </div>
     </nav>
+
+    <!-- Custom Cursor and Mouse Circle -->
+    <div id="mouseCircle"></div>
+    <div id="customCursor">
+      <div id="cursorInner"></div>
+      <div id="cursorOuter"></div>
+    </div>
 
     <!-- Main Content -->
     <div class="scrollable">
-        <div id="mouseCircle"></div>
-        <div id="customCursor">
-            <div id="cursorInner"></div>
-            <div id="cursorOuter"></div>
+      <!-- About Section -->
+      <section id="about">
+        <h1 class="headname">{tinsley.dev}</h1>
+        <div class="content-wrapper">
+          <div class="age-text">
+            I'm a <span class="age-number"></span> year-old developer.
+          </div>
+          <div class="construction-text">
+            Projects coming soon<br />Check out my GitHub for now
+          </div>
         </div>
+        <div class="scroll-down-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </section>
 
-        <!-- About Section -->
-        <section id="about">
-            <h1 class="headname">{tinsley.dev}</h1>
-            <div class="content-wrapper">
-                <div class="age-text">
-                    I'm a ‎<span class="age-number"></span> year-old developer.
-                </div>
-                <div class="construction-text">
-                    Projects coming soon<br />Check out my GitHub for now
-                </div>
-            </div>
-            <div class="scroll-down-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </section>
+      <!-- Skills Section -->
+      <section id="skills">
+        <div class="section-header">
+          <h2>Skills</h2>
+        </div>
+        <div class="skills-list">
+          <div class="skill-item">C++</div>
+          <div class="skill-item">Python</div>
+          <div class="skill-item">JavaScript</div>
+          <div class="skill-item">HTML</div>
+          <div class="skill-item">CSS</div>
+          <div class="skill-item">Java</div>
+          <div class="skill-item">Web Scraping</div>
+          <div class="skill-item">Data Analysis</div>
+          <div class="skill-item">Git</div>
+        </div>
+      </section>
 
-        <!-- Projects Section -->
-        <section id="projects">
-            <div class="projects-header">
-                <h2>Projects</h2>
-            </div>
-            <div class="projects">
-                <div class="project">
-                    <h3>tinsley.dev</h3>
-                    <p>My Portfolio Website</p>
-                    <p>HTML, CSS, and JS</p>
-                    <a href="https://github.com/TinsleyDevers/tinsley.dev" target="_blank">github.com/tinsley.dev</a>
-                </div>
-                <div class="project">
-                    <h3>Excelbnb</h3>
-                    <p>Python application designed to convert Airbnb listings into a structured Excel spreadsheet</p>
-                    <p>Python, Web Scraping, Data Analysis</p>
-                    <a href="https://github.com/TinsleyDevers/Excelbnb" target="_blank">github.com/Excelbnb</a>
-                </div>
-                <div class="project">
-                    <h3>Zone7 Utility</h3>
-                    <p>Minecraft Java Plugin</p>
-                    <p>Java, OOP, API</p>
-                    <a href="https://github.com/TinsleyDevers/Zone7-Utility" target="_blank">github.com/Zone7-Utility</a>
-                </div>
-                <div class="project">
-                    <h3>Calhoun Grades Webscraper</h3>
-                    <p>Python application focused on scraping your grades off Blackboard and converting it into an Excel spreadsheet</p>
-                    <p>Python, Web Scraping, Data Analysis</p>
-                    <a href="https://github.com/TinsleyDevers/CalhounGrades" target="_blank">github.com/CalhounGrades</a>
-                </div>
-                <div class="project">
-                    <h3>WORK IN PROGRESS</h3>
-                    <p>This webpage is a work in progress and is actively being worked on.</p>
-                    <p>Checkout my GitHub for more information</p>
-                    <a href="https://github.com/TinsleyDevers" target="_blank">github.com/TinsleyDevers</a>
-                </div>
-            </div>
-        </section>
+      <!-- Projects Section -->
+      <section id="projects">
+        <div class="section-header">
+          <h2>Projects</h2>
+        </div>
+        <div class="projects">
+          <div class="project">
+            <h3>tinsley.dev</h3>
+            <p>My Portfolio Website</p>
+            <p>HTML, CSS, JS</p>
+            <a
+              href="https://github.com/TinsleyDevers/tinsley.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/tinsley.dev
+            </a>
+          </div>
+          <div class="project">
+            <h3>Excelbnb</h3>
+            <p>
+              Python application designed to convert Airbnb listings into a
+              structured Excel spreadsheet.
+            </p>
+            <p>Python, Web Scraping, Data Analysis</p>
+            <a
+              href="https://github.com/TinsleyDevers/Excelbnb"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/Excelbnb
+            </a>
+          </div>
+          <div class="project">
+            <h3>Zone7 Utility</h3>
+            <p>Minecraft Java Plugin</p>
+            <p>Java, OOP, API</p>
+            <a
+              href="https://github.com/TinsleyDevers/Zone7-Utility"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/Zone7-Utility
+            </a>
+          </div>
+          <div class="project">
+            <h3>Calhoun Grades Webscraper</h3>
+            <p>
+              Python application focused on scraping your grades off Blackboard
+              and converting it into an Excel spreadsheet.
+            </p>
+            <p>Python, Web Scraping, Data Analysis</p>
+            <a
+              href="https://github.com/TinsleyDevers/CalhounGrades"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/CalhounGrades
+            </a>
+          </div>
+          <div class="project">
+            <h3>WORK IN PROGRESS</h3>
+            <p>
+              This webpage is a work in progress and is actively being worked
+              on.
+            </p>
+            <p>Checkout my GitHub for more information.</p>
+            <a
+              href="https://github.com/TinsleyDevers"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/TinsleyDevers
+            </a>
+          </div>
+        </div>
+      </section>
 
-        <!-- Contact Section -->
-        <section id="contact">
-            <div class="footer-text">© 2024 Tinsley Devers</div>
-            <div class="footer-links">
-                <a href="https://www.linkedin.com/in/tinsley-devers-40820a1b9/" target="_blank">{LinkedIn}</a>
-                <a href="mailto:tinsley.devers@gmail.com">{Email}</a>
-                <a href="https://github.com/TinsleyDevers" target="_blank">{GitHub}</a>
+      <!-- Experience Section -->
+      <section id="experience">
+        <div class="section-header">
+          <h2>Experience</h2>
+        </div>
+        <div class="experience-item">
+          <h3>Software Engineer at Lorem Ipsum</h3>
+          <h4>December 2023 - Present</h4>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
+            ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+        <div class="experience-item">
+          <h3>Intern at Lorem Ipsum</h3>
+          <h4>June 2023 - August 2023</h4>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+      </section>
+
+      <!-- Education Section -->
+      <section id="education">
+        <div class="section-header">
+          <h2>Education</h2>
+        </div>
+        <div class="education-item">
+          <h3>Associate of Science in Computer Science</h3>
+          <h4>Calhoun Community College</h4>
+          <p>Graduated: May 2025</p>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact">
+        <div class="contact-form-container">
+          <h2>Contact Me</h2>
+          <form
+            id="contactForm"
+            method="POST"
+            action="https://kwesforms.com/api/f/dmyuGURHkEEGilAf3weo"
+            class="contact-form kf-form"
+            novalidate
+          >
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                maxlength="255"
+                placeholder="Your Name"
+                aria-required="true"
+              />
             </div>
-        </section>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="your.email@example.com"
+                aria-required="true"
+              />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                placeholder="Your Message"
+                aria-required="true"
+              ></textarea>
+            </div>
+            <button type="submit" class="submit-button">Send Message</button>
+            <div id="formFeedback" class="form-feedback"></div>
+            <!-- Honeypot Field -->
+            <div style="display: none">
+              <label for="bot-field">Don’t fill this out:</label>
+              <input type="text" id="bot-field" name="bot-field" />
+            </div>
+          </form>
+        </div>
+        <!-- Footer -->
+        <footer>
+          <div class="footer-text">
+            © <span id="current-year"></span> Tinsley Devers
+          </div>
+          <div class="footer-links">
+            <a
+              href="https://www.linkedin.com/in/tinsley-devers-40820a1b9/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {LinkedIn}
+            </a>
+            <a href="mailto:tinsley.devers@gmail.com">{Email}</a>
+            <a
+              href="https://github.com/TinsleyDevers"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {GitHub}
+            </a>
+          </div>
+        </footer>
+      </section>
     </div>
 
     <!-- Scripts -->
@@ -120,5 +306,8 @@
     <script src="js/toggleFeatures.js"></script>
     <script src="js/easterEggs.js"></script>
     <script src="js/constellation.js"></script>
-</body>
+    <script src="js/contact.js"></script>
+    <!-- DISABLED KwesForms JS FOR NOW -->
+    <!-- <script src="https://kwesforms.com/v2/kf-script.js" defer></script> -->
+  </body>
 </html>

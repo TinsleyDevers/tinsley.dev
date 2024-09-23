@@ -1,33 +1,51 @@
 // age.js
-document.addEventListener("DOMContentLoaded", function () {
-    const birthDate = new Date(2003, 3, 30); // April 30, 2003
-    const ageNumber = document.querySelector(".age-number");
+(() => {
+  const initAgeCalculator = () => {
+    const birthDate = new Date(2003, 3, 30);
+    const ageElement = document.querySelector(".age-number");
+    const animationDuration = 1000;
+    const decimalPlaces = 9;
+
+    if (!ageElement) {
+      console.error("Age display element with class 'age-number' not found.");
+      return;
+    }
+
     let previousAge = 0;
 
-    function updateAge() {
-        const now = new Date();
-        const ageInMilliseconds = now - birthDate;
-        const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
-        animateAge(previousAge, ageInYears, 1000); // duration in ms
-        previousAge = ageInYears;
-    }
+    const calculateCurrentAge = () => {
+      const now = new Date();
+      const ageInMilliseconds = now - birthDate;
+      const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
+      return ageInYears;
+    };
 
-    function animateAge(startAge, endAge, duration) {
-        const startTime = performance.now();
+    const animateAge = (startAge, endAge, duration) => {
+      const startTime = performance.now();
 
-        function animation(currentTime) {
-            const elapsedTime = currentTime - startTime;
-            const progress = Math.min(elapsedTime / duration, 1);
-            const currentAge = startAge + (endAge - startAge) * progress;
-            ageNumber.textContent = currentAge.toFixed(9); // Adjust decimal places as desired
-            if (progress < 1) {
-                requestAnimationFrame(animation);
-            }
+      const animationLoop = (currentTime) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const currentAge = startAge + (endAge - startAge) * progress;
+        ageElement.textContent = currentAge.toFixed(decimalPlaces);
+
+        if (progress < 1) {
+          requestAnimationFrame(animationLoop);
         }
+      };
 
-        requestAnimationFrame(animation);
-    }
+      requestAnimationFrame(animationLoop);
+    };
+
+    const updateAge = () => {
+      const currentAge = calculateCurrentAge();
+      animateAge(previousAge, currentAge, animationDuration);
+      previousAge = currentAge;
+    };
 
     updateAge();
     setInterval(updateAge, 1000);
-});
+  };
+
+  document.addEventListener("DOMContentLoaded", initAgeCalculator);
+})();
