@@ -16,11 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = "{tinsley.dev}";
     const typingSpeedRange = { min: 50, max: 150 };
     const fadeOutDelay = 1000;
+    const fadeOutDuration = 1000;
 
     const typingIndicator = createTypingIndicator();
 
     typeText(message, 0, typingIndicator, typingSpeedRange, () => {
-      initiateFadeOut(fadeOutDelay);
+      initiateFadeOut(fadeOutDelay, fadeOutDuration);
     });
   }
 
@@ -34,8 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function typeText(text, index, indicator, speedRange, callback) {
     if (index > 0) {
-      splashText.textContent = text.substring(0, index);
-      splashText.appendChild(indicator);
+      splashText.innerHTML = `${text.substring(
+        0,
+        index
+      )}<span class="typing-indicator">_</span>`;
     }
 
     if (index < text.length) {
@@ -49,14 +52,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function initiateFadeOut(delay) {
+  function initiateFadeOut(delay, duration) {
     setTimeout(() => {
       splash.classList.add("fade-out");
-      splash.addEventListener("transitionend", handleTransitionEnd);
+
+      setTimeout(() => {
+        handleSplashRemoval();
+      }, duration);
     }, delay);
   }
 
-  function handleTransitionEnd() {
+  function handleSplashRemoval() {
     splash.remove();
     document.body.classList.remove("content-hidden");
     document.body.classList.add("content-visible");
@@ -66,8 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
       mainContent.setAttribute("tabindex", "-1");
       mainContent.focus();
     }
-
-    splash.removeEventListener("transitionend", handleTransitionEnd);
   }
 
   function setCurrentYear() {

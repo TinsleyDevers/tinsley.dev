@@ -22,8 +22,6 @@
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
-    let cursorInnerX = mouseX;
-    let cursorInnerY = mouseY;
     let cursorOuterX = mouseX;
     let cursorOuterY = mouseY;
 
@@ -33,18 +31,19 @@
     };
 
     const animateCursor = () => {
-      cursorInnerX += (mouseX - cursorInnerX) * 0.35;
-      cursorInnerY += (mouseY - cursorInnerY) * 0.35;
-
+      const cursorInnerX = mouseX;
+      const cursorInnerY = mouseY;
       const dx = cursorInnerX - cursorOuterX;
       const dy = cursorInnerY - cursorOuterY;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      const activationDistance = 25;
+      // small circle move distance
+      const threshold = 30;
 
-      if (distance > activationDistance) {
-        cursorOuterX += (cursorInnerX - cursorOuterX) * 0.05;
-        cursorOuterY += (cursorInnerY - cursorOuterY) * 0.05;
+      if (distance > threshold) {
+        const easingFactor = 0.15; // trailing speed
+        cursorOuterX += dx * easingFactor;
+        cursorOuterY += dy * easingFactor;
       }
 
       cursorInner.style.transform = `translate(${cursorInnerX}px, ${cursorInnerY}px) translate(-50%, -50%)`;
