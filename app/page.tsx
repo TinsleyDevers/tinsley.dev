@@ -94,7 +94,7 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Hi, I'm Tinsley Devers
+          Hi, I&apos;m Tinsley Devers
         </motion.h1>
         <motion.p
           className="text-base sm:text-lg mb-2 max-w-xl text-center"
@@ -141,9 +141,10 @@ export default function HomePage() {
       >
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">About Me</h2>
         <p className="max-w-2xl text-center text-sm sm:text-base">
-          I’m a developer specializing in dolor sit amet, consectetur adipiscing
-          elit. Sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+          I&apos;m a developer specializing in dolor sit amet, consectetur
+          adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          ullamco.
         </p>
       </motion.section>
 

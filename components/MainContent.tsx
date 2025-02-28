@@ -6,7 +6,6 @@ import SplashScreen from "./SplashScreen";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { LayoutGroup } from "framer-motion";
-import EasterEggs from "../components/EasterEggs";
 
 interface MainContentProps {
   children: React.ReactNode;

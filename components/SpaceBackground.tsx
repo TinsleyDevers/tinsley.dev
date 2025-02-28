@@ -1,7 +1,7 @@
 // components/SpaceBackground.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 const starColors = ["#ffffff", "#ffe5b4", "#ffd9e8", "#d4f4fa"];
 const crossColors = ["#ffffff", "#ffcdf3", "#c9ecff", "#fff0b3"];
@@ -53,7 +53,7 @@ export default function SpaceBackground() {
     Math.random() * (max - min) + min;
 
   useEffect(() => {
-    // main stars
+    // Main stars
     const baseStars: Star[] = Array.from({ length: starCount }).map(() => ({
       top: Math.random() * 100,
       left: Math.random() * 100,
@@ -62,7 +62,7 @@ export default function SpaceBackground() {
       color: starColors[Math.floor(Math.random() * starColors.length)],
     }));
 
-    // looping
+    // Duplicate stars for seamless scrolling
     const duplicatedStars: Star[] = baseStars.map((s) => ({
       ...s,
       left: s.left + 100,
@@ -70,14 +70,14 @@ export default function SpaceBackground() {
 
     setStars([...baseStars, ...duplicatedStars]);
 
-    // cross sparkle stars
+    // Cross sparkle stars
     const baseCross: CrossStar[] = Array.from({ length: crossStarCount }).map(
       (_, idx) => ({
         id: idx,
         top: Math.random() * 100,
         left: Math.random() * 100,
-        delay: Math.random() * 5, // random delay
-        scale: randRange(0.5, 1.2), // scale between 0.5 and 1.2
+        delay: Math.random() * 5,
+        scale: randRange(0.5, 1.2),
         color: crossColors[Math.floor(Math.random() * crossColors.length)],
       })
     );
@@ -113,29 +113,35 @@ export default function SpaceBackground() {
     setClouds([...baseClouds, ...duplicatedClouds]);
   }, []);
 
+  const spawnShootingStar = useCallback(() => {
+    setShootingStarId((prev) => {
+      const nextId = prev + 1;
+      const newStar: ShootingStar = {
+        id: nextId,
+        top: Math.random() * 70,
+        left: Math.random() * 80,
+      };
+
+      setShootingStars((prevStars) => [...prevStars, newStar]);
+
+      // Remove it after animation (2s)
+      setTimeout(() => {
+        setShootingStars((prevStars) =>
+          prevStars.filter((star) => star.id !== newStar.id)
+        );
+      }, 2000);
+
+      return nextId;
+    });
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       spawnShootingStar();
     }, 7000);
+
     return () => clearInterval(interval);
-  }, []);
-
-  const spawnShootingStar = () => {
-    setShootingStarId((prev) => prev + 1);
-    const newStar: ShootingStar = {
-      id: shootingStarId,
-      top: Math.random() * 70,
-      left: Math.random() * 80,
-    };
-    setShootingStars((prev) => [...prev, newStar]);
-
-    // Remove it after animation (2s)
-    setTimeout(() => {
-      setShootingStars((prevStars) =>
-        prevStars.filter((star) => star.id !== newStar.id)
-      );
-    }, 2000);
-  };
+  }, [spawnShootingStar]);
 
   return (
     <div
