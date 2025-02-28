@@ -46,14 +46,13 @@ export default function SpaceBackground() {
   const [stars, setStars] = useState<Star[]>([]);
   const [crossStars, setCrossStars] = useState<CrossStar[]>([]);
   const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
-  const [shootingStarId, setShootingStarId] = useState(0);
   const [clouds, setClouds] = useState<Cloud[]>([]);
 
   const randRange = (min: number, max: number) =>
     Math.random() * (max - min) + min;
 
   useEffect(() => {
-    // Main stars
+    // main stars
     const baseStars: Star[] = Array.from({ length: starCount }).map(() => ({
       top: Math.random() * 100,
       left: Math.random() * 100,
@@ -62,15 +61,14 @@ export default function SpaceBackground() {
       color: starColors[Math.floor(Math.random() * starColors.length)],
     }));
 
-    // Duplicate stars for seamless scrolling
+    // duplicate stars for looping
     const duplicatedStars: Star[] = baseStars.map((s) => ({
       ...s,
       left: s.left + 100,
     }));
-
     setStars([...baseStars, ...duplicatedStars]);
 
-    // Cross sparkle stars
+    // cross sparkle stars
     const baseCross: CrossStar[] = Array.from({ length: crossStarCount }).map(
       (_, idx) => ({
         id: idx,
@@ -82,16 +80,15 @@ export default function SpaceBackground() {
       })
     );
 
-    // Duplicate cross stars
+    // duplicate cross stars
     const duplicatedCross: CrossStar[] = baseCross.map((c) => ({
       ...c,
       id: c.id + crossStarCount,
       left: c.left + 100,
     }));
-
     setCrossStars([...baseCross, ...duplicatedCross]);
 
-    // Generate clouds
+    // generate clouds
     const baseClouds: Cloud[] = Array.from({ length: cloudCount }).map(
       (_, idx) => ({
         id: idx,
@@ -103,43 +100,35 @@ export default function SpaceBackground() {
       })
     );
 
-    // Duplicate clouds
+    // duplicate clouds
     const duplicatedClouds: Cloud[] = baseClouds.map((cl) => ({
       ...cl,
       id: cl.id + cloudCount,
       left: cl.left + 100,
     }));
-
     setClouds([...baseClouds, ...duplicatedClouds]);
   }, []);
 
   const spawnShootingStar = useCallback(() => {
-    setShootingStarId((prev) => {
-      const nextId = prev + 1;
-      const newStar: ShootingStar = {
-        id: nextId,
-        top: Math.random() * 70,
-        left: Math.random() * 80,
-      };
+    const id = performance.now();
+    const newStar: ShootingStar = {
+      id,
+      top: Math.random() * 70,
+      left: Math.random() * 80,
+    };
 
-      setShootingStars((prevStars) => [...prevStars, newStar]);
+    setShootingStars((prevStars) => [...prevStars, newStar]);
 
-      // Remove it after animation (2s)
-      setTimeout(() => {
-        setShootingStars((prevStars) =>
-          prevStars.filter((star) => star.id !== newStar.id)
-        );
-      }, 2000);
-
-      return nextId;
-    });
+    // remove it after animation (2s)
+    setTimeout(() => {
+      setShootingStars((prevStars) =>
+        prevStars.filter((star) => star.id !== id)
+      );
+    }, 2000);
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      spawnShootingStar();
-    }, 7000);
-
+    const interval = setInterval(spawnShootingStar, 7000);
     return () => clearInterval(interval);
   }, [spawnShootingStar]);
 
@@ -179,7 +168,7 @@ export default function SpaceBackground() {
               transform: `rotate(45deg) translate(-50%, -50%) scale(${c.scale})`,
               filter: `drop-shadow(0 0 2px ${c.color})`,
             }}
-          ></div>
+          />
         ))}
 
         {shootingStars.map((s) => (
