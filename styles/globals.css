@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Twinkling effect */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+.twinkle {
+  animation: twinkle 2s infinite ease-in-out;
+}
+
+/* Shooting star animation */
+@keyframes shootingStar {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(600px, -300px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Cross star */
+@keyframes crossStar {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes loopStars {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes loopClouds {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-loopStars {
+  animation: loopStars 260s linear infinite;
+}
+
+.animate-loopClouds {
+  animation: loopClouds 30s linear infinite;
+}
+
+.cross-star {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  animation: crossStar 3s infinite ease-in-out;
+}
+
+.cross-star::before,
+.cross-star::after {
+  content: "";
+  position: absolute;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Horizontal line */
+.cross-star::before {
+  width: 8px;
+  height: 2px;
+}
+
+/* Vertical line */
+.cross-star::after {
+  width: 2px;
+  height: 8px;
+}
+
+.underscore-glow {
+  background: linear-gradient(
+    90deg,
+    #6454f0,
+    #a35df9,
+    #f776f1,
+    #f2a5ec,
+    #da7df3,
+    #6454f0
+  );
+  border-radius: 2px;
+  box-shadow: 0 0 6px #f776f1;
+}
+
+@keyframes cosmicBlend {
+  to {
+    background-position: 200% 50%;
+  }
+}
+
+.blend-glow {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    #6454f0,
+    #a35df9,
+    #f776f1,
+    #f2a5ec,
+    #da7df3,
+    #6454f0
+  );
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: cosmicBlend 20s linear infinite;
+}
+
+.blend-glow::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  filter: blur(8px);
+  color: transparent;
+  background: inherit;
+  background-clip: text;
+  -webkit-background-clip: text;
+  mix-blend-mode: plus-lighter;
+  animation: cosmicBlend 20s linear infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0b1023;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    45deg,
+    #6454f0,
+    #a35df9,
+    #f776f1,
+    #f2a5ec,
+    #da7df3,
+    #6454f0
+  );
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    45deg,
+    #6454f0,
+    #a35df9,
+    #f776f1,
+    #f2a5ec,
+    #da7df3,
+    #6454f0
+  );
+  opacity: 0.9;
+}
