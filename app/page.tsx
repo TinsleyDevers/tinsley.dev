@@ -51,19 +51,24 @@ export default function HomePage() {
 
   const experienceData = [
     {
-      jobName: "Frontend Developer",
-      companyName: "Lorem Ipsum",
-      dateWorked: "2022 - Present",
+      jobName: "Operations Supervisor",
+      companyName: "Carter Express, Inc",
+      dateWorked: "Mar 2022 - Jun 2023",
       description:
-        "Developing responsive UI components, lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      skills: ["React", "Tailwind CSS", "TypeScript"],
+        "Managed supply chain warehouse operations for Toyota and Mazda, optimizing warehouse logistics and leading a team of 40 operators.",
+      skills: [
+        "Project Management",
+        "Data Analysis",
+        "Process Improvement",
+        "KPIs, OKRs",
+      ],
     },
     {
       jobName: "Web Developer Intern",
       companyName: "Lorem Ipsum",
       dateWorked: "2021 - 2022",
       description:
-        "Maintained internal tools, lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Maintained internal tools, lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", // please update this later ty.
       skills: ["HTML", "CSS", "JavaScript"],
     },
   ];
@@ -102,8 +107,7 @@ export default function HomePage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          I build beautiful, modern, feature-packed, and interactive
-          experiences.
+          Software developer building real world applications.
         </motion.p>
         <motion.p
           className="text-xs sm:text-sm mb-8 max-w-xl text-center text-gray-400"
@@ -111,8 +115,7 @@ export default function HomePage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          This website is a concept and not a finished product, check out my
-          GitHub for now!
+          I love building efficient, scalable, and user-focused applications.
         </motion.p>
 
         {/* CTA button*/}
@@ -141,10 +144,9 @@ export default function HomePage() {
       >
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">About Me</h2>
         <p className="max-w-2xl text-center text-sm sm:text-base">
-          I&apos;m a developer specializing in dolor sit amet, consectetur
-          adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco.
+          With a solid background in programming, my 5+ years of experience has
+          been focused on developing user-friendly applications. My goal is to
+          create innovative products that solve real-world problems.
         </p>
       </motion.section>
 
