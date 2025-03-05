@@ -4,47 +4,140 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Twinkling effect */
+/* Base styles */
+:root {
+  --background: #070b19;
+  --foreground: #ededed;
+  --purple-glow: rgba(139, 92, 246, 0.5);
+  --pink-glow: rgba(236, 72, 153, 0.5);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(139, 92, 246, 0.3);
+  color: white;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b1023;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    45deg,
+    #6454f0,
+    #a35df9,
+    #f776f1,
+    #f2a5ec,
+    #da7df3,
+    #6454f0
+  );
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    45deg,
+    #6454f0,
+    #a35df9,
+    #f776f1,
+    #f2a5ec,
+    #da7df3,
+    #6454f0
+  );
+  opacity: 0.9;
+}
+
+/* Enhanced twinkling animation for stars */
 @keyframes twinkle {
   0%,
   100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.twinkle {
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+/* Pulsing animation for brighter stars */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
     opacity: 0.8;
   }
   50% {
-    opacity: 0.3;
+    transform: scale(1.3);
+    opacity: 1;
   }
 }
-.twinkle {
-  animation: twinkle 2s infinite ease-in-out;
-}
 
-/* Shooting star animation */
+/* Enhanced shooting star animation */
 @keyframes shootingStar {
   0% {
-    transform: translate(0, 0) scale(0.5);
+    transform: translateX(0) translateY(0) scale(0.3);
     opacity: 0;
   }
-  10% {
+  5% {
     opacity: 1;
   }
+  95% {
+    opacity: 0.8;
+  }
   100% {
-    transform: translate(600px, -300px) scale(1.2);
+    transform: translateX(600px) translateY(300px) scale(0.1);
     opacity: 0;
   }
 }
 
-/* Cross star */
-@keyframes crossStar {
-  0%,
-  100% {
-    opacity: 0.5;
+/* Shine animation for buttons and UI elements */
+@keyframes shine {
+  from {
+    background-position: -100% 0;
   }
-  50% {
-    opacity: 1;
+  to {
+    background-position: 200% 0;
   }
 }
 
+/* Different speed animations for parallax effect */
 @keyframes loopStars {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes loopDistantStars {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes loopNebulas {
   0% {
     transform: translateX(0);
   }
@@ -62,18 +155,28 @@
   }
 }
 
+/* Animation timing classes */
 .animate-loopStars {
-  animation: loopStars 260s linear infinite;
+  animation: loopStars 240s linear infinite;
+}
+
+.animate-loopDistantStars {
+  animation: loopDistantStars 480s linear infinite; /* Slower for distant stars */
+}
+
+.animate-loopNebulas {
+  animation: loopNebulas 300s linear infinite;
 }
 
 .animate-loopClouds {
-  animation: loopClouds 30s linear infinite;
+  animation: loopClouds 180s linear infinite;
 }
 
+/* Enhanced cross star styling */
 .cross-star {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   transform: rotate(45deg) translate(-50%, -50%);
   animation: crossStar 3s infinite ease-in-out;
 }
@@ -90,16 +193,41 @@
 
 /* Horizontal line */
 .cross-star::before {
-  width: 8px;
+  width: 10px;
   height: 2px;
 }
 
 /* Vertical line */
 .cross-star::after {
   width: 2px;
-  height: 8px;
+  height: 10px;
 }
 
+/* Cross star animation */
+@keyframes crossStar {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: rotate(45deg) translate(-50%, -50%) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Gleaming effect for special stars */
+@keyframes gleam {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
+  }
+}
+
+/* Underscore glow effect for links */
 .underscore-glow {
   background: linear-gradient(
     90deg,
@@ -114,9 +242,16 @@
   box-shadow: 0 0 6px #f776f1;
 }
 
+/* Cosmic blend animation for glowing text */
 @keyframes cosmicBlend {
-  to {
-    background-position: 200% 50%;
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
@@ -133,11 +268,10 @@
     #6454f0
   );
   background-size: 200% 100%;
-  background-position: 0% 50%;
   color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
-  animation: cosmicBlend 20s linear infinite;
+  animation: cosmicBlend 6s linear infinite;
 }
 
 .blend-glow::after {
@@ -145,47 +279,126 @@
   position: absolute;
   left: 0;
   top: 0;
+  width: 100%;
+  height: 100%;
   filter: blur(8px);
   color: transparent;
   background: inherit;
   background-clip: text;
   -webkit-background-clip: text;
   mix-blend-mode: plus-lighter;
-  animation: cosmicBlend 20s linear infinite;
+  animation: cosmicBlend 6s linear infinite;
+  z-index: -1;
 }
 
+/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed header */
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* Image reveal animation */
+@keyframes revealImage {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
-::-webkit-scrollbar-track {
-  background: #0b1023;
+
+.reveal-image {
+  animation: revealImage 1.5s ease-out forwards;
 }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    45deg,
-    #6454f0,
-    #a35df9,
-    #f776f1,
-    #f2a5ec,
-    #da7df3,
-    #6454f0
-  );
-  border-radius: 4px;
+
+/* Floating animation for elements */
+@keyframes floatAnimation {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    45deg,
-    #6454f0,
-    #a35df9,
-    #f776f1,
-    #f2a5ec,
-    #da7df3,
-    #6454f0
-  );
-  opacity: 0.9;
+
+.animate-float {
+  animation: floatAnimation 6s ease-in-out infinite;
+}
+
+/* Typewriter cursor effect */
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+}
+
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid;
+  animation: typewriter 2s steps(40, end) forwards, blink 0.8s step-end infinite;
+}
+
+/* Easter egg activated skill animation */
+@keyframes rainbow-pulse {
+  0%,
+  100% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  50% {
+    filter: hue-rotate(360deg) brightness(1.3);
+  }
+}
+
+.activated-skill {
+  animation: rainbow-pulse 2s ease infinite;
+}
+
+/* Fade out animation */
+.fade-out {
+  animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Custom utility classes */
+.text-gradient {
+  @apply bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text;
+}
+
+.bg-glass {
+  @apply bg-white/10 backdrop-blur-sm;
+}
+
+.hover-lift {
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/10;
+}
+
+/* Customizing default focus styles */
+*:focus-visible {
+  outline: 2px solid rgba(139, 92, 246, 0.6);
+  outline-offset: 2px;
 }

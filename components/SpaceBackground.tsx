@@ -1,10 +1,18 @@
-// components/SpaceBackground.tsx
+// component/SpaceBackground.tsx
+
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
+import { motion } from "framer-motion";
 
-const starColors = ["#ffffff", "#ffe5b4", "#ffd9e8", "#d4f4fa"];
-const crossColors = ["#ffffff", "#ffcdf3", "#c9ecff", "#fff0b3"];
+const starColors = ["#ffffff", "#ffe5b4", "#ffd9e8", "#d4f4fa", "#e0c3fc"];
+const crossColors = ["#ffffff", "#ffcdf3", "#c9ecff", "#fff0b3", "#e0c3fc"];
+const nebulaColors = [
+  "rgba(111, 66, 193, 0.15)", // purple
+  "rgba(219, 39, 119, 0.12)", // pink
+  "rgba(59, 130, 246, 0.1)", // blue
+  "rgba(16, 185, 129, 0.08)", // green
+];
 
 interface Star {
   top: number;
@@ -12,6 +20,7 @@ interface Star {
   size: number;
   twinkleDelay: number;
   color: string;
+  depth: number; // 0 = closest, 2 = furthest
 }
 
 interface CrossStar {
@@ -21,12 +30,26 @@ interface CrossStar {
   delay: number;
   scale: number;
   color: string;
+  depth: number;
 }
 
 interface ShootingStar {
   id: number;
   top: number;
   left: number;
+  size: number;
+  duration: number;
+  delay: number;
+}
+
+interface Nebula {
+  id: number;
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  rotation: number;
+  color: string;
 }
 
 interface Cloud {
@@ -39,36 +62,42 @@ interface Cloud {
 }
 
 export default function SpaceBackground() {
-  const starCount = 160;
-  const crossStarCount = 12;
+  const starCount = 200;
+  const crossStarCount = 15;
+  const nebulaCount = 4;
   const cloudCount = 6;
 
   const [stars, setStars] = useState<Star[]>([]);
   const [crossStars, setCrossStars] = useState<CrossStar[]>([]);
+  const [nebulas, setNebulas] = useState<Nebula[]>([]);
   const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
   const [clouds, setClouds] = useState<Cloud[]>([]);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const randRange = (min: number, max: number) =>
     Math.random() * (max - min) + min;
 
+  // Initialize stars, nebulas, etc.
   useEffect(() => {
-    // main stars
+    // Generate stars with different depths for parallax
     const baseStars: Star[] = Array.from({ length: starCount }).map(() => ({
       top: Math.random() * 100,
       left: Math.random() * 100,
-      size: randRange(1, 2.2),
+      size: randRange(1, 2.5),
       twinkleDelay: Math.random() * 5,
       color: starColors[Math.floor(Math.random() * starColors.length)],
+      depth: Math.floor(Math.random() * 3), // 0, 1, or 2
     }));
 
-    // duplicate stars for looping
+    // Duplicate stars for looping
     const duplicatedStars: Star[] = baseStars.map((s) => ({
       ...s,
       left: s.left + 100,
     }));
     setStars([...baseStars, ...duplicatedStars]);
 
-    // cross sparkle stars
+    // Cross sparkle stars
     const baseCross: CrossStar[] = Array.from({ length: crossStarCount }).map(
       (_, idx) => ({
         id: idx,
@@ -77,10 +106,11 @@ export default function SpaceBackground() {
         delay: Math.random() * 5,
         scale: randRange(0.5, 1.2),
         color: crossColors[Math.floor(Math.random() * crossColors.length)],
+        depth: Math.floor(Math.random() * 3), // 0, 1, or 2
       })
     );
 
-    // duplicate cross stars
+    // Duplicate cross stars
     const duplicatedCross: CrossStar[] = baseCross.map((c) => ({
       ...c,
       id: c.id + crossStarCount,
@@ -88,19 +118,40 @@ export default function SpaceBackground() {
     }));
     setCrossStars([...baseCross, ...duplicatedCross]);
 
-    // generate clouds
-    const baseClouds: Cloud[] = Array.from({ length: cloudCount }).map(
+    // Generate nebulas
+    const baseNebulas: Nebula[] = Array.from({ length: nebulaCount }).map(
       (_, idx) => ({
         id: idx,
-        top: Math.random() * 80,
-        left: Math.random() * 100,
-        width: randRange(150, 350),
-        height: randRange(50, 130),
-        opacity: randRange(0.07, 0.15),
+        top: randRange(10, 90),
+        left: randRange(0, 100),
+        width: randRange(200, 500),
+        height: randRange(150, 350),
+        rotation: randRange(-30, 30),
+        color: nebulaColors[Math.floor(Math.random() * nebulaColors.length)],
       })
     );
 
-    // duplicate clouds
+    // Duplicate nebulas
+    const duplicatedNebulas: Nebula[] = baseNebulas.map((n) => ({
+      ...n,
+      id: n.id + nebulaCount,
+      left: n.left + 100,
+    }));
+    setNebulas([...baseNebulas, ...duplicatedNebulas]);
+
+    // Generate clouds
+    const baseClouds: Cloud[] = Array.from({ length: cloudCount }).map(
+      (_, idx) => ({
+        id: idx,
+        top: Math.random() * 90,
+        left: Math.random() * 100,
+        width: randRange(150, 350),
+        height: randRange(50, 130),
+        opacity: randRange(0.05, 0.12),
+      })
+    );
+
+    // Duplicate clouds
     const duplicatedClouds: Cloud[] = baseClouds.map((cl) => ({
       ...cl,
       id: cl.id + cloudCount,
@@ -109,86 +160,264 @@ export default function SpaceBackground() {
     setClouds([...baseClouds, ...duplicatedClouds]);
   }, []);
 
+  // Handle mouse movement for parallax effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+
+      const { left, top, width, height } =
+        containerRef.current.getBoundingClientRect();
+      const x = (e.clientX - left) / width - 0.5;
+      const y = (e.clientY - top) / height - 0.5;
+
+      setMousePosition({ x, y });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // Spawn shooting stars periodically
   const spawnShootingStar = useCallback(() => {
-    const id = performance.now();
+    const id = Date.now();
     const newStar: ShootingStar = {
       id,
-      top: Math.random() * 70,
+      top: Math.random() * 60,
       left: Math.random() * 80,
+      size: randRange(1.5, 3),
+      duration: randRange(1.5, 3),
+      delay: 0,
     };
 
     setShootingStars((prevStars) => [...prevStars, newStar]);
 
-    // remove it after animation (2s)
+    // Remove shooting star after animation
     setTimeout(() => {
       setShootingStars((prevStars) =>
         prevStars.filter((star) => star.id !== id)
       );
-    }, 2000);
+    }, newStar.duration * 1000 + 200);
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(spawnShootingStar, 7000);
+    // Spawn initial shooting star
+    setTimeout(spawnShootingStar, 2000);
+
+    // Schedule recurring shooting stars with varying intervals
+    const interval = setInterval(() => {
+      if (Math.random() > 0.7) {
+        // 30% chance for multiple shooting stars
+        const burstCount = Math.floor(randRange(2, 4));
+        for (let i = 0; i < burstCount; i++) {
+          setTimeout(spawnShootingStar, i * 300);
+        }
+      } else {
+        spawnShootingStar();
+      }
+    }, 7000);
+
     return () => clearInterval(interval);
   }, [spawnShootingStar]);
 
   return (
     <div
+      ref={containerRef}
       className="fixed inset-0 -z-10 overflow-hidden"
       style={{
         background:
-          "linear-gradient(to bottom, #0a0d1c, #1d2c51 40%, #5b6187 100%)",
+          "linear-gradient(to bottom, #070b19, #0e1b38 40%, #1a2b4a 80%, #2c3359 100%)",
       }}
     >
-      {/* STAR + CROSS-STAR SCROLLER */}
-      <div className="absolute top-0 left-0 h-full w-[200%] animate-loopStars">
-        {stars.map((star, idx) => (
+      {/* Nebula layer */}
+      <div
+        className="absolute top-0 left-0 h-full w-[200%] animate-loopNebulas"
+        style={{
+          transform: `translateX(${mousePosition.x * -10}px) translateY(${
+            mousePosition.y * -10
+          }px)`,
+          transition: "transform 0.1s ease-out",
+        }}
+      >
+        {nebulas.map((nebula) => (
           <div
-            key={`star-${idx}`}
-            className="absolute rounded-full twinkle"
+            key={`nebula-${nebula.id}`}
+            className="absolute bg-blend-screen"
             style={{
-              top: `${star.top}%`,
-              left: `${star.left}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              backgroundColor: star.color,
-              animationDelay: `${star.twinkleDelay}s`,
-            }}
-          />
-        ))}
-
-        {crossStars.map((c) => (
-          <div
-            key={`cross-${c.id}`}
-            className="cross-star"
-            style={{
-              top: `${c.top}%`,
-              left: `${c.left}%`,
-              animationDelay: `${c.delay}s`,
-              transform: `rotate(45deg) translate(-50%, -50%) scale(${c.scale})`,
-              filter: `drop-shadow(0 0 2px ${c.color})`,
-            }}
-          />
-        ))}
-
-        {shootingStars.map((s) => (
-          <div
-            key={s.id}
-            className="absolute w-1 h-1 bg-white rounded-full"
-            style={{
-              top: `${s.top}%`,
-              left: `${s.left}%`,
-              animation: "shootingStar 2s linear forwards",
+              top: `${nebula.top}%`,
+              left: `${nebula.left}%`,
+              width: `${nebula.width}px`,
+              height: `${nebula.height}px`,
+              background: nebula.color,
+              borderRadius: "50%",
+              filter: "blur(60px)",
+              transform: `rotate(${nebula.rotation}deg) translate(-50%, -50%)`,
             }}
           />
         ))}
       </div>
 
-      {/* CLOUD SCROLLER */}
+      {/* Distant stars (depth 2) */}
+      <div
+        className="absolute top-0 left-0 h-full w-[200%] animate-loopDistantStars"
+        style={{
+          transform: `translateX(${mousePosition.x * -4}px) translateY(${
+            mousePosition.y * -4
+          }px)`,
+          transition: "transform 0.1s ease-out",
+        }}
+      >
+        {stars
+          .filter((star) => star.depth === 2)
+          .map((star, idx) => (
+            <div
+              key={`distant-star-${idx}`}
+              className="absolute rounded-full twinkle"
+              style={{
+                top: `${star.top}%`,
+                left: `${star.left}%`,
+                width: `${star.size * 0.6}px`,
+                height: `${star.size * 0.6}px`,
+                backgroundColor: star.color,
+                opacity: 0.6,
+                animationDelay: `${star.twinkleDelay}s`,
+                animationDuration: "4s",
+              }}
+            />
+          ))}
+      </div>
+
+      {/* Mid-distance stars (depth 1) */}
+      <div
+        className="absolute top-0 left-0 h-full w-[200%] animate-loopStars"
+        style={{
+          transform: `translateX(${mousePosition.x * -8}px) translateY(${
+            mousePosition.y * -8
+          }px)`,
+          transition: "transform 0.1s ease-out",
+        }}
+      >
+        {stars
+          .filter((star) => star.depth === 1)
+          .map((star, idx) => (
+            <div
+              key={`mid-star-${idx}`}
+              className="absolute rounded-full twinkle"
+              style={{
+                top: `${star.top}%`,
+                left: `${star.left}%`,
+                width: `${star.size * 0.8}px`,
+                height: `${star.size * 0.8}px`,
+                backgroundColor: star.color,
+                opacity: 0.8,
+                animationDelay: `${star.twinkleDelay}s`,
+                animationDuration: "3.5s",
+              }}
+            />
+          ))}
+
+        {crossStars
+          .filter((c) => c.depth === 1)
+          .map((c) => (
+            <div
+              key={`mid-cross-${c.id}`}
+              className="cross-star"
+              style={{
+                top: `${c.top}%`,
+                left: `${c.left}%`,
+                animationDelay: `${c.delay}s`,
+                transform: `rotate(45deg) translate(-50%, -50%) scale(${
+                  c.scale * 0.8
+                })`,
+                filter: `drop-shadow(0 0 2px ${c.color})`,
+                opacity: 0.8,
+              }}
+            />
+          ))}
+      </div>
+
+      {/* Close stars (depth 0) - most parallax effect */}
+      <div
+        className="absolute top-0 left-0 h-full w-[200%] animate-loopStars"
+        style={{
+          transform: `translateX(${mousePosition.x * -15}px) translateY(${
+            mousePosition.y * -15
+          }px)`,
+          transition: "transform 0.1s ease-out",
+        }}
+      >
+        {stars
+          .filter((star) => star.depth === 0)
+          .map((star, idx) => (
+            <div
+              key={`close-star-${idx}`}
+              className="absolute rounded-full twinkle"
+              style={{
+                top: `${star.top}%`,
+                left: `${star.left}%`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                backgroundColor: star.color,
+                animationDelay: `${star.twinkleDelay}s`,
+                animationDuration: "3s",
+                boxShadow: `0 0 ${star.size * 0.7}px ${star.color}`,
+              }}
+            />
+          ))}
+
+        {crossStars
+          .filter((c) => c.depth === 0)
+          .map((c) => (
+            <div
+              key={`close-cross-${c.id}`}
+              className="cross-star"
+              style={{
+                top: `${c.top}%`,
+                left: `${c.left}%`,
+                animationDelay: `${c.delay}s`,
+                transform: `rotate(45deg) translate(-50%, -50%) scale(${c.scale})`,
+                filter: `drop-shadow(0 0 3px ${c.color})`,
+              }}
+            />
+          ))}
+
+        {/* Shooting stars */}
+        {shootingStars.map((s) => (
+          <div
+            key={`shooting-star-${s.id}`}
+            className="absolute"
+            style={{
+              top: `${s.top}%`,
+              left: `${s.left}%`,
+              width: `${s.size}px`,
+              height: `${s.size}px`,
+              background: "white",
+              borderRadius: "50%",
+              boxShadow: "0 0 20px 2px rgba(255, 255, 255, 0.8)",
+              animation: `shootingStar ${s.duration}s linear forwards`,
+              animationDelay: `${s.delay}s`,
+            }}
+          >
+            {/* Shooting star tail */}
+            <div
+              className="absolute top-0 right-0 transform translate-x-full"
+              style={{
+                width: `${s.size * 20}px`,
+                height: `${s.size}px`,
+                background:
+                  "linear-gradient(to left, transparent, rgba(255, 255, 255, 0.8))",
+                borderRadius: "0 50% 50% 0",
+                transformOrigin: "left center",
+              }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Cloud scroller */}
       <div className="absolute top-0 left-0 h-full w-[200%] pointer-events-none animate-loopClouds">
         {clouds.map((cloud) => (
           <div
-            key={cloud.id}
+            key={`cloud-${cloud.id}`}
             className="absolute bg-white"
             style={{
               top: `${cloud.top}%`,
@@ -203,6 +432,15 @@ export default function SpaceBackground() {
           />
         ))}
       </div>
+
+      {/* Vignette effect */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%)",
+        }}
+      />
     </div>
   );
 }
