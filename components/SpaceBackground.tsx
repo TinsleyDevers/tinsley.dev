@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
 
 interface Star {
   top: number;
@@ -63,14 +69,23 @@ export default function SpaceBackground() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const starColors = ["#ffffff", "#ffe5b4", "#ffd9e8", "#d4f4fa", "#e0c3fc"];
-  const crossColors = ["#ffffff", "#ffcdf3", "#c9ecff", "#fff0b3", "#e0c3fc"];
-  const nebulaColors = [
-    "rgba(111, 66, 193, 0.15)",
-    "rgba(219, 39, 119, 0.12)",
-    "rgba(59, 130, 246, 0.1)",
-    "rgba(16, 185, 129, 0.08)",
-  ];
+  const starColors = useMemo(
+    () => ["#ffffff", "#ffe5b4", "#ffd9e8", "#d4f4fa", "#e0c3fc"],
+    []
+  );
+  const crossColors = useMemo(
+    () => ["#ffffff", "#ffcdf3", "#c9ecff", "#fff0b3", "#e0c3fc"],
+    []
+  );
+  const nebulaColors = useMemo(
+    () => [
+      "rgba(111, 66, 193, 0.15)",
+      "rgba(219, 39, 119, 0.12)",
+      "rgba(59, 130, 246, 0.1)",
+      "rgba(16, 185, 129, 0.08)",
+    ],
+    []
+  );
 
   const randRange = (min: number, max: number) =>
     Math.random() * (max - min) + min;
@@ -142,7 +157,15 @@ export default function SpaceBackground() {
       left: cl.left + 100,
     }));
     setClouds([...baseClouds, ...duplicatedClouds]);
-  }, []);
+  }, [
+    starCount,
+    crossStarCount,
+    nebulaCount,
+    cloudCount,
+    starColors,
+    crossColors,
+    nebulaColors,
+  ]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -199,6 +222,7 @@ export default function SpaceBackground() {
           "linear-gradient(to bottom, #070b19, #0e1b38 40%, #1a2b4a 80%, #2c3359 100%)",
       }}
     >
+      {/* Nebulas */}
       <div
         className="absolute top-0 left-0 h-full w-[200%] animate-loopNebulas"
         style={{
@@ -226,6 +250,7 @@ export default function SpaceBackground() {
         ))}
       </div>
 
+      {/* Distant stars (depth=2) */}
       <div
         className="absolute top-0 left-0 h-full w-[200%] animate-loopDistantStars"
         style={{
@@ -255,6 +280,7 @@ export default function SpaceBackground() {
           ))}
       </div>
 
+      {/* Mid distance stars (depth=1) */}
       <div
         className="absolute top-0 left-0 h-full w-[200%] animate-loopStars"
         style={{
@@ -303,6 +329,7 @@ export default function SpaceBackground() {
           ))}
       </div>
 
+      {/* Close stars (depth=0) */}
       <div
         className="absolute top-0 left-0 h-full w-[200%] animate-loopStars"
         style={{
@@ -346,6 +373,8 @@ export default function SpaceBackground() {
               }}
             />
           ))}
+
+        {/* Shooting stars */}
         {shootingStars.map((s) => (
           <div
             key={`shooting-star-${s.id}`}
@@ -377,6 +406,7 @@ export default function SpaceBackground() {
         ))}
       </div>
 
+      {/* Cloud scroller */}
       <div className="absolute top-0 left-0 h-full w-[200%] pointer-events-none animate-loopClouds">
         {clouds.map((cloud) => (
           <div
@@ -396,6 +426,7 @@ export default function SpaceBackground() {
         ))}
       </div>
 
+      {/* Vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
