@@ -25,57 +25,7 @@ interface TiltCardProps {
   className?: string;
 }
 
-const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [visible, setVisible] = useState(false);
-  const [clicked, setClicked] = useState(false);
-
-  useEffect(() => {
-    const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-    };
-    const handleMouseEnter = () => setVisible(true);
-    const handleMouseLeave = () => setVisible(false);
-    const handleMouseDown = () => setClicked(true);
-    const handleMouseUp = () => setClicked(false);
-
-    window.addEventListener("mousemove", updatePosition);
-    window.addEventListener("mouseenter", handleMouseEnter);
-    window.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      window.removeEventListener("mousemove", updatePosition);
-      window.removeEventListener("mouseenter", handleMouseEnter);
-      window.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, []);
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 w-6 h-6 rounded-full pointer-events-none z-50 mix-blend-difference"
-      animate={{
-        x: position.x - 12,
-        y: position.y - 12,
-        scale: clicked ? 0.8 : 1,
-        opacity: visible ? 1 : 0,
-      }}
-      transition={{
-        x: { duration: 0.1, ease: "linear" },
-        y: { duration: 0.1, ease: "linear" },
-        scale: { duration: 0.15, ease: "circOut" },
-      }}
-      style={{
-        background: "rgba(255, 255, 255, 0.9)",
-        boxShadow: "0 0 10px rgba(255, 255, 255, 0.5)",
-      }}
-    />
-  );
-};
-
+// 3D tilt card component
 const TiltCard = ({ children, className = "" }: TiltCardProps) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -118,6 +68,7 @@ const TiltCard = ({ children, className = "" }: TiltCardProps) => {
   );
 };
 
+// Animation variants
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
@@ -172,6 +123,7 @@ const cardItem: Variants = {
 };
 
 export default function HomePage() {
+  // Projects
   const projectsData: Project[] = useMemo(
     () => [
       {
@@ -216,6 +168,7 @@ export default function HomePage() {
     []
   );
 
+  // Experience
   const experienceData = [
     {
       jobName: "Operations Supervisor",
@@ -242,6 +195,7 @@ export default function HomePage() {
     },
   ];
 
+  // Education
   const educationData = [
     {
       major: "B.S. in Computer Science",
@@ -257,6 +211,7 @@ export default function HomePage() {
     },
   ];
 
+  // Skills
   const technicalSkills = [
     { name: "HTML5", level: 90, category: "Frontend" },
     { name: "CSS3", level: 85, category: "Frontend" },
@@ -269,27 +224,33 @@ export default function HomePage() {
     { name: "Git", level: 80, category: "Tools" },
   ];
 
+  // Refs
   const heroRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
 
+  // Scroll progress
   const { scrollYProgress } = useScroll();
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
 
+  // In-view
   const isAboutInView = useInView(aboutRef, { once: true, amount: 0.3 });
   const isSkillsInView = useInView(skillsRef, { once: true, amount: 0.3 });
   const isProjectsInView = useInView(projectsRef, { once: true, amount: 0.1 });
 
+  // Active project
   const [activeProject, setActiveProject] = useState<Project | null>(null);
 
+  // Skill filter
   const [skillFilter, setSkillFilter] = useState("All");
   const filteredSkills =
     skillFilter === "All"
       ? technicalSkills
       : technicalSkills.filter((skill) => skill.category === skillFilter);
 
+  // Scroll progress for top bar
   const [scrollProgress, setScrollProgress] = useState(0);
   useEffect(() => {
     const handleScroll = () => {
@@ -307,10 +268,7 @@ export default function HomePage() {
 
   return (
     <>
-      {/* <div className="hidden md:block">
-        <CustomCursor />
-      </div> */}
-
+      {/* Top scroll-progress bar */}
       <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-black/10">
         <motion.div
           className="h-full bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500"
@@ -318,6 +276,7 @@ export default function HomePage() {
         />
       </div>
 
+      {/* Hero Section */}
       <motion.section
         id="hero"
         ref={heroRef}
@@ -381,6 +340,7 @@ export default function HomePage() {
               </p>
             </div>
 
+            {/* Social Links */}
             <div className="flex gap-4 mb-6">
               <motion.a
                 href="https://github.com/tinsleydevers"
@@ -466,6 +426,7 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Floating scroll indicator */}
         <motion.div
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
           animate={{
@@ -485,6 +446,7 @@ export default function HomePage() {
         </motion.div>
       </motion.section>
 
+      {/* About Section */}
       <motion.section
         id="about"
         ref={aboutRef}
@@ -550,6 +512,7 @@ export default function HomePage() {
               maintainable code.
             </motion.p>
 
+            {/* Personal highlights */}
             <motion.div
               className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"
               variants={childVariants}
@@ -574,6 +537,7 @@ export default function HomePage() {
               ))}
             </motion.div>
 
+            {/* CTA buttons */}
             <motion.div
               className="flex flex-wrap gap-4"
               variants={childVariants}
@@ -599,6 +563,7 @@ export default function HomePage() {
         </div>
       </motion.section>
 
+      {/* Skills Section */}
       <motion.section
         id="skills"
         ref={skillsRef}
@@ -617,6 +582,7 @@ export default function HomePage() {
           <span className="absolute -bottom-3 left-1/2 w-12 h-1 bg-purple-500 transform -translate-x-1/2"></span>
         </motion.h2>
 
+        {/* Skill filters */}
         <motion.div
           className="flex flex-wrap justify-center gap-2 mb-10"
           variants={childVariants}
@@ -638,6 +604,7 @@ export default function HomePage() {
           ))}
         </motion.div>
 
+        {/* Skill bars */}
         <motion.div
           className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-6"
           variants={childVariants}
@@ -672,6 +639,7 @@ export default function HomePage() {
           ))}
         </motion.div>
 
+        {/* Additional Tech Stack */}
         <motion.div className="mt-16 w-full max-w-4xl" variants={childVariants}>
           <h3 className="text-xl font-bold mb-6 text-center">
             Technologies I Work With
@@ -711,6 +679,7 @@ export default function HomePage() {
         </motion.div>
       </motion.section>
 
+      {/* Projects Section */}
       <motion.section
         id="projects"
         ref={projectsRef}
@@ -737,6 +706,7 @@ export default function HomePage() {
               >
                 <TiltCard className="bg-white/5 hover:bg-white/10 text-white h-full p-1 rounded-xl overflow-hidden">
                   <div className="h-full flex flex-col rounded-lg overflow-hidden bg-black/30 backdrop-blur-sm">
+                    {/* Project image */}
                     <div className="relative h-40 overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
                       <img
@@ -756,6 +726,7 @@ export default function HomePage() {
                       </div>
                     </div>
 
+                    {/* Project details */}
                     <div className="flex-1 p-5 flex flex-col">
                       <h3 className="text-lg font-bold mb-2 text-purple-400 whitespace-pre-line">
                         {project.name}
@@ -810,6 +781,7 @@ export default function HomePage() {
           </div>
         </motion.div>
 
+        {/* Project details modal */}
         <AnimatePresence>
           {activeProject && (
             <motion.div
@@ -850,14 +822,17 @@ export default function HomePage() {
                       </svg>
                     </button>
                   </div>
+
                   <img
                     src={activeProject.image}
                     alt={activeProject.name}
                     className="w-full h-64 object-cover rounded-lg mb-4"
                   />
+
                   <p className="text-gray-300 mb-6">
                     {activeProject.description}
                   </p>
+
                   <div className="mb-6">
                     <h4 className="text-lg font-medium mb-2">
                       Technologies Used
@@ -873,6 +848,7 @@ export default function HomePage() {
                       ))}
                     </div>
                   </div>
+
                   <div className="flex justify-end">
                     <a
                       href={activeProject.github}
@@ -890,6 +866,7 @@ export default function HomePage() {
         </AnimatePresence>
       </motion.section>
 
+      {/* Experience Section */}
       <motion.section
         id="experience"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
@@ -917,6 +894,7 @@ export default function HomePage() {
               variants={childVariants}
             >
               <div className="absolute left-0 md:left-1/2 top-0 w-6 h-6 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full transform -translate-x-2.5 md:-translate-x-3 z-10"></div>
+
               <div
                 className={`w-full md:w-1/2 ${
                   index % 2 === 0 ? "md:pr-12" : "md:pl-12"
@@ -955,6 +933,7 @@ export default function HomePage() {
         </div>
       </motion.section>
 
+      {/* Education Section */}
       <motion.section
         id="education"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
@@ -995,6 +974,7 @@ export default function HomePage() {
         </div>
       </motion.section>
 
+      {/* Contact Section */}
       <motion.section
         id="contact"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16 relative"
@@ -1246,6 +1226,7 @@ export default function HomePage() {
         </motion.div>
       </motion.section>
 
+      {/* Back to top button */}
       <AnimatePresence>
         {scrollProgress > 20 && (
           <motion.button

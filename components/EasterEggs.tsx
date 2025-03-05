@@ -1,16 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 export default function EasterEggs() {
-  // Only storing to pass typed text into checkSecretWords
-  // We never read 'secretWord' directly.
   const [, setSecretWord] = useState("");
-
-  // Not reading 'titleClickCount' directly.
   const [, setTitleClickCount] = useState(0);
-
-  // Not reading 'konami' directly.
   const [, setKonami] = useState<string[]>([]);
 
   const [eggCooldownTime, setEggCooldownTime] = useState(0);
@@ -42,8 +36,7 @@ export default function EasterEggs() {
        *        .  +     *        *        .   +
     .     *        .     +  *       *        .
   
-  Hey There! I'm glad you liked the site. Want to see what's going on? Check out the repo at https://github.com/TinsleyDevers/tinsley.dev
-  
+  Hey There! I'm glad you liked the site. Check out the repo at https://github.com/TinsleyDevers/tinsley.dev
   Also, you can contact me via contact@tinsley.dev if you have any questions!
     `);
   }, []);
@@ -75,7 +68,9 @@ export default function EasterEggs() {
     if (eggName) setActiveEgg(eggName);
   };
 
-  function skillsAnimation() {
+  // Some of the ephemeral eggs below...
+
+  const skillsAnimation = useCallback(() => {
     if (activeEgg === "tinsley" || !canTriggerEgg()) return;
     setEggTriggered("tinsley");
     const skills = document.querySelectorAll(
@@ -123,9 +118,9 @@ export default function EasterEggs() {
       }, 300);
     }, 3000);
     setTimeout(() => setActiveEgg(null), 5000);
-  }
+  }, [activeEgg, canTriggerEgg]);
 
-  function hackingEffect() {
+  const hackingEffect = useCallback(() => {
     if (activeEgg === "hack" || !canTriggerEgg()) return;
     setEggTriggered("hack");
     try {
@@ -201,11 +196,10 @@ export default function EasterEggs() {
     let currentLine = document.createElement("div");
     content.appendChild(currentLine);
 
-    let typingInterval: number | undefined;
     const startTyping = (ms: number) => {
-      typingInterval = window.setInterval(() => {
+      const typingInterval = window.setInterval(() => {
         if (lineIndex >= hackingLines.length) {
-          if (typingInterval) clearInterval(typingInterval);
+          clearInterval(typingInterval);
           return;
         }
         const line = hackingLines[lineIndex];
@@ -219,7 +213,7 @@ export default function EasterEggs() {
             currentLine = document.createElement("div");
             content.appendChild(currentLine);
             terminal.scrollTop = terminal.scrollHeight;
-            if (typingInterval) clearInterval(typingInterval);
+            clearInterval(typingInterval);
             setTimeout(() => {
               startTyping(Math.random() * 30 + 20);
             }, 300);
@@ -232,7 +226,6 @@ export default function EasterEggs() {
     const handleEscKey = (evt: KeyboardEvent) => {
       if (evt.key === "Escape") {
         document.removeEventListener("keydown", handleEscKey);
-        if (typingInterval) clearInterval(typingInterval);
         if (document.body.contains(overlay)) {
           document.body.removeChild(overlay);
         }
@@ -240,9 +233,9 @@ export default function EasterEggs() {
       }
     };
     document.addEventListener("keydown", handleEscKey);
-  }
+  }, [activeEgg, canTriggerEgg]);
 
-  function startRetro() {
+  const startRetro = useCallback(() => {
     setEggTriggered("retro");
     try {
       const audio = audioRef.current;
@@ -304,9 +297,9 @@ export default function EasterEggs() {
       "h1, h2, h3, h4, h5, h6, p, span, div, a"
     );
     allText.forEach((el) => el.classList.add("retro-text"));
-  }
+  }, []);
 
-  function endRetro() {
+  const endRetro = useCallback(() => {
     const styleEl = document.getElementById("retro-style");
     if (styleEl) styleEl.remove();
     const retroFilter = document.getElementById("retro-filter-overlay");
@@ -317,18 +310,18 @@ export default function EasterEggs() {
     const allText = document.querySelectorAll(".retro-text");
     allText.forEach((el) => el.classList.remove("retro-text"));
     setActiveEgg(null);
-  }
+  }, []);
 
-  function toggleRetroMode() {
+  const toggleRetroMode = useCallback(() => {
     if (!canTriggerEgg()) return;
     if (activeEgg === "retro") {
       endRetro();
       return;
     }
     startRetro();
-  }
+  }, [activeEgg, canTriggerEgg, endRetro, startRetro]);
 
-  function triggerMatrixEasterEgg() {
+  const triggerMatrixEasterEgg = useCallback(() => {
     if (activeEgg === "matrix" || !canTriggerEgg()) return;
     setEggTriggered("matrix");
     try {
@@ -367,7 +360,6 @@ export default function EasterEggs() {
       drops[i] = Math.random() * -100;
     }
 
-    let intervalId: number | undefined;
     const draw = () => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -386,23 +378,23 @@ export default function EasterEggs() {
         drops[i]++;
       }
     };
-    intervalId = window.setInterval(draw, 33);
+    const intervalId = window.setInterval(draw, 33);
 
     setTimeout(() => {
       canvas.classList.add("fade-out");
       canvas.style.transition = "opacity 3s";
       canvas.style.opacity = "0";
       setTimeout(() => {
-        if (intervalId) clearInterval(intervalId);
+        clearInterval(intervalId);
         if (document.body.contains(canvas)) {
           document.body.removeChild(canvas);
         }
         setActiveEgg(null);
       }, 3000);
     }, 5000);
-  }
+  }, [activeEgg, canTriggerEgg]);
 
-  function thanosSnap() {
+  const thanosSnap = useCallback(() => {
     if (activeEgg === "thanos" || !canTriggerEgg()) return;
     setEggTriggered("thanos");
     try {
@@ -499,6 +491,7 @@ export default function EasterEggs() {
         }, 1500);
       }, Math.random() * 1000 + index * 30);
     });
+
     setTimeout(() => {
       const msg = document.createElement("div");
       msg.textContent = "Perfectly balanced, as all things should be.";
@@ -518,6 +511,7 @@ export default function EasterEggs() {
       setTimeout(() => {
         msg.style.opacity = "1";
       }, 100);
+
       setTimeout(() => {
         msg.style.opacity = "0";
         setTimeout(() => {
@@ -538,9 +532,10 @@ export default function EasterEggs() {
         setActiveEgg(null);
       }, 5000);
     }, 2000);
-  }
+  }, [activeEgg, canTriggerEgg]);
 
-  function triggerFireworks() {
+  // Fireworks
+  const triggerFireworks = useCallback(() => {
     if (!canTriggerEgg()) return;
     setEggTriggered();
     const container = document.createElement("div");
@@ -587,8 +582,25 @@ export default function EasterEggs() {
         document.body.removeChild(container);
       }
     }, 2000);
-  }
+  }, [canTriggerEgg]);
 
+  // Check typed words
+  const checkSecretWords = useCallback(
+    (word: string) => {
+      if (word.endsWith("tinsley")) {
+        skillsAnimation();
+      } else if (word.endsWith("thanos")) {
+        thanosSnap();
+      } else if (word.endsWith("hack")) {
+        hackingEffect();
+      } else if (word.endsWith("retro")) {
+        toggleRetroMode();
+      }
+    },
+    [skillsAnimation, thanosSnap, hackingEffect, toggleRetroMode]
+  );
+
+  // Keydown listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isTypingInForm(e)) return;
@@ -628,20 +640,9 @@ export default function EasterEggs() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [triggerMatrixEasterEgg]);
+  }, [checkSecretWords, triggerMatrixEasterEgg]);
 
-  function checkSecretWords(word: string) {
-    if (word.endsWith("tinsley")) {
-      skillsAnimation();
-    } else if (word.endsWith("thanos")) {
-      thanosSnap();
-    } else if (word.endsWith("hack")) {
-      hackingEffect();
-    } else if (word.endsWith("retro")) {
-      toggleRetroMode();
-    }
-  }
-
+  // Title click => fireworks
   useEffect(() => {
     const titleEl = document.getElementById("siteTitle");
     if (!titleEl) return;
