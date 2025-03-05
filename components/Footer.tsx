@@ -1,14 +1,10 @@
-// components/Footer.tsx
 "use client";
 
 import { motion } from "framer-motion";
 import { useState } from "react";
 
 export default function Footer() {
-  const [hoverEffect, setHoverEffect] = useState(false);
-
   const currentYear = new Date().getFullYear();
-
   const socialLinks = [
     {
       name: "GitHub",
@@ -24,7 +20,7 @@ export default function Footer() {
       url: "https://www.linkedin.com/in/tinsley-devers-40820a1b9/",
       icon: (
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 0h.003z" />
         </svg>
       ),
     },
@@ -50,11 +46,8 @@ export default function Footer() {
 
   return (
     <footer className="relative py-12 overflow-hidden">
-      {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-30"></div>
-
-        {/* Animated flowing particles */}
         <div className="absolute inset-0">
           {Array.from({ length: 8 }).map((_, i) => (
             <motion.div
@@ -82,7 +75,6 @@ export default function Footer() {
 
       <div className="relative max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {/* Column 1 - Logo and brief */}
           <div className="flex flex-col items-center md:items-start">
             <motion.h3
               className="text-xl font-bold blend-glow mb-3"
@@ -96,7 +88,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2 - Quick Links */}
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">
               Quick Links
@@ -123,7 +114,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 3 - Contact Info */}
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">
               Get In Touch
@@ -160,16 +150,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="w-full h-px bg-white/10 mb-6"></div>
-
-        {/* Bottom Section */}
         <div className="flex flex-col-reverse md:flex-row justify-between items-center">
           <div className="text-xs text-gray-500 mt-4 md:mt-0">
             © {currentYear} Tinsley Devers. All rights reserved.
           </div>
-
-          {/* Social Links */}
           <div className="flex space-x-4">
             {socialLinks.map((link) => (
               <motion.a
@@ -180,8 +165,6 @@ export default function Footer() {
                 className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-300 hover:bg-purple-600/30 hover:text-white transition-all"
                 whileHover={{ y: -3, scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                onHoverStart={() => setHoverEffect(true)}
-                onHoverEnd={() => setHoverEffect(false)}
               >
                 {link.icon}
               </motion.a>
@@ -189,7 +172,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Easter Egg Hint */}
         <motion.div
           className="absolute right-4 bottom-9 text-xs text-gray-600 hidden md:block"
           initial={{ opacity: 0 }}

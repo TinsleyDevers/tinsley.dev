@@ -1,63 +1,35 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-
-/**
- * EasterEggs component:
- * - Contains only Thanos, Matrix, Hack, Retro, and Tinsley ("skills" highlight).
- * - Ignores keystrokes if the user is typing in form fields.
- * - Fireworks triggered by 16 consecutive clicks on {tinsley.dev} title.
- * - 5-second global cooldown for all eggs.
- */
+import { useEffect, useRef, useState } from "react";
 
 export default function EasterEggs() {
-  // ----------------------------------------------------------------
-  // 1) State & Refs
-  // ----------------------------------------------------------------
-  const [secretWord, setSecretWord] = useState("");
-  const [eggCooldownTime, setEggCooldownTime] = useState(0); // Track last time an egg was triggered
-  const [activeEgg, setActiveEgg] = useState<string | null>(null); // e.g. "hack", "retro", etc. if toggled on
-  const [titleClickCount, setTitleClickCount] = useState(0);
+  // Only storing to pass typed text into checkSecretWords
+  // We never read 'secretWord' directly.
+  const [, setSecretWord] = useState("");
 
-  // For "Matrix code" and "Konami" references
-  const [konami, setKonami] = useState<string[]>([]);
-  const konamiCode = [
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "b",
-    "a",
-  ];
+  // Not reading 'titleClickCount' directly.
+  const [, setTitleClickCount] = useState(0);
 
-  // We’ll store an Audio element reference for playing optional sounds
+  // Not reading 'konami' directly.
+  const [, setKonami] = useState<string[]>([]);
+
+  const [eggCooldownTime, setEggCooldownTime] = useState(0);
+  const [activeEgg, setActiveEgg] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // ----------------------------------------------------------------
-  // 2) Setup on mount (audio, console messages, etc.)
-  // ----------------------------------------------------------------
   useEffect(() => {
-    // Create an Audio element
     const audio = new Audio();
     audio.volume = 0.3;
     audioRef.current = audio;
-
-    // Display your console ASCII messages
-    const asciiText = `  _______  _          _            
+    console.log(`  _______  _          _            
  |__   __|(_)        | |           
     | |   _ _ __  ___| | ___ _   _ 
     | |  | | '_ \\/ __| |/ _ \\ | | |
     | |  | | | | \\__ \\ |  __/ |_| |
     |_|  |_|_| |_|___/_|\\___|\\___,|
                               __/ |
-                             |___/ `;
-
-    // Additional ASCII referencing “CONTACT ME”:
-    const contactASCII = `
+                             |___/ `);
+    console.info(`
        CONTACT ME
      ----------------------------------------
        .   *   .           *       *  .  *   .
@@ -73,68 +45,39 @@ export default function EasterEggs() {
   Hey There! I'm glad you liked the site. Want to see what's going on? Check out the repo at https://github.com/TinsleyDevers/tinsley.dev
   
   Also, you can contact me via contact@tinsley.dev if you have any questions!
-      `;
-
-    console.log(
-      `%c${asciiText}`,
-      "font-family: monospace; font-size: 14px; color: #9333ea; font-weight: bold;"
-    );
-
-    console.info(
-      `%c${contactASCII}`,
-      "font-family: monospace; font-size: 12px; color: #a855f7"
-    );
+    `);
   }, []);
 
-  // ----------------------------------------------------------------
-  // 3) Utility: Check if user is in a form input
-  // ----------------------------------------------------------------
   function isTypingInForm(e: KeyboardEvent | MouseEvent) {
     const target = e.target as HTMLElement | null;
     if (!target) return false;
-    // If the target is an input, textarea, or inside a .form container, skip triggers
     const tag = target.tagName.toLowerCase();
     if (tag === "input" || tag === "textarea" || tag === "select") {
       return true;
     }
-    // If the element is inside a form with querySelector
     const closestForm = target.closest("form");
     if (closestForm) {
       return true;
     }
-    // You can add more checks if needed
     return false;
   }
 
-  // ----------------------------------------------------------------
-  // 4) Global 5s cooldown check
-  // ----------------------------------------------------------------
   const canTriggerEgg = () => {
     const now = Date.now();
     if (now - eggCooldownTime < 5000) {
-      // still cooling down
       return false;
     }
     return true;
   };
+
   const setEggTriggered = (eggName?: string) => {
-    // set activeEgg if it is a toggled effect. For 'hack' or 'retro' we set them
-    // for 'tinsley' or 'thanos' or 'matrix' that are mostly ephemeral, we can do a quick set
     setEggCooldownTime(Date.now());
     if (eggName) setActiveEgg(eggName);
   };
 
-  // ----------------------------------------------------------------
-  // 5) The requested Easter eggs
-  // ----------------------------------------------------------------
-
-  // (1) Tinsley => Skills highlight
-  const skillsAnimation = () => {
-    // If it's already active or we can't trigger => skip
+  function skillsAnimation() {
     if (activeEgg === "tinsley" || !canTriggerEgg()) return;
     setEggTriggered("tinsley");
-
-    // Quick skill highlight
     const skills = document.querySelectorAll(
       ".bg-purple-600, .bg-purple-600\\/40, .bg-purple-600\\/50"
     );
@@ -145,7 +88,6 @@ export default function EasterEggs() {
       el.style.background = "linear-gradient(90deg, #9333ea, #ec4899)";
       el.style.transform = "scale(1.1)";
       el.style.boxShadow = "0 0 15px rgba(236, 72, 153, 0.6)";
-
       setTimeout(() => {
         el.style.transform = "";
         el.style.background = "";
@@ -153,8 +95,6 @@ export default function EasterEggs() {
         skill.classList.remove("activated-skill");
       }, 2500);
     });
-
-    // bottom right notification
     const note = document.createElement("div");
     note.textContent = "✨ Skills upgraded ✨";
     note.style.position = "fixed";
@@ -182,28 +122,19 @@ export default function EasterEggs() {
         if (document.body.contains(note)) document.body.removeChild(note);
       }, 300);
     }, 3000);
-
-    // remove activeEgg after a short bit
     setTimeout(() => setActiveEgg(null), 5000);
-  };
+  }
 
-  // (2) Hack => Terminal
-  const hackingEffect = () => {
-    // If already active or cooldown => skip
+  function hackingEffect() {
     if (activeEgg === "hack" || !canTriggerEgg()) return;
     setEggTriggered("hack");
-
-    // Optionally play sound
     try {
       const audio = audioRef.current;
       if (audio) {
-        audio.src = "/assets/typing.mp3"; // change if needed
-        audio.play().catch(() => console.log("Audio blocked"));
+        audio.src = "/assets/typing.mp3";
+        audio.play().catch(() => {});
       }
-    } catch (err) {
-      console.log("Audio error", err);
-    }
-
+    } catch {}
     const overlay = document.createElement("div");
     overlay.style.position = "fixed";
     overlay.style.top = "0";
@@ -219,7 +150,6 @@ export default function EasterEggs() {
     overlay.style.zIndex = "10000";
     document.body.appendChild(overlay);
 
-    // Terminal window
     const terminal = document.createElement("div");
     terminal.style.width = "80%";
     terminal.style.maxWidth = "800px";
@@ -299,48 +229,28 @@ export default function EasterEggs() {
     };
     startTyping(30);
 
-    const handleEscKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+    const handleEscKey = (evt: KeyboardEvent) => {
+      if (evt.key === "Escape") {
         document.removeEventListener("keydown", handleEscKey);
         if (typingInterval) clearInterval(typingInterval);
         if (document.body.contains(overlay)) {
           document.body.removeChild(overlay);
         }
-        setActiveEgg(null); // allow re-activate after they close
+        setActiveEgg(null);
       }
     };
     document.addEventListener("keydown", handleEscKey);
-  };
-
-  // (3) Retro => toggle
-  const toggleRetroMode = () => {
-    // If already active => turn it OFF if typed again, or skip? We'll do toggle.
-    if (!canTriggerEgg()) return;
-
-    if (activeEgg === "retro") {
-      // Turn OFF retro
-      endRetro();
-      return;
-    }
-    // Otherwise turn ON
-    startRetro();
-  };
+  }
 
   function startRetro() {
     setEggTriggered("retro");
-
-    // Possibly play sound
     try {
       const audio = audioRef.current;
       if (audio) {
-        audio.src = "/assets/retro.mp3"; // change if needed
-        audio.play().catch(() => console.log("Audio blocked"));
+        audio.src = "/assets/retro.mp3";
+        audio.play().catch(() => {});
       }
-    } catch (err) {
-      console.log("Audio error", err);
-    }
-
-    // Apply the “CRT” filter
+    } catch {}
     const retroFilter = document.createElement("div");
     retroFilter.id = "retro-filter-overlay";
     retroFilter.style.position = "fixed";
@@ -397,36 +307,37 @@ export default function EasterEggs() {
   }
 
   function endRetro() {
-    // Remove the overlays
     const styleEl = document.getElementById("retro-style");
     if (styleEl) styleEl.remove();
     const retroFilter = document.getElementById("retro-filter-overlay");
     if (retroFilter) retroFilter.remove();
     const vignette = document.getElementById("retro-vignette");
     if (vignette) vignette.remove();
-
     document.body.classList.remove("retro-filter");
     const allText = document.querySelectorAll(".retro-text");
     allText.forEach((el) => el.classList.remove("retro-text"));
-
     setActiveEgg(null);
   }
 
-  // (4) Matrix => Konami code
-  const triggerMatrixEasterEgg = () => {
+  function toggleRetroMode() {
+    if (!canTriggerEgg()) return;
+    if (activeEgg === "retro") {
+      endRetro();
+      return;
+    }
+    startRetro();
+  }
+
+  function triggerMatrixEasterEgg() {
     if (activeEgg === "matrix" || !canTriggerEgg()) return;
     setEggTriggered("matrix");
-
-    // Optional sound
     try {
       const audio = audioRef.current;
       if (audio) {
         audio.src = "/assets/matrix.mp3";
-        audio.play().catch(() => console.log("Audio blocked"));
+        audio.play().catch(() => {});
       }
-    } catch (err) {
-      console.log("Audio error", err);
-    }
+    } catch {}
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -434,7 +345,6 @@ export default function EasterEggs() {
       setActiveEgg(null);
       return;
     }
-
     canvas.style.position = "fixed";
     canvas.style.top = "0";
     canvas.style.left = "0";
@@ -461,7 +371,6 @@ export default function EasterEggs() {
     const draw = () => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       for (let i = 0; i < drops.length; i++) {
         if (Math.random() > 0.98) {
           ctx.fillStyle = "#fff";
@@ -471,7 +380,6 @@ export default function EasterEggs() {
         const text = characters[Math.floor(Math.random() * characters.length)];
         ctx.font = `${fontSize}px monospace`;
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
@@ -484,7 +392,6 @@ export default function EasterEggs() {
       canvas.classList.add("fade-out");
       canvas.style.transition = "opacity 3s";
       canvas.style.opacity = "0";
-
       setTimeout(() => {
         if (intervalId) clearInterval(intervalId);
         if (document.body.contains(canvas)) {
@@ -493,30 +400,23 @@ export default function EasterEggs() {
         setActiveEgg(null);
       }, 3000);
     }, 5000);
-  };
+  }
 
-  // (5) Thanos => Snap
-  const thanosSnap = () => {
+  function thanosSnap() {
     if (activeEgg === "thanos" || !canTriggerEgg()) return;
     setEggTriggered("thanos");
-
     try {
       const audio = audioRef.current;
       if (audio) {
         audio.src = "/assets/snap.mp3";
-        audio.play().catch(() => console.log("Audio blocked"));
+        audio.play().catch(() => {});
       }
-    } catch (err) {
-      console.log("Audio error", err);
-    }
-
+    } catch {}
     const selector = "h1, h2, h3, p, img, .w-10, .h-10, button, a, .blend-glow";
     const elements = Array.from(document.querySelectorAll(selector));
     elements.sort(() => Math.random() - 0.5);
     const half = Math.floor(elements.length / 2);
     const toSnap = elements.slice(0, half);
-
-    // Flash
     const flash = document.createElement("div");
     flash.style.position = "fixed";
     flash.style.top = "0";
@@ -599,7 +499,6 @@ export default function EasterEggs() {
         }, 1500);
       }, Math.random() * 1000 + index * 30);
     });
-
     setTimeout(() => {
       const msg = document.createElement("div");
       msg.textContent = "Perfectly balanced, as all things should be.";
@@ -619,14 +518,11 @@ export default function EasterEggs() {
       setTimeout(() => {
         msg.style.opacity = "1";
       }, 100);
-
-      // restore
       setTimeout(() => {
         msg.style.opacity = "0";
         setTimeout(() => {
           if (document.body.contains(msg)) document.body.removeChild(msg);
         }, 1000);
-
         toSnap.forEach((el) => {
           (el as HTMLElement).style.animation = "";
           (el as HTMLElement).style.visibility = "";
@@ -636,25 +532,17 @@ export default function EasterEggs() {
             (el as HTMLElement).style.opacity = "";
           }, 100);
         });
-
         if (document.head.contains(styleEl)) {
           styleEl.remove();
         }
         setActiveEgg(null);
       }, 5000);
     }, 2000);
-  };
+  }
 
-  // ----------------------------------------------------------------
-  // 6) Fireworks triggered by 16 clicks on site title
-  // ----------------------------------------------------------------
-  const triggerFireworks = () => {
-    // Just do a quick ephemeral effect. Check cooldown
+  function triggerFireworks() {
     if (!canTriggerEgg()) return;
-
-    setEggTriggered(); // no name because ephemeral
-
-    // We'll do a simpler confetti or fireworks effect
+    setEggTriggered();
     const container = document.createElement("div");
     container.style.position = "fixed";
     container.style.inset = "0";
@@ -677,7 +565,6 @@ export default function EasterEggs() {
       const angle = Math.random() * 2 * Math.PI;
       const dist = Math.random() * 300 + 100;
       const dur = Math.random() * 1500 + 1000;
-
       spark.animate(
         [
           { transform: "scale(1) translate(0,0)", opacity: 1 },
@@ -700,30 +587,33 @@ export default function EasterEggs() {
         document.body.removeChild(container);
       }
     }, 2000);
-  };
+  }
 
-  // ----------------------------------------------------------------
-  // 7) Handlers for keyboard
-  // ----------------------------------------------------------------
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // If the user is typing in a form, skip
       if (isTypingInForm(e)) return;
-
-      // Konami
       setKonami((prev) => {
+        const konamiCode = [
+          "ArrowUp",
+          "ArrowUp",
+          "ArrowDown",
+          "ArrowDown",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowLeft",
+          "ArrowRight",
+          "b",
+          "a",
+        ];
         const updated = [...prev, e.key];
         if (updated.length > konamiCode.length) {
           updated.shift();
         }
         if (updated.join(",") === konamiCode.join(",")) {
-          // matrix
           triggerMatrixEasterEgg();
         }
         return updated;
       });
-
-      // Alphanumeric => build secret word
       if (/^[a-zA-Z0-9]$/.test(e.key)) {
         setSecretWord((prev) => {
           const newWord = (prev + e.key.toLowerCase()).slice(-20);
@@ -731,58 +621,37 @@ export default function EasterEggs() {
           return newWord;
         });
       }
-
-      // backspace
       if (e.key === "Backspace") {
         setSecretWord((prev) => prev.slice(0, -1));
       }
-
-      // If alt+shift+t => retro toggle
-      // Actually user only wants "tinsley" typed for skill highlight, "thanos", "hack", "retro", "matrix"
-      // So we skip that other combos.
-      // (We do not do alt+shift+t or ctrl+alt+g anymore since they weren't requested.)
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [triggerMatrixEasterEgg]);
 
-  // Helper: Check the typed word
   function checkSecretWords(word: string) {
-    // TINSLEY
     if (word.endsWith("tinsley")) {
       skillsAnimation();
-    }
-    // THAnos
-    else if (word.endsWith("thanos")) {
+    } else if (word.endsWith("thanos")) {
       thanosSnap();
-    }
-    // HACK
-    else if (word.endsWith("hack")) {
+    } else if (word.endsWith("hack")) {
       hackingEffect();
-    }
-    // RETRO
-    else if (word.endsWith("retro")) {
+    } else if (word.endsWith("retro")) {
       toggleRetroMode();
     }
   }
 
-  // ----------------------------------------------------------------
-  // 8) Handle clicks on the site title (16 times => fireworks)
-  // ----------------------------------------------------------------
   useEffect(() => {
-    // We'll assume your top-left site title has an id or class we can reference, e.g. #siteTitle
     const titleEl = document.getElementById("siteTitle");
     if (!titleEl) return;
 
-    const handleClickTitle = (e: MouseEvent) => {
-      // If user clicks the title, increment count
+    const handleClickTitle = () => {
       setTitleClickCount((prev) => {
         const newVal = prev + 1;
         if (newVal >= 16) {
-          // trigger fireworks
           triggerFireworks();
-          return 0; // reset
+          return 0;
         }
         return newVal;
       });
@@ -790,10 +659,7 @@ export default function EasterEggs() {
 
     titleEl.addEventListener("click", handleClickTitle);
     return () => titleEl.removeEventListener("click", handleClickTitle);
-  }, []);
+  }, [triggerFireworks]);
 
-  // ----------------------------------------------------------------
-  // 9) Return nothing visible
-  // ----------------------------------------------------------------
   return null;
 }
