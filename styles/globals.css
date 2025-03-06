@@ -402,3 +402,10 @@ html {
   outline: 2px solid rgba(139, 92, 246, 0.6);
   outline-offset: 2px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

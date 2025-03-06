@@ -1,3 +1,4 @@
+// components/spaceBackground.tsx
 "use client";
 
 import React, {

@@ -1,3 +1,4 @@
+// app/page.tsx
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -335,8 +336,7 @@ export default function HomePage() {
                 >
                   ⚡
                 </motion.span>
-                I love building efficient, scalable, and user-focused
-                applications.
+                Always looking for new opportunities and challenges.
               </p>
             </div>
 
@@ -425,25 +425,6 @@ export default function HomePage() {
             </motion.a>
           </div>
         </div>
-
-        {/* Floating scroll indicator */}
-        <motion.div
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-          animate={{
-            y: [0, 10, 0],
-            opacity: [0.4, 1, 0.4],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <div className="w-8 h-12 border-2 border-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
-          </div>
-          <span className="mt-2 text-xs text-white/70">Scroll</span>
-        </motion.div>
       </motion.section>
 
       {/* About Section */}
@@ -587,7 +568,7 @@ export default function HomePage() {
           className="flex flex-wrap justify-center gap-2 mb-10"
           variants={childVariants}
         >
-          {["All", "Frontend", "Backend", "Tools"].map((category) => (
+          {["Frontend", "Backend", "Tools"].map((category) => (
             <motion.button
               key={category}
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
