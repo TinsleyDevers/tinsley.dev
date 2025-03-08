@@ -563,63 +563,6 @@ export default function HomePage() {
           <span className="absolute -bottom-3 left-1/2 w-12 h-1 bg-purple-500 transform -translate-x-1/2"></span>
         </motion.h2>
 
-        {/* Skill filters */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-2 mb-10"
-          variants={childVariants}
-        >
-          {["Frontend", "Backend", "Tools"].map((category) => (
-            <motion.button
-              key={category}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                skillFilter === category
-                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
-                  : "bg-white/10 text-white hover:bg-white/20"
-              }`}
-              onClick={() => setSkillFilter(category)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {category}
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Skill bars */}
-        <motion.div
-          className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-6"
-          variants={childVariants}
-        >
-          {filteredSkills.map((skill, index) => (
-            <motion.div
-              key={skill.name}
-              className="relative overflow-hidden"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div className="flex justify-between mb-1">
-                <span className="font-medium text-sm text-white">
-                  {skill.name}
-                </span>
-                <span className="text-xs text-gray-400">{skill.level}%</span>
-              </div>
-              <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${skill.level}%` }}
-                  transition={{
-                    duration: 1,
-                    ease: "easeOut",
-                    delay: 0.2 + index * 0.1,
-                  }}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
         {/* Additional Tech Stack */}
         <motion.div className="mt-16 w-full max-w-4xl" variants={childVariants}>
           <h3 className="text-xl font-bold mb-6 text-center">
