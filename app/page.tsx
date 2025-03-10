@@ -332,13 +332,6 @@ export default function HomePage() {
   // Active project
   const [activeProject, setActiveProject] = useState<Project | null>(null);
 
-  // Skill filter
-  const [skillFilter, setSkillFilter] = useState("All");
-  const filteredSkills =
-    skillFilter === "All"
-      ? technicalSkills
-      : technicalSkills.filter((skill) => skill.category === skillFilter);
-
   // Scroll progress for top bar
   const [scrollProgress, setScrollProgress] = useState(0);
   useEffect(() => {

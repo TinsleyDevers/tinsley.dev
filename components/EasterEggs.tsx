@@ -5,7 +5,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 export default function EasterEggs() {
   const [, setSecretWord] = useState("");
-  const [, setTitleClickCount] = useState(0);
   const [, setKonami] = useState<string[]>([]);
 
   const [eggCooldownTime, setEggCooldownTime] = useState(0);
@@ -532,56 +531,6 @@ export default function EasterEggs() {
       }, 5000);
     }, 2000);
   }, [activeEgg, canTriggerEgg]);
-
-  // Fireworks
-  const triggerFireworks = useCallback(() => {
-    if (!canTriggerEgg()) return;
-    setEggTriggered();
-    const container = document.createElement("div");
-    container.style.position = "fixed";
-    container.style.inset = "0";
-    container.style.pointerEvents = "none";
-    container.style.zIndex = "9999";
-    container.style.overflow = "hidden";
-    document.body.appendChild(container);
-
-    for (let i = 0; i < 120; i++) {
-      const spark = document.createElement("div");
-      spark.style.position = "absolute";
-      spark.style.width = "5px";
-      spark.style.height = "5px";
-      spark.style.backgroundColor = "#ffcc00";
-      spark.style.borderRadius = "50%";
-      spark.style.top = `${Math.random() * 100}%`;
-      spark.style.left = `${Math.random() * 100}%`;
-      container.appendChild(spark);
-
-      const angle = Math.random() * 2 * Math.PI;
-      const dist = Math.random() * 300 + 100;
-      const dur = Math.random() * 1500 + 1000;
-      spark.animate(
-        [
-          { transform: "scale(1) translate(0,0)", opacity: 1 },
-          {
-            transform: `scale(0) translate(${Math.cos(angle) * dist}px, ${
-              Math.sin(angle) * dist
-            }px)`,
-            opacity: 0,
-          },
-        ],
-        { duration: dur, easing: "cubic-bezier(0.4, 0, 0.2, 1)" }
-      );
-      setTimeout(() => {
-        if (container.contains(spark)) container.removeChild(spark);
-      }, dur);
-    }
-
-    setTimeout(() => {
-      if (document.body.contains(container)) {
-        document.body.removeChild(container);
-      }
-    }, 2000);
-  }, [canTriggerEgg]);
 
   // Check typed words
   const checkSecretWords = useCallback(
