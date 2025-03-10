@@ -276,7 +276,7 @@ export default function HomePage() {
     {
       jobName: "Web Developer Intern",
       companyName: "Lorem Ipsum",
-      dateWorked: "2021 - 2022",
+      dateWorked: "2025 - Present ",
       description:
         "Maintained internal tools, lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.",
       skills: ["HTML", "CSS", "JavaScript"],
