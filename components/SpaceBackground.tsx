@@ -1,4 +1,3 @@
-// components/spaceBackground.tsx
 "use client";
 
 import React, {
@@ -8,6 +7,7 @@ import React, {
   useRef,
   useMemo,
 } from "react";
+import { detectDeviceCapabilities, throttle } from "../utils/performance";
 
 interface Star {
   top: number;
@@ -57,10 +57,16 @@ interface Cloud {
 }
 
 export default function SpaceBackground() {
-  const starCount = 100;
-  const crossStarCount = 15;
-  const nebulaCount = 4;
-  const cloudCount = 6;
+  // Get device capabilities
+  const { isMobile, isLowPower, prefersReducedMotion } =
+    detectDeviceCapabilities();
+  const shouldReduceMotion = isMobile || isLowPower || prefersReducedMotion;
+
+  // Adjust counts based on device capabilities
+  const starCount = shouldReduceMotion ? 50 : 100;
+  const crossStarCount = shouldReduceMotion ? 8 : 15;
+  const nebulaCount = shouldReduceMotion ? 2 : 4;
+  const cloudCount = shouldReduceMotion ? 3 : 6;
 
   const [stars, setStars] = useState<Star[]>([]);
   const [crossStars, setCrossStars] = useState<CrossStar[]>([]);
@@ -71,6 +77,9 @@ export default function SpaceBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isVisible, setIsVisible] = useState(true);
+
+  // The parallax strength multiplier - zero if reduced motion
+  const parallaxStrength = shouldReduceMotion ? 0 : 1;
 
   const starColors = useMemo(
     () => ["#ffffff", "#ffe5b4", "#ffd9e8", "#d4f4fa", "#e0c3fc"],
@@ -94,10 +103,11 @@ export default function SpaceBackground() {
     Math.random() * (max - min) + min;
 
   useEffect(() => {
+    // Create stars with responsive sizing based on dimensions
     const baseStars: Star[] = Array.from({ length: starCount }).map(() => ({
       top: Math.random() * 100,
       left: Math.random() * 100,
-      size: randRange(1, 2.5),
+      size: randRange(1, 2.5) * (dimensions.width > 768 ? 1 : 0.8), // Adjust size for mobile
       twinkleDelay: Math.random() * 5,
       color: starColors[Math.floor(Math.random() * starColors.length)],
       depth: Math.floor(Math.random() * 3),
@@ -114,7 +124,7 @@ export default function SpaceBackground() {
         top: Math.random() * 100,
         left: Math.random() * 100,
         delay: Math.random() * 5,
-        scale: randRange(0.5, 1.2),
+        scale: randRange(0.5, 1.2) * (dimensions.width > 768 ? 1 : 0.8), // Adjust size for mobile
         color: crossColors[Math.floor(Math.random() * crossColors.length)],
         depth: Math.floor(Math.random() * 3),
       })
@@ -131,8 +141,8 @@ export default function SpaceBackground() {
         id: idx,
         top: randRange(10, 90),
         left: randRange(0, 100),
-        width: randRange(200, 500),
-        height: randRange(150, 350),
+        width: randRange(200, 500) * (dimensions.width > 768 ? 1 : 0.7), // Adjust size for mobile
+        height: randRange(150, 350) * (dimensions.width > 768 ? 1 : 0.7), // Adjust size for mobile
         rotation: randRange(-30, 30),
         color: nebulaColors[Math.floor(Math.random() * nebulaColors.length)],
       })
@@ -149,8 +159,8 @@ export default function SpaceBackground() {
         id: idx,
         top: Math.random() * 90,
         left: Math.random() * 100,
-        width: randRange(150, 350),
-        height: randRange(50, 130),
+        width: randRange(150, 350) * (dimensions.width > 768 ? 1 : 0.7), // Adjust size for mobile
+        height: randRange(50, 130) * (dimensions.width > 768 ? 1 : 0.7), // Adjust size for mobile
         opacity: randRange(0.05, 0.12),
       })
     );
@@ -168,22 +178,58 @@ export default function SpaceBackground() {
     starColors,
     crossColors,
     nebulaColors,
+    dimensions.width, // Now dimensions is actually used
   ]);
 
+  // Optimized mouse move handler using CSS variables for better performance
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
+    // Create a throttled handler
+    const handleMouseMove = throttle((e: MouseEvent) => {
+      if (!containerRef.current || !isVisible || shouldReduceMotion) return;
+
       const { left, top, width, height } =
         containerRef.current.getBoundingClientRect();
       const x = (e.clientX - left) / width - 0.5;
       const y = (e.clientY - top) / height - 0.5;
-      setMousePosition({ x, y });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
-  // Update the resize handler to use ResizeObserver instead of window events
+      // Use CSS variables for transitions
+      document.documentElement.style.setProperty(
+        "--mouse-x-slow",
+        `${x * -4}px`
+      );
+      document.documentElement.style.setProperty(
+        "--mouse-y-slow",
+        `${y * -4}px`
+      );
+      document.documentElement.style.setProperty(
+        "--mouse-x-medium",
+        `${x * -8}px`
+      );
+      document.documentElement.style.setProperty(
+        "--mouse-y-medium",
+        `${y * -8}px`
+      );
+      document.documentElement.style.setProperty(
+        "--mouse-x-fast",
+        `${x * -15}px`
+      );
+      document.documentElement.style.setProperty(
+        "--mouse-y-fast",
+        `${y * -15}px`
+      );
+
+      // Keep the React state updated for components that need it
+      setMousePosition({ x, y });
+    }, 16); // Approximately 60fps
+
+    if (isVisible && !shouldReduceMotion) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
+
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [isVisible, shouldReduceMotion]);
+
+  // Update the resize handler to use ResizeObserver
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -196,7 +242,7 @@ export default function SpaceBackground() {
       });
     };
 
-    // Modern approach using ResizeObserver (more efficient)
+    // Modern approach using ResizeObserver
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
@@ -206,6 +252,7 @@ export default function SpaceBackground() {
     return () => resizeObserver.disconnect();
   }, []);
 
+  // Visibility observer to pause animations when not visible
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -221,8 +268,13 @@ export default function SpaceBackground() {
     return () => observer.disconnect();
   }, []);
 
+  // Shooting star effect
   const spawnShootingStar = useCallback(() => {
     if (!isVisible) return;
+
+    // Limit max number of shooting stars for performance
+    if (shootingStars.length >= (shouldReduceMotion ? 2 : 5)) return;
+
     const id = Date.now();
     const newStar: ShootingStar = {
       id,
@@ -233,14 +285,18 @@ export default function SpaceBackground() {
       delay: 0,
     };
     setShootingStars((prevStars) => [...prevStars, newStar]);
+
     setTimeout(() => {
       setShootingStars((prevStars) =>
         prevStars.filter((star) => star.id !== id)
       );
     }, newStar.duration * 1000 + 200);
-  }, [isVisible]);
+  }, [isVisible, shootingStars.length, shouldReduceMotion]);
 
+  // Spawn shooting stars periodically
   useEffect(() => {
+    if (shouldReduceMotion) return; // Skip for reduced motion
+
     setTimeout(spawnShootingStar, 2000);
     const interval = setInterval(() => {
       if (Math.random() > 0.7) {
@@ -253,12 +309,12 @@ export default function SpaceBackground() {
       }
     }, 7000);
     return () => clearInterval(interval);
-  }, [spawnShootingStar]);
+  }, [spawnShootingStar, shouldReduceMotion]);
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 -z-10 overflow-hidden"
+      className="fixed inset-0 -z-10 overflow-hidden hardware-accelerated"
       style={{
         background:
           "linear-gradient(to bottom, #070b19, #0e1b38 40%, #1a2b4a 80%, #2c3359 100%)",
@@ -266,13 +322,10 @@ export default function SpaceBackground() {
     >
       {/* Nebulas */}
       <div
-        className="absolute top-0 left-0 h-full w-[200%] animate-loopNebulas"
-        style={{
-          transform: `translateX(${mousePosition.x * -10}px) translateY(${
-            mousePosition.y * -10
-          }px)`,
-          transition: "transform 0.1s ease-out",
-        }}
+        className={`absolute top-0 left-0 h-full w-[200%] ${
+          shouldReduceMotion ? "" : "animate-loopNebulas parallax-slow"
+        }`}
+        style={shouldReduceMotion ? {} : {}}
       >
         {nebulas.map((nebula) => (
           <div
@@ -294,13 +347,9 @@ export default function SpaceBackground() {
 
       {/* Distant stars (depth=2) */}
       <div
-        className="absolute top-0 left-0 h-full w-[200%] animate-loopDistantStars"
-        style={{
-          transform: `translateX(${mousePosition.x * -4}px) translateY(${
-            mousePosition.y * -4
-          }px)`,
-          transition: "transform 0.1s ease-out",
-        }}
+        className={`absolute top-0 left-0 h-full w-[200%] ${
+          shouldReduceMotion ? "" : "animate-loopDistantStars parallax-slow"
+        }`}
       >
         {stars
           .filter((star) => star.depth === 2)
@@ -324,13 +373,9 @@ export default function SpaceBackground() {
 
       {/* Mid distance stars (depth=1) */}
       <div
-        className="absolute top-0 left-0 h-full w-[200%] animate-loopStars"
-        style={{
-          transform: `translateX(${mousePosition.x * -8}px) translateY(${
-            mousePosition.y * -8
-          }px)`,
-          transition: "transform 0.1s ease-out",
-        }}
+        className={`absolute top-0 left-0 h-full w-[200%] ${
+          shouldReduceMotion ? "" : "animate-loopStars parallax-medium"
+        }`}
       >
         {stars
           .filter((star) => star.depth === 1)
@@ -373,13 +418,9 @@ export default function SpaceBackground() {
 
       {/* Close stars (depth=0) */}
       <div
-        className="absolute top-0 left-0 h-full w-[200%] animate-loopStars"
-        style={{
-          transform: `translateX(${mousePosition.x * -15}px) translateY(${
-            mousePosition.y * -15
-          }px)`,
-          transition: "transform 0.1s ease-out",
-        }}
+        className={`absolute top-0 left-0 h-full w-[200%] ${
+          shouldReduceMotion ? "" : "animate-loopStars parallax-fast"
+        }`}
       >
         {stars
           .filter((star) => star.depth === 0)
@@ -417,39 +458,44 @@ export default function SpaceBackground() {
           ))}
 
         {/* Shooting stars */}
-        {shootingStars.map((s) => (
-          <div
-            key={`shooting-star-${s.id}`}
-            className="absolute"
-            style={{
-              top: `${s.top}%`,
-              left: `${s.left}%`,
-              width: `${s.size}px`,
-              height: `${s.size}px`,
-              background: "white",
-              borderRadius: "50%",
-              boxShadow: "0 0 20px 2px rgba(255, 255, 255, 0.8)",
-              animation: `shootingStar ${s.duration}s linear forwards`,
-              animationDelay: `${s.delay}s`,
-            }}
-          >
+        {!shouldReduceMotion &&
+          shootingStars.map((s) => (
             <div
-              className="absolute top-0 right-0 transform translate-x-full"
+              key={`shooting-star-${s.id}`}
+              className="absolute"
               style={{
-                width: `${s.size * 20}px`,
+                top: `${s.top}%`,
+                left: `${s.left}%`,
+                width: `${s.size}px`,
                 height: `${s.size}px`,
-                background:
-                  "linear-gradient(to left, transparent, rgba(255, 255, 255, 0.8))",
-                borderRadius: "0 50% 50% 0",
-                transformOrigin: "left center",
+                background: "white",
+                borderRadius: "50%",
+                boxShadow: "0 0 20px 2px rgba(255, 255, 255, 0.8)",
+                animation: `shootingStar ${s.duration}s linear forwards`,
+                animationDelay: `${s.delay}s`,
               }}
-            />
-          </div>
-        ))}
+            >
+              <div
+                className="absolute top-0 right-0 transform translate-x-full"
+                style={{
+                  width: `${s.size * 20}px`,
+                  height: `${s.size}px`,
+                  background:
+                    "linear-gradient(to left, transparent, rgba(255, 255, 255, 0.8))",
+                  borderRadius: "0 50% 50% 0",
+                  transformOrigin: "left center",
+                }}
+              />
+            </div>
+          ))}
       </div>
 
       {/* Cloud scroller */}
-      <div className="absolute top-0 left-0 h-full w-[200%] pointer-events-none animate-loopClouds">
+      <div
+        className={`absolute top-0 left-0 h-full w-[200%] pointer-events-none ${
+          shouldReduceMotion ? "" : "animate-loopClouds"
+        }`}
+      >
         {clouds.map((cloud) => (
           <div
             key={`cloud-${cloud.id}`}
