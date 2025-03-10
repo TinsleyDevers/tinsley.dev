@@ -14,8 +14,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-use": "^17.6.0",
-    "tinsley.dev": "file:",
-    "use-resize-observer": "^9.1.0"
+    "tinsley.dev": "file:"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
