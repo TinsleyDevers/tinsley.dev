@@ -1,7 +1,7 @@
 // components/MainContent.tsx
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import SplashScreen from "./SplashScreen";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
