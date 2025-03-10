@@ -1210,11 +1210,11 @@ export default function HomePage() {
                 {/* Left side - Contact info */}
                 <div>
                   <h3 className="text-xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
-                    Let's Connect
+                    Let&apos;s Connect
                   </h3>
                   <p className="text-gray-300 mb-8">
-                    Have a project in mind or want to discuss opportunities? I'm
-                    always open to new ideas and collaborations.
+                    Have a project in mind or want to discuss opportunities?
+                    I&apos;m always open to new ideas and collaborations.
                   </p>
                   <div className="space-y-6">
                     <div className="flex items-center">
@@ -1355,8 +1355,8 @@ export default function HomePage() {
                       Ready to Work Together?
                     </h3>
                     <p className="text-gray-300 mb-6">
-                      I'm currently available for freelance work and open to
-                      discussing new opportunities.
+                      I&apos;m currently available for freelance work and open
+                      to discussing new opportunities.
                     </p>
 
                     <motion.a
