@@ -73,9 +73,13 @@ export default function SpaceBackground() {
   const [nebulas, setNebulas] = useState<Nebula[]>([]);
   const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
   const [clouds, setClouds] = useState<Cloud[]>([]);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isVisible, setIsVisible] = useState(true);
+
+  // The parallax strength multiplier - zero if reduced motion
+  const parallaxStrength = shouldReduceMotion ? 0 : 1;
 
   const starColors = useMemo(
     () => ["#ffffff", "#ffe5b4", "#ffd9e8", "#d4f4fa", "#e0c3fc"],
@@ -213,6 +217,9 @@ export default function SpaceBackground() {
         "--mouse-y-fast",
         `${y * -15}px`
       );
+
+      // Keep the React state updated for components that need it
+      setMousePosition({ x, y });
     }, 16); // Approximately 60fps
 
     if (isVisible && !shouldReduceMotion) {
