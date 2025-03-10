@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "framer-motion": "^12.4.10",
+    "framer-motion": "^12.4.11",
     "next": "^15.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tinsley.dev": "file:"
+    "react-use": "^17.6.0",
+    "tinsley.dev": "file:",
+    "use-resize-observer": "^9.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -23,7 +25,7 @@
     "@types/node": "^20.17.23",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "postcss": "^8.5.3",

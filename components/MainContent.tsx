@@ -1,11 +1,12 @@
 // components/MainContent.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import SplashScreen from "./SplashScreen";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { AnimatePresence, motion, LayoutGroup } from "framer-motion";
+import { detectDeviceCapabilities, throttle } from "../utils/performance";
 
 interface MainContentProps {
   children: React.ReactNode;
@@ -15,36 +16,53 @@ export default function MainContent({ children }: MainContentProps) {
   const [showSplash, setShowSplash] = useState(true);
   const [isInitialRender, setIsInitialRender] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [deviceCapabilities] = useState(detectDeviceCapabilities());
+  const [contentReady, setContentReady] = useState(false);
+
+  // Limit loading state changes to improve performance
+  const handleNavigationStart = useCallback(
+    throttle(() => {
+      setIsLoading(true);
+    }, 200),
+    []
+  );
 
   useEffect(() => {
-    const handleNavigationStart = () => {
-      setIsLoading(true);
-    };
-    window.addEventListener("beforeunload", handleNavigationStart);
+    window.addEventListener("beforeunload", handleNavigationStart, {
+      passive: true,
+    });
     return () =>
       window.removeEventListener("beforeunload", handleNavigationStart);
-  }, []);
+  }, [handleNavigationStart]);
 
-  // Smooth scroll to hash
+  // Scroll handler
   useEffect(() => {
-    const handleHashChange = (e: HashChangeEvent) => {
+    const handleHashChange = throttle((e: HashChangeEvent) => {
       e.preventDefault();
       const targetId = window.location.hash.substring(1);
       const targetElement = document.getElementById(targetId);
       if (targetElement) {
         targetElement.scrollIntoView({
-          behavior: "smooth",
+          behavior: deviceCapabilities.prefersReducedMotion ? "auto" : "smooth",
           block: "start",
         });
       }
-    };
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
+    }, 100);
 
+    window.addEventListener("hashchange", handleHashChange, { passive: true });
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [deviceCapabilities.prefersReducedMotion]);
+
+  // Handle transition from splash screen to main content
   useEffect(() => {
     if (!showSplash && isInitialRender) {
-      setIsInitialRender(false);
+      // Delay showing the content
+      const timer = setTimeout(() => {
+        setContentReady(true);
+        setIsInitialRender(false);
+      }, 100);
+
+      return () => clearTimeout(timer);
     }
   }, [showSplash, isInitialRender]);
 
@@ -66,21 +84,17 @@ export default function MainContent({ children }: MainContentProps) {
         )}
       </AnimatePresence>
 
-      <Navbar />
-
-      <AnimatePresence mode="wait">
-        <motion.main
-          key={isInitialRender ? "initial" : "loaded"}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5 }}
-        >
-          {children}
-        </motion.main>
-      </AnimatePresence>
-
-      <Footer />
+      {/* Main content with fade-in effect */}
+      <motion.div
+        className="min-h-screen flex flex-col"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: contentReady || !isInitialRender ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Navbar />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </motion.div>
     </LayoutGroup>
   );
 }

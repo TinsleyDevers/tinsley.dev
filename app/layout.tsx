@@ -7,6 +7,7 @@ import EasterEggs from "../components/EasterEggs";
 export const metadata = {
   title: "{tinsley.dev}",
   description: "My personal portfolio!",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
 export default function RootLayout({
@@ -16,6 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+      </head>
       <body className="text-white scroll-smooth">
         <EasterEggs />
         <SpaceBackground />

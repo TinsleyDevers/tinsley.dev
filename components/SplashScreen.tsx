@@ -150,9 +150,9 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
             {/* Particles container */}
             <div ref={particlesRef} className="absolute inset-0"></div>
 
-            {/* Main text with no jump/clipping */}
+            {/* Main text */}
             <div className="relative leading-[1.2] whitespace-nowrap">
-              {/* Invisible text includes underscore */}
+              {/* Invisible text */}
               <h1 className="invisible text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.2]">
                 {fullText}
               </h1>
@@ -177,7 +177,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
               </motion.div>
             </div>
 
-            {/* Subtitle further down (e.g. mt-4 or mt-6) */}
+            {/* Subtitle */}
             <AnimatePresence>
               {showSubtitle && (
                 <motion.p

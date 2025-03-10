@@ -69,8 +69,6 @@ export default function EasterEggs() {
     if (eggName) setActiveEgg(eggName);
   };
 
-  // Some of the ephemeral eggs below...
-
   const skillsAnimation = useCallback(() => {
     if (activeEgg === "tinsley" || !canTriggerEgg()) return;
     setEggTriggered("tinsley");
@@ -642,26 +640,6 @@ export default function EasterEggs() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [checkSecretWords, triggerMatrixEasterEgg]);
-
-  // Title click => fireworks
-  useEffect(() => {
-    const titleEl = document.getElementById("siteTitle");
-    if (!titleEl) return;
-
-    const handleClickTitle = () => {
-      setTitleClickCount((prev) => {
-        const newVal = prev + 1;
-        if (newVal >= 16) {
-          triggerFireworks();
-          return 0;
-        }
-        return newVal;
-      });
-    };
-
-    titleEl.addEventListener("click", handleClickTitle);
-    return () => titleEl.removeEventListener("click", handleClickTitle);
-  }, [triggerFireworks]);
 
   return null;
 }

@@ -13,10 +13,9 @@ export default function Navbar() {
     () => [
       { label: "Home", href: "#hero", icon: "💫" },
       { label: "About", href: "#about", icon: "👨‍💻" },
-      { label: "Skills", href: "#skills", icon: "🛠️" },
       { label: "Projects", href: "#projects", icon: "🚀" },
+      { label: "Skills", href: "#skills", icon: "🛠️" },
       { label: "Experience", href: "#experience", icon: "📈" },
-      { label: "Education", href: "#education", icon: "🎓" },
       { label: "Contact", href: "#contact", icon: "✉️" },
     ],
     []
@@ -56,6 +55,7 @@ export default function Navbar() {
     >
       <motion.a
         href="#hero"
+        id="siteTitle"
         layoutId="siteTitle"
         className="text-xl md:text-2xl font-bold blend-glow relative group"
         data-text="{tinsley.dev}"
@@ -107,7 +107,13 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
           >
             <span className="relative z-10 flex items-center">
-              <span className="mr-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <span
+                className={`mr-1.5 ${
+                  activeSection === link.href.substring(1)
+                    ? "opacity-100"
+                    : "opacity-0 group-hover:opacity-100"
+                } transition-opacity duration-300`}
+              >
                 {link.icon}
               </span>
               {link.label}
