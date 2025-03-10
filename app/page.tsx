@@ -300,19 +300,6 @@ export default function HomePage() {
     },
   ];
 
-  // Skills
-  const technicalSkills = [
-    { name: "HTML5", level: 90, category: "Frontend" },
-    { name: "CSS3", level: 85, category: "Frontend" },
-    { name: "JavaScript", level: 80, category: "Frontend" },
-    { name: "React", level: 75, category: "Frontend" },
-    { name: "Next.js", level: 70, category: "Frontend" },
-    { name: "Tailwind CSS", level: 85, category: "Frontend" },
-    { name: "Python", level: 75, category: "Backend" },
-    { name: "Java", level: 70, category: "Backend" },
-    { name: "Git", level: 80, category: "Tools" },
-  ];
-
   // Refs
   const heroRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);

@@ -26,7 +26,7 @@ export default function EasterEggs() {
     console.info(`
        CONTACT ME
      ----------------------------------------
-       .   *   .           *       *  .  *   .
+.   *   .           *       *  .  *   .
     *      .      .  *  .  +     *  .     +
    . Tinsley *        *        .     *        *
        *  .    +   *   .    .  +     .     *    *
@@ -55,18 +55,19 @@ export default function EasterEggs() {
     return false;
   }
 
-  const canTriggerEgg = () => {
+  // Wrap canTriggerEgg in its own useCallback
+  const canTriggerEgg = useCallback(() => {
     const now = Date.now();
     if (now - eggCooldownTime < 5000) {
       return false;
     }
     return true;
-  };
+  }, [eggCooldownTime]);
 
-  const setEggTriggered = (eggName?: string) => {
+  const setEggTriggered = useCallback((eggName?: string) => {
     setEggCooldownTime(Date.now());
     if (eggName) setActiveEgg(eggName);
-  };
+  }, []);
 
   const skillsAnimation = useCallback(() => {
     if (activeEgg === "tinsley" || !canTriggerEgg()) return;
@@ -116,7 +117,7 @@ export default function EasterEggs() {
       }, 300);
     }, 3000);
     setTimeout(() => setActiveEgg(null), 5000);
-  }, [activeEgg, canTriggerEgg]);
+  }, [activeEgg, canTriggerEgg, setEggTriggered]);
 
   const hackingEffect = useCallback(() => {
     if (activeEgg === "hack" || !canTriggerEgg()) return;
@@ -231,7 +232,7 @@ export default function EasterEggs() {
       }
     };
     document.addEventListener("keydown", handleEscKey);
-  }, [activeEgg, canTriggerEgg]);
+  }, [activeEgg, canTriggerEgg, setEggTriggered]);
 
   const startRetro = useCallback(() => {
     setEggTriggered("retro");
@@ -295,7 +296,7 @@ export default function EasterEggs() {
       "h1, h2, h3, h4, h5, h6, p, span, div, a"
     );
     allText.forEach((el) => el.classList.add("retro-text"));
-  }, []);
+  }, [setEggTriggered]);
 
   const endRetro = useCallback(() => {
     const styleEl = document.getElementById("retro-style");
@@ -390,7 +391,7 @@ export default function EasterEggs() {
         setActiveEgg(null);
       }, 3000);
     }, 5000);
-  }, [activeEgg, canTriggerEgg]);
+  }, [activeEgg, canTriggerEgg, setEggTriggered]);
 
   const thanosSnap = useCallback(() => {
     if (activeEgg === "thanos" || !canTriggerEgg()) return;
@@ -530,7 +531,7 @@ export default function EasterEggs() {
         setActiveEgg(null);
       }, 5000);
     }, 2000);
-  }, [activeEgg, canTriggerEgg]);
+  }, [activeEgg, canTriggerEgg, setEggTriggered]);
 
   // Check typed words
   const checkSecretWords = useCallback(
