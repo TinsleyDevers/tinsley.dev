@@ -57,7 +57,7 @@ interface Cloud {
 }
 
 export default function SpaceBackground() {
-  const starCount = 200;
+  const starCount = 100;
   const crossStarCount = 15;
   const nebulaCount = 4;
   const cloudCount = 6;
