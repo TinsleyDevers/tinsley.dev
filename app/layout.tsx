@@ -20,6 +20,12 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link
+          rel="preload"
+          href="/path/to/critical-image.png"
+          as="image"
+          type="image/png"
+        />
       </head>
       <body className="text-white scroll-smooth">
         <EasterEggs />

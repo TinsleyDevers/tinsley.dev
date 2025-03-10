@@ -69,6 +69,8 @@ export default function SpaceBackground() {
   const [clouds, setClouds] = useState<Cloud[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [isVisible, setIsVisible] = useState(true);
 
   const starColors = useMemo(
     () => ["#ffffff", "#ffe5b4", "#ffd9e8", "#d4f4fa", "#e0c3fc"],
@@ -181,7 +183,46 @@ export default function SpaceBackground() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  // Update the resize handler to use ResizeObserver instead of window events
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
+    const handleResize = () => {
+      const { clientWidth, clientHeight } = container;
+      setDimensions({
+        width: clientWidth,
+        height: clientHeight,
+      });
+    };
+
+    // Modern approach using ResizeObserver (more efficient)
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
+
+    // Initial size
+    handleResize();
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
   const spawnShootingStar = useCallback(() => {
+    if (!isVisible) return;
     const id = Date.now();
     const newStar: ShootingStar = {
       id,
@@ -197,7 +238,7 @@ export default function SpaceBackground() {
         prevStars.filter((star) => star.id !== id)
       );
     }, newStar.duration * 1000 + 200);
-  }, []);
+  }, [isVisible]);
 
   useEffect(() => {
     setTimeout(spawnShootingStar, 2000);

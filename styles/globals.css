@@ -445,6 +445,17 @@ html {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
   }
+
+  /* Specifically target Framer Motion animations */
+  .framer-motion-div {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Prevent parallax effects */
+  [style*="transform:"] {
+    transform: none !important;
+  }
 }
 
 /* Hardware acceleration classes */
@@ -463,4 +474,34 @@ html {
 /* Optimize image rendering */
 img {
   content-visibility: auto;
+}
+
+/* Add a utility class for mobile devices */
+.mobile-no-animation {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+@media (max-width: 768px) {
+  /* Reduce animation work on mobile */
+  .motion-reduce-mobile {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Improve scroll performance */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Apply will-change only for critical animations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  /* Optimize image rendering */
+  img {
+    content-visibility: auto;
+  }
 }
