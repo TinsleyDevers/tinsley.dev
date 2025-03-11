@@ -50,10 +50,7 @@ const TiltCard = ({ children, className = "" }: TiltCardProps) => {
   const [isHovering, setIsHovering] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Use requestAnimationFrame for smoother updates
   const rafRef = useRef<number | null>(null);
-
-  // Track last position for smoother transitions
   const lastPosition = useRef({ x: 0, y: 0 });
 
   // Clean up RAF on unmount
@@ -80,17 +77,17 @@ const TiltCard = ({ children, className = "" }: TiltCardProps) => {
     const normalizedX = mouseX / (rect.width / 2);
     const normalizedY = mouseY / (rect.height / 2);
 
-    // Apply tilt with easing
-    const targetX = -normalizedY * 10; // Invert Y axis for natural tilt
+    // Apply tilt
+    const targetX = -normalizedY * 10;
     const targetY = normalizedX * 10;
 
-    // Use RAF for smoother animation
+    // Use RAF for animation
     if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current);
     }
 
     rafRef.current = requestAnimationFrame(() => {
-      // Apply easing for smoother transitions
+      // Apply easing for transitions
       const newX =
         lastPosition.current.x + (targetX - lastPosition.current.x) * 0.2;
       const newY =
@@ -279,7 +276,7 @@ export default function HomePage() {
       dateWorked: "2025 - Present ",
       description:
         "Maintained internal tools, lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.",
-      skills: ["HTML", "CSS", "JavaScript"],
+      skills: ["HTML", "CSS", "JavaScript", "React"],
       icon: "💻",
     },
   ];
@@ -885,12 +882,12 @@ export default function HomePage() {
                 </h3>
                 <div className="space-y-3">
                   {[
-                    "Node.js",
                     "Python",
                     "Java",
-                    "REST API",
-                    "Express",
-                    "MongoDB",
+                    "C++",
+                    "Lua",
+                    "Node.js",
+                    "React",
                     "SQL",
                     "API Integration",
                   ].map((skill) => (
@@ -926,11 +923,11 @@ export default function HomePage() {
                     "Git",
                     "GitHub",
                     "VS Code",
+                    "Vercel",
                     "Figma",
-                    "Agile/Scrum",
-                    "CI/CD",
-                    "Testing",
-                    "Performance Optimization",
+                    "Adobe Creative Suite",
+                    "Unreal Engine",
+                    "Godot",
                   ].map((skill) => (
                     <div key={skill} className="flex items-center">
                       <span className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mr-3"></span>
@@ -951,22 +948,19 @@ export default function HomePage() {
             </h3>
             <div className="flex flex-wrap justify-center gap-4">
               {[
-                "HTML5",
-                "CSS3",
-                "JavaScript",
-                "TypeScript",
+                "Python",
+                "C++",
+                "Java",
                 "React",
                 "Next.js",
                 "Tailwind CSS",
-                "Node.js",
-                "Python",
-                "Java",
                 "Git",
                 "GitHub",
                 "VS Code",
                 "Figma",
-                "REST API",
-                "MongoDB",
+                "Adobe Creative Suite",
+                "Unreal Engine",
+                "Godot",
               ].map((tech) => (
                 <motion.div
                   key={tech}
