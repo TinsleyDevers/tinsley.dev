@@ -297,7 +297,7 @@ body {
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Account for fixed header */
+  scroll-padding-top: 80px;
 }
 
 /* Image reveal animation */
