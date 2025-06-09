@@ -200,7 +200,7 @@ export default function SpaceBackground() {
   }, []);
 
   useEffect(() => {
-    setTimeout(spawnShootingStar, 2000);
+    const timeoutId = setTimeout(spawnShootingStar, 2000);
     const interval = setInterval(() => {
       if (Math.random() > 0.7) {
         const burstCount = Math.floor(randRange(2, 4));
@@ -211,7 +211,10 @@ export default function SpaceBackground() {
         spawnShootingStar();
       }
     }, 7000);
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(interval);
+    };
   }, [spawnShootingStar]);
 
   return (
