@@ -20,11 +20,12 @@ export default function MainContent({ children }: MainContentProps) {
   const [contentReady, setContentReady] = useState(false);
 
   // Limit loading state changes to improve performance
-  const handleNavigationStart = useCallback(() => {
+  const handleNavigationStart = useCallback(
     throttle(() => {
       setIsLoading(true);
-    }, 200);
-  }, []);
+    }, 200),
+    []
+  );
 
   useEffect(() => {
     window.addEventListener("beforeunload", handleNavigationStart, {
