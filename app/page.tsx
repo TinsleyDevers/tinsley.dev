@@ -285,7 +285,7 @@ export default function HomePage() {
   const educationData = [
     {
       major: "B.S. in Computer Science",
-      school: "Undecided",
+      school: "Baruch College, CUNY",
       graduationDate: "Expected: December 2026 / May 2027",
       icon: "🎓",
     },
