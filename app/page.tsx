@@ -281,7 +281,6 @@ export default function HomePage() {
         "Social Media Strategy",
         "Influencer Marketing",
         "Brand Development",
-        "Audience Engagement"
       ],
       icon: "🚀",
     },
