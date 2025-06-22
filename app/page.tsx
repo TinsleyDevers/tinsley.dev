@@ -273,7 +273,7 @@ export default function HomePage() {
     {
       jobName: "Co-founder & CEO",
       companyName: "ATK.social",
-      dateWorked: "2023 – Present",
+      dateWorked: "2025 – Present",
       description:
         "Founded ATK.social, leading social strategy, influencer partnerships, and brand storytelling.",
       skills: [
