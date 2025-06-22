@@ -271,13 +271,19 @@ export default function HomePage() {
       icon: "📊",
     },
     {
-      jobName: "Web Developer Intern",
-      companyName: "Lorem Ipsum",
-      dateWorked: "2025 - Present ",
+      jobName: "Co-founder & CEO",
+      companyName: "ATK.social",
+      dateWorked: "2023 – Present",
       description:
-        "Maintained internal tools, lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.",
-      skills: ["HTML", "CSS", "JavaScript", "React"],
-      icon: "💻",
+        "Founded ATK.social, leading social strategy, influencer partnerships, and brand storytelling.",
+      skills: [
+        "Content Creation",
+        "Social Media Strategy",
+        "Influencer Marketing",
+        "Brand Development",
+        "Audience Engagement"
+      ],
+      icon: "🚀",
     },
   ];
 
