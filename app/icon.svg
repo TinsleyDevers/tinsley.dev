@@ -1,0 +1,6 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Using Arial/Helvetica style - clean and modern -->
+  <text x="-2" y="24" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="300" fill="#737373">{</text>
+  <text x="15.5" y="26" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#171717">T</text>
+  <text x="34" y="24" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="300" fill="#737373">}</text>
+</svg>
