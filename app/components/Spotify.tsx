@@ -1,7 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Music2, GitCommit, ArrowUpRight, ExternalLink } from "lucide-react";
+import {
+  Music2,
+  GitCommit,
+  ArrowUpRight,
+  ExternalLink,
+  GitBranch,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface Song {
@@ -17,6 +23,7 @@ interface Commit {
   repo: string;
   time: string;
   url: string;
+  sha: string;
 }
 
 // Credentials from .env.local
@@ -139,64 +146,73 @@ export default function Spotify() {
     fetchTopTracks();
   }, []);
 
-  // Fetch GitHub commits
+  // Fetch GitHub commits from recent repos
   useEffect(() => {
     async function fetchCommits() {
       try {
-        const response = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=100`
+        // Fetch recent repos to get their latest commits
+        const reposResponse = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=5`
         );
-        const events = await response.json();
+        const repos = await reposResponse.json();
 
-        if (!Array.isArray(events)) {
+        if (!Array.isArray(repos)) {
           setCommits([]);
           return;
         }
 
-        // Filter for push events and extract commits
-        const pushEvents = events.filter(
-          (event: { type: string }) => event.type === "PushEvent"
-        );
-
         const recentCommits: Commit[] = [];
-        for (const event of pushEvents) {
+
+        // Fetch commits from each recent repo
+        for (const repo of repos) {
           if (recentCommits.length >= 3) break;
 
-          const repoName = event.repo.name.replace(`${GITHUB_USERNAME}/`, "");
-          const eventCommits = event.payload.commits || [];
+          try {
+            const commitsResponse = await fetch(
+              `https://api.github.com/repos/${repo.full_name}/commits?per_page=3`
+            );
+            const repoCommits = await commitsResponse.json();
 
-          for (const commit of eventCommits) {
-            if (recentCommits.length >= 3) break;
+            if (!Array.isArray(repoCommits)) continue;
 
-            // Calculate relative time
-            const commitDate = new Date(event.created_at);
-            const now = new Date();
-            const diffMs = now.getTime() - commitDate.getTime();
-            const diffMins = Math.floor(diffMs / (1000 * 60));
-            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-            const diffDays = Math.floor(diffHours / 24);
+            for (const commit of repoCommits) {
+              if (recentCommits.length >= 3) break;
 
-            let timeAgo = "";
-            if (diffDays > 0) {
-              timeAgo = `${diffDays}d ago`;
-            } else if (diffHours > 0) {
-              timeAgo = `${diffHours}h ago`;
-            } else if (diffMins > 0) {
-              timeAgo = `${diffMins}m ago`;
-            } else {
-              timeAgo = "Just now";
+              // Calculate relative time
+              const commitDate = new Date(commit.commit.author.date);
+              const now = new Date();
+              const diffMs = now.getTime() - commitDate.getTime();
+              const diffMins = Math.floor(diffMs / (1000 * 60));
+              const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+              const diffDays = Math.floor(diffHours / 24);
+
+              let timeAgo = "";
+              if (diffDays > 0) {
+                timeAgo = `${diffDays}d ago`;
+              } else if (diffHours > 0) {
+                timeAgo = `${diffHours}h ago`;
+              } else if (diffMins > 0) {
+                timeAgo = `${diffMins}m ago`;
+              } else {
+                timeAgo = "Just now";
+              }
+
+              recentCommits.push({
+                message: commit.commit.message.split("\n")[0],
+                repo: repo.name,
+                time: timeAgo,
+                url: commit.html_url,
+                sha: commit.sha.substring(0, 7),
+              });
             }
-
-            recentCommits.push({
-              message: commit.message.split("\n")[0],
-              repo: repoName,
-              time: timeAgo,
-              url: `https://github.com/${event.repo.name}/commit/${commit.sha}`,
-            });
+          } catch {
+            // Skip repo if commits can't be fetched
+            continue;
           }
         }
 
-        setCommits(recentCommits);
+        // Sort by date (most recent first) and take top 3
+        setCommits(recentCommits.slice(0, 3));
       } catch (error) {
         console.error("Failed to fetch GitHub commits:", error);
         setCommits([]);
@@ -318,7 +334,7 @@ export default function Spotify() {
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <Music2 size={16} className="text-white/40" />
+                            <Music2 size={16} className="text-white" />
                           </div>
                         )}
                       </div>
@@ -370,7 +386,7 @@ export default function Spotify() {
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-[#e5e5e5]">
                 <div className="flex items-center gap-3">
-                  <GitCommit size={16} className="text-[#737373]" />
+                  <GitBranch size={16} className="text-[#737373]" />
                   <span className="text-sm font-bold tracking-tight">
                     Latest Commits
                   </span>
@@ -399,10 +415,13 @@ export default function Spotify() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: index * 0.1 }}
-                      className="p-4"
+                      className="flex items-center gap-4 p-4"
                     >
-                      <div className="h-4 bg-[#f5f5f5] rounded w-3/4 mb-2 animate-pulse" />
-                      <div className="h-3 bg-[#f5f5f5] rounded w-1/3 animate-pulse" />
+                      <div className="w-12 h-12 bg-[#f5f5f5] animate-pulse" />
+                      <div className="flex-1">
+                        <div className="h-4 bg-[#f5f5f5] rounded w-3/4 mb-2 animate-pulse" />
+                        <div className="h-3 bg-[#f5f5f5] rounded w-1/2 animate-pulse" />
+                      </div>
                     </motion.div>
                   ))
                 ) : commits.length === 0 ? (
@@ -428,17 +447,40 @@ export default function Spotify() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1, duration: 0.3 }}
-                      className="block p-4 group"
+                      className="group flex items-center gap-4 p-4 cursor-pointer"
                     >
-                      <p className="text-sm font-mono truncate text-[#171717] mb-1">
-                        {commit.message}
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] text-[#737373] font-medium">
-                          {commit.repo}
-                        </span>
-                        <span className="text-[#d4d4d4]">•</span>
-                        <span className="text-[10px] text-[#a3a3a3]">
+                      {/* Commit indicator */}
+                      <div className="relative w-12 h-12 flex-shrink-0 bg-[#171717] flex items-center justify-center">
+                        <GitCommit size={18} className="text-white" />
+                        {/* Pulse animation on hover */}
+                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+
+                      {/* Commit info */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <p className="font-medium text-sm truncate">
+                            {commit.message}
+                          </p>
+                          <ExternalLink
+                            size={12}
+                            className="text-[#a3a3a3] flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-xs text-[#737373]">
+                            {commit.repo}
+                          </span>
+                          <span className="text-[#d4d4d4]">•</span>
+                          <span className="text-xs text-[#a3a3a3] font-mono">
+                            {commit.sha}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Time */}
+                      <div className="text-right flex-shrink-0">
+                        <span className="text-xs text-[#a3a3a3]">
                           {commit.time}
                         </span>
                       </div>
