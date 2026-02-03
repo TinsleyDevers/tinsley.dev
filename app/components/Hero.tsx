@@ -42,14 +42,14 @@ export default function Hero() {
               }}
               className="text-xl md:text-2xl leading-relaxed text-[#737373] max-w-xl"
             >
-              Building at the intersection of{" "}
-              <span className="text-[#171717] font-medium">technology</span> and{" "}
+              Lorem ipsum dolor sit amet{" "}
+              <span className="text-[#171717] font-medium">consectetur</span> adipiscing{" "}
               <span className="text-[#171717] font-medium">
-                user experience
+                elit, sed
               </span>
-              . I turn complex problems into{" "}
+              . do eiusmod tempor incididunt{" "}
               <span className="text-[#171717] font-medium">
-                intuitive products
+                ut labore et
               </span>
               .
             </motion.p>
