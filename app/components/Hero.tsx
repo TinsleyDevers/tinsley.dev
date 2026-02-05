@@ -17,7 +17,7 @@ export default function Hero() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <span className="text-xs uppercase tracking-widest text-[#737373]">
-                  Product Manager & Developer
+                  IT Systems & Developer
                 </span>
                 <span className="w-1 h-1 bg-[#d4d4d4] rounded-full" />
                 <span className="text-xs uppercase tracking-widest text-[#737373] flex items-center gap-1">
@@ -113,7 +113,7 @@ export default function Hero() {
                   Focus Areas
                 </p>
                 <div className="flex flex-wrap gap-2 mt-3">
-                  {["Product Strategy", "User Research", "Python", "Data"].map(
+                  {["IT Support", "Continuous Improvement", "Python", "Data"].map(
                     (tag) => (
                       <span
                         key={tag}
