@@ -79,11 +79,11 @@ export default function About() {
                   working solutions
                 </span>
                 . My projects focus on identifying pain points and shipping
-                products that make a real difference.
+                products and solutions that make a real difference.
               </p>
               <p className="text-lg leading-relaxed text-[#737373]">
-                From founding a social startup to managing warehouse operations
-                for Toyota and Mazda, I bring{" "}
+                From IT support to developing products, and to managing warehouse operations,
+                I bring{" "}
                 <span className="text-[#171717] font-medium">
                   cross-functional experience
                 </span>{" "}
