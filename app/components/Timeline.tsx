@@ -20,17 +20,16 @@ const timelineItems: TimelineItem[] = [
     organization: "Baruch College, CUNY",
     location: "New York, NY",
     date: "2025 – Present",
-    description: "Expected: December 2026 / May 2027",
+    description: "Expected: December 2027 / May 2028",
     current: true,
   },
   {
     type: "work",
-    title: "Co-founder & CEO",
-    organization: "ATK.social",
-    date: "2025 – Present",
+    title: "IT Systems Administrator (Student/Program Support)",
+    organization: "Calhoun Community College - Esports Program",
+    date: "2024 - 2025",
     description:
-      "Founded ATK.social, leading social strategy, influencer partnerships, and brand storytelling.",
-    current: true,
+      "Supported Calhoun Esports IT: built/maintained Windows 11 PCs, handled imaging/config/drivers, resolved BSOD/boot/peripheral issues.",
   },
   {
     type: "education",
@@ -91,7 +90,7 @@ export default function Timeline() {
                 Experience & Education
               </h2>
               <p className="text-[#737373] leading-relaxed">
-                From founding startups to managing warehouse operations, my path
+                From IT Support to managing warehouse operations, my path
                 has been defined by solving problems and shipping solutions.
               </p>
             </motion.div>
