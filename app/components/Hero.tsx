@@ -97,10 +97,7 @@ export default function Hero() {
                   rel="noopener noreferrer"
                   className="text-sm text-[#525252] hover:text-[#171717] transition-colors inline-flex items-center gap-1 group"
                 >
-                  Co-founder & CEO at ATK.social
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                    ↗
-                  </span>
+                  Looking for work!
                 </a>
               </div>
               <div>
@@ -144,12 +141,12 @@ export default function Hero() {
               Currently
             </p>
             <a
-              href="https://atk.social"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-[#525252] hover:text-[#171717] transition-colors"
             >
-              CEO @ ATK.social ↗
+              Looking for work!
             </a>
           </div>
           <div className="p-4 border border-[#e5e5e5]">
