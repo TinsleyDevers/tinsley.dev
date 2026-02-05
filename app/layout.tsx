@@ -16,8 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "tinsley.dev",
   description:
-    "Tinsley Devers — Product Manager & Developer building at the intersection of technology and user experience.",
+    "Tinsley Devers — IT Systems & Developer building at the intersection of technology and user experience.",
   keywords: [
+    "IT",
+    "Systems Administrator",
     "product manager",
     "developer",
     "portfolio",
@@ -29,7 +31,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Tinsley Devers" }],
   metadataBase: new URL("https://tinsley.dev"),
   openGraph: {
-    title: "Tinsley Devers — Product Manager & Developer",
+    title: "Tinsley Devers — IT Systems & Developer",
     description:
       "Building at the intersection of technology and user experience. Turning complex problems into intuitive products.",
     url: "https://tinsley.dev",
@@ -39,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tinsley Devers — Product Manager & Developer",
+    title: "Tinsley Devers — IT Systems & Developer",
     description:
       "Building at the intersection of technology and user experience. Turning complex problems into intuitive products.",
   },
