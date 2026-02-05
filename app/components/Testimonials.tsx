@@ -1,4 +1,3 @@
-/* REMOVED FOR NOW! WILL RE ADD WITH REAL DATA AND NOT PLACEHOLDER STUFF LATER
 "use client";
 
 import { motion } from "framer-motion";
@@ -59,7 +58,7 @@ export default function Testimonials() {
     <section className="py-24 px-8 md:px-12 border-t border-[#e5e5e5]">
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Left column - Header *}
+          {/* Left column - Header */}
           <div className="lg:col-span-4">
             <motion.div
               initial={{ opacity: 0 }}
@@ -80,7 +79,7 @@ export default function Testimonials() {
             </motion.div>
           </div>
 
-          {/* Right column - Testimonials *}
+          {/* Right column - Testimonials */}
           <div className="lg:col-span-8">
             <motion.div
               variants={containerVariants}
@@ -125,4 +124,4 @@ export default function Testimonials() {
       </div>
     </section>
   );
-}*/
+}
