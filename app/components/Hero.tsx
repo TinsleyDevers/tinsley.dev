@@ -42,14 +42,14 @@ export default function Hero() {
               }}
               className="text-xl md:text-2xl leading-relaxed text-[#737373] max-w-xl"
             >
-              I identify problems and{" "}
-              <span className="text-[#171717] font-medium">build solutions</span> that actually{" "}
+              Identifying problems and{" "}
+              <span className="text-[#171717] font-medium">building solutions</span> that actually{" "}
               <span className="text-[#171717] font-medium">
                 work for users
               </span>
               , combining technical skills with{" "}
               <span className="text-[#171717] font-medium">
-                real-world impact
+                real-world issues
               </span>
               .
             </motion.p>
