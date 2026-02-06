@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function BackToTop() {
   const [show, setShow] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
 
   useEffect(() => {
@@ -14,13 +15,25 @@ export default function BackToTop() {
     });
   }, [scrollY]);
 
+  // Listen for mobile menu toggle events from Header
+  useEffect(() => {
+    const handleMenuToggle = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      setMenuOpen(detail?.open ?? false);
+    };
+
+    window.addEventListener("mobile-menu-toggle", handleMenuToggle);
+    return () =>
+      window.removeEventListener("mobile-menu-toggle", handleMenuToggle);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <AnimatePresence>
-      {show && (
+      {show && !menuOpen && (
         <motion.button
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
