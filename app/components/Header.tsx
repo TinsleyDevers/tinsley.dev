@@ -16,13 +16,16 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll + notify other components when mobile menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
+    window.dispatchEvent(
+      new CustomEvent("mobile-menu-toggle", { detail: { open: mobileOpen } })
+    );
     return () => {
       document.body.style.overflow = "";
     };
@@ -106,37 +109,37 @@ export default function Header() {
             </a>
           </nav>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileOpen((prev) => !prev)}
-            className="md:hidden relative z-50 w-10 h-10 flex items-center justify-center"
+            className="md:hidden relative z-50 py-1.5 px-3 border border-[#e5e5e5] hover:border-[#171717] transition-colors duration-200"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
-            <div className="w-5 h-4 flex flex-col justify-between">
-              <motion.span
-                animate={
-                  mobileOpen
-                    ? { rotate: 45, y: 7, width: 20 }
-                    : { rotate: 0, y: 0, width: 20 }
-                }
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="block h-px bg-[#171717] origin-center"
-              />
-              <motion.span
-                animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-                transition={{ duration: 0.15 }}
-                className="block h-px bg-[#171717] w-3 ml-auto"
-              />
-              <motion.span
-                animate={
-                  mobileOpen
-                    ? { rotate: -45, y: -7, width: 20 }
-                    : { rotate: 0, y: 0, width: 20 }
-                }
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="block h-px bg-[#171717] origin-center"
-              />
-            </div>
+            <AnimatePresence mode="wait" initial={false}>
+              {mobileOpen ? (
+                <motion.span
+                  key="close"
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.15 }}
+                  className="text-[10px] uppercase tracking-widest font-medium text-[#171717] block"
+                >
+                  Close
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="menu"
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.15 }}
+                  className="text-[10px] uppercase tracking-widest font-medium text-[#737373] block"
+                >
+                  Menu
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       </motion.header>
