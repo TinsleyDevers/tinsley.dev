@@ -18,7 +18,7 @@ export const projects: Project[] = [
     title: "CalhounRMP",
     description:
       "Chrome extension that displays Rate My Professors ratings directly on the Calhoun Community College class registration page, helping students make informed decisions.",
-    year: "2024",
+    year: "2025",
     tags: ["JavaScript", "Chrome Extension", "User Research"],
   },
   {
@@ -34,7 +34,7 @@ export const projects: Project[] = [
     title: "Zone7 Utility",
     description:
       "Minecraft Java plugin built for the Zone7 server (zone7.apexmc.co), enhancing player experience with custom utilities.",
-    year: "2024",
+    year: "2023",
     tags: ["Java", "Plugin Development", "User Experience"],
   },
   {
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     title: "tinsley.dev",
     description:
       "Personal portfolio website showcasing projects and skills with a focus on clean design and smooth user experience.",
-    year: "2024",
+    year: "2026",
     tags: ["Next.js", "TypeScript", "Framer Motion"],
   },
 ];
