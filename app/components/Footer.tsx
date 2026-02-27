@@ -11,7 +11,7 @@ const links = [
   },
   {
     name: "LinkedIn",
-    href: "https://www.linkedin.com/in/tinsley-devers-40820a1b9/",
+    href: "https://www.linkedin.com/in/tinsley-devers/",
     icon: Linkedin,
   },
   {
@@ -55,10 +55,10 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-xs uppercase tracking-widest text-[#737373] mb-3 block">
+              <span className="text-xs uppercase tracking-widest text-[#737373] mb-1 block">
                 Connect
               </span>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
                 Let&apos;s build
                 <br />
                 something great

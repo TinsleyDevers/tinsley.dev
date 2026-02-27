@@ -92,10 +92,7 @@ export default function Hero() {
                   Currently
                 </p>
                 <a
-                  href="https://atk.social"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-[#525252] hover:text-[#171717] transition-colors inline-flex items-center gap-1 group"
+                  className="text-sm text-[#525252] inline-flex items-center gap-1 group"
                 >
                   Looking for work!
                 </a>
@@ -141,10 +138,7 @@ export default function Hero() {
               Currently
             </p>
             <a
-              href=""
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-[#525252] hover:text-[#171717] transition-colors"
+              className="text-sm text-[#525252]"
             >
               Looking for work!
             </a>

@@ -3,15 +3,30 @@
 import { motion } from "framer-motion";
 
 const skills = {
-  Product: [
-    "User Research",
-    "Problem Definition",
-    "Roadmapping",
-    "Prioritization",
+  "Systems & Infrastructure": [
+    "Windows Server",
+    "Active Directory",
+    "Network Administration",
+    "System Deployment",
   ],
-  Technical: ["Python", "JavaScript", "SQL", "Data Analysis"],
-  Design: ["Figma", "Wireframing", "User Flows", "Prototyping"],
-  Tools: ["Git", "Jira", "Notion", "Excel"],
+  "Development & Scripting": [
+    "Python",
+    "JavaScript",
+    "PowerShell",
+    "SQL",
+  ],
+  "Support & Operations": [
+    "Help Desk",
+    "Troubleshooting",
+    "Documentation",
+    "User Training",
+  ],
+  "Tools & Platforms": [
+    "Git",
+    "Azure/M365",
+    "Ticketing Systems",
+    "Remote Support",
+  ],
 };
 
 const containerVariants = {

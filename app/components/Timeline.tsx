@@ -19,24 +19,24 @@ const timelineItems: TimelineItem[] = [
     title: "B.B.A. in Computer Information Systems",
     organization: "Baruch College, CUNY",
     location: "New York, NY",
-    date: "2025 – Present",
+    date: "2026 – Present",
     description: "Expected: December 2027 / May 2028",
     current: true,
   },
   {
     type: "work",
-    title: "IT Systems Administrator (Student/Program Support)",
+    title: "IT Systems Administrator",
     organization: "Calhoun Community College - Esports Program",
     date: "2024 - 2025",
     description:
-      "Supported Calhoun Esports IT: built/maintained Windows 11 PCs, handled imaging/config/drivers, resolved BSOD/boot/peripheral issues.",
+      "Supported Calhoun Esports IT: built/maintained Windows 11 PCs, scheduled matches, and resolved BSOD/boot/peripheral issues.",
   },
   {
     type: "education",
     title: "A.S. in Computer Science",
     organization: "Calhoun Community College",
     date: "Graduated: May 2025",
-    description: "Associate degree in Computer Science.",
+    description: "Cum Laude, Choir Bass Vocalist, Varsity Esports Player",
   },
   {
     type: "work",

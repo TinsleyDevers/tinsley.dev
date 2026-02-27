@@ -53,7 +53,7 @@ export default async function Image() {
               textTransform: "uppercase",
             }}
           >
-            Product Manager & Developer
+            IT Systems & Developer
           </div>
 
           <div
