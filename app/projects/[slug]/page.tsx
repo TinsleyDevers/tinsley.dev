@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { notFound, useParams } from "next/navigation";
 import { projects } from "../../components/Projects";
-import ScrollProgress from "../../components/ScrollProgress";
 import BackToTop from "../../components/BackToTop";
 
 interface CaseStudy {
@@ -397,7 +396,6 @@ export default function ProjectPage() {
 
   return (
     <>
-      <ScrollProgress />
       <BackToTop />
 
       <motion.header

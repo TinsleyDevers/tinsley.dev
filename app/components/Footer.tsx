@@ -64,8 +64,8 @@ export default function Footer() {
                 something great
               </h2>
               <p className="text-lg text-[#737373] max-w-md">
-                Looking for opportunities. Let&apos;s chat about how we can work
-                together.
+                Open to new opportunities across IT, systems, and tech.
+                Let&apos;s chat about how I can help your team.
               </p>
             </motion.div>
           </div>

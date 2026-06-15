@@ -94,7 +94,7 @@ export default function Hero() {
                 <a
                   className="text-sm text-[#525252] inline-flex items-center gap-1 group"
                 >
-                  Looking for work!
+                  Open to new opportunities
                 </a>
               </div>
               <div>
@@ -110,7 +110,7 @@ export default function Hero() {
                   Focus Areas
                 </p>
                 <div className="flex flex-wrap gap-2 mt-3">
-                  {["IT Support", "Continuous Improvement", "Python", "Data"].map(
+                  {["IT Support", "Endpoint Mgmt", "PowerShell", "Networking"].map(
                     (tag) => (
                       <span
                         key={tag}
@@ -140,7 +140,7 @@ export default function Hero() {
             <a
               className="text-sm text-[#525252]"
             >
-              Looking for work!
+              Open to new roles
             </a>
           </div>
           <div className="p-4 border border-[#e5e5e5]">

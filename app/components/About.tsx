@@ -3,29 +3,29 @@
 import { motion } from "framer-motion";
 
 const skills = {
-  "Systems & Infrastructure": [
-    "Windows Server",
+  "Endpoint & MDM": [
+    "Microsoft Intune",
+    "SCCM / MECM",
+    "Windows Autopilot",
+    "Group Policy",
+  ],
+  "Identity & Access": [
     "Active Directory",
-    "Network Administration",
-    "System Deployment",
+    "Provisioning",
+    "RBAC",
+    "MFA / SSO",
   ],
-  "Development & Scripting": [
+  "Scripting & Automation": [
     "Python",
-    "JavaScript",
     "PowerShell",
-    "SQL",
-  ],
-  "Support & Operations": [
-    "Help Desk",
-    "Troubleshooting",
-    "Documentation",
-    "User Training",
-  ],
-  "Tools & Platforms": [
+    "Bash",
     "Git",
-    "Azure/M365",
-    "Ticketing Systems",
-    "Remote Support",
+  ],
+  "Support & Ops": [
+    "Tier 1/2 Support",
+    "Networking",
+    "Documentation",
+    "Live Events",
   ],
 };
 

@@ -13,38 +13,54 @@ interface TimelineItem {
   current?: boolean;
 }
 
-const timelineItems: TimelineItem[] = [
+const workItems: TimelineItem[] = [
   {
-    type: "education",
-    title: "B.B.A. in Computer Information Systems",
-    organization: "Baruch College, CUNY",
+    type: "work",
+    title: "IT Chair",
+    organization: "Baruch Esports Association — Baruch College",
     location: "New York, NY",
-    date: "2026 – Present",
-    description: "Expected: December 2027 / May 2028",
+    date: "Jan 2026 - Present",
+    description:
+      "Lead IT for a 100+ member organization: manage and schedule a team across live esports events, provide Tier 1/2 support for Windows workstations, networking, A/V, and streaming gear, and administer the community's Discord roles and access.",
     current: true,
   },
   {
     type: "work",
-    title: "IT Systems Administrator",
-    organization: "Calhoun Community College - Esports Program",
-    date: "2024 - 2025",
+    title: "Associate Systems Administrator",
+    organization: "Calhoun Community College — Esports",
+    location: "Huntsville, AL",
+    date: "Jan 2024 - May 2025",
     description:
-      "Supported Calhoun Esports IT: built/maintained Windows 11 PCs, scheduled matches, and resolved BSOD/boot/peripheral issues.",
+      "Built, deployed, and validated 26 Windows 11 workstations end-to-end (imaging, driver packaging, SCCM distribution). Administered Active Directory, resolved BSOD/boot/hardware faults, and authored SOPs that reduced repeat incidents.",
+  },
+  {
+    type: "work",
+    title: "Operations Supervisor",
+    organization: "Carter Express",
+    location: "Madison, AL",
+    date: "Mar 2022 - Jun 2023",
+    description:
+      "Supervised a 40-person warehouse team across supply chain operations; tracked KPIs and implemented process improvements that increased retention and attendance.",
+  },
+];
+
+const educationItems: TimelineItem[] = [
+  {
+    type: "education",
+    title: "B.B.A. in Computer Information Systems",
+    organization: "Baruch College (CUNY), Zicklin School of Business",
+    location: "New York, NY",
+    date: "Jan 2026 - Present",
+    description: "Computer Information Systems.",
+    current: true,
   },
   {
     type: "education",
     title: "A.S. in Computer Science",
     organization: "Calhoun Community College",
-    date: "Graduated: May 2025",
-    description: "Cum Laude, Choir Bass Vocalist, Varsity Esports Player",
-  },
-  {
-    type: "work",
-    title: "Operations Supervisor",
-    organization: "Carter Express, Inc",
-    date: "Mar 2022 – Jun 2023",
-    description:
-      "Led a team of 40+ warehouse operators handling Toyota and Mazda distribution. Streamlined logistics processes, managed abnormal systems, and coordinated cross-functional teams.",
+    location: "Huntsville, AL",
+    date: "Jan 2024 - May 2025",
+    description: "Cum Laude, Choir Bass Vocalist, Varsity Esports Player.",
   },
 ];
 
@@ -66,6 +82,110 @@ const itemVariants = {
     transition: { duration: 0.5 },
   },
 };
+
+function TimelineCard({ item, index }: { item: TimelineItem; index: number }) {
+  return (
+    <motion.div
+      key={`${item.title}-${index}`}
+      variants={itemVariants}
+      className="relative grid grid-cols-1 md:grid-cols-[24px_1fr] gap-4 md:gap-6"
+    >
+      {/* Icon */}
+      <div className="hidden md:flex items-start justify-center pt-1">
+        <div
+          className={`w-6 h-6 rounded-full flex items-center justify-center ${
+            item.current
+              ? "bg-[#171717] text-white"
+              : "bg-[#fafafa] border border-[#e5e5e5] text-[#737373]"
+          }`}
+        >
+          {item.type === "work" ? (
+            <Briefcase size={12} />
+          ) : (
+            <GraduationCap size={12} />
+          )}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div
+        className={`p-5 border transition-colors ${
+          item.current
+            ? "bg-white border-[#171717]"
+            : "bg-white border-[#e5e5e5] hover:border-[#d4d4d4]"
+        }`}
+      >
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-2">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="md:hidden">
+                {item.type === "work" ? (
+                  <Briefcase size={14} className="text-[#737373]" />
+                ) : (
+                  <GraduationCap size={14} className="text-[#737373]" />
+                )}
+              </span>
+              {item.current && (
+                <span className="text-[10px] px-2 py-0.5 bg-[#171717] text-white font-medium">
+                  CURRENT
+                </span>
+              )}
+            </div>
+            <h3 className="font-bold tracking-tight">{item.title}</h3>
+            <p className="text-sm text-[#737373]">
+              {item.organization}
+              {item.location && ` · ${item.location}`}
+            </p>
+          </div>
+          <span className="text-xs text-[#737373] whitespace-nowrap">
+            {item.date}
+          </span>
+        </div>
+        <p className="text-sm text-[#525252] leading-relaxed">
+          {item.description}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+function TimelineTrack({
+  label,
+  icon,
+  items,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  items: TimelineItem[];
+}) {
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      {/* Track label */}
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-[#737373]">{icon}</span>
+        <span className="text-[10px] uppercase tracking-widest font-medium text-[#525252]">
+          {label}
+        </span>
+        <span className="flex-1 h-px bg-[#e5e5e5]" />
+      </div>
+
+      {/* Track items + connecting line */}
+      <div className="relative">
+        <div className="absolute left-[11px] top-3 bottom-3 w-px bg-[#e5e5e5] hidden md:block" />
+        <div className="space-y-6">
+          {items.map((item, index) => (
+            <TimelineCard key={`${item.title}-${index}`} item={item} index={index} />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Timeline() {
   return (
@@ -96,95 +216,18 @@ export default function Timeline() {
             </motion.div>
           </div>
 
-          {/* Right column - Timeline */}
-          <div className="lg:col-span-8">
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="relative"
-            >
-              {/* Timeline line */}
-              <div className="absolute left-[11px] top-3 bottom-3 w-px bg-[#e5e5e5] hidden md:block" />
-
-              <div className="space-y-6">
-                {timelineItems.map((item, index) => (
-                  <motion.div
-                    key={`${item.title}-${index}`}
-                    variants={itemVariants}
-                    className="relative grid grid-cols-1 md:grid-cols-[24px_1fr] gap-4 md:gap-6"
-                  >
-                    {/* Icon */}
-                    <div className="hidden md:flex items-start justify-center pt-1">
-                      <div
-                        className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                          item.current
-                            ? "bg-[#171717] text-white"
-                            : "bg-white border border-[#e5e5e5] text-[#737373]"
-                        }`}
-                      >
-                        {item.type === "work" ? (
-                          <Briefcase size={12} />
-                        ) : (
-                          <GraduationCap size={12} />
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div
-                      className={`p-5 border transition-colors ${
-                        item.current
-                          ? "bg-white border-[#171717]"
-                          : "bg-white border-[#e5e5e5] hover:border-[#d4d4d4]"
-                      }`}
-                    >
-                      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-2">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="md:hidden">
-                              {item.type === "work" ? (
-                                <Briefcase
-                                  size={14}
-                                  className="text-[#737373]"
-                                />
-                              ) : (
-                                <GraduationCap
-                                  size={14}
-                                  className="text-[#737373]"
-                                />
-                              )}
-                            </span>
-                            <span className="text-[10px] uppercase tracking-wider font-medium text-[#737373]">
-                              {item.type === "education" ? "Education" : "Work"}
-                            </span>
-                            {item.current && (
-                              <span className="text-[10px] px-2 py-0.5 bg-[#171717] text-white font-medium">
-                                CURRENT
-                              </span>
-                            )}
-                          </div>
-                          <h3 className="font-bold tracking-tight">
-                            {item.title}
-                          </h3>
-                          <p className="text-sm text-[#737373]">
-                            {item.organization}
-                            {item.location && ` · ${item.location}`}
-                          </p>
-                        </div>
-                        <span className="text-xs text-[#737373] whitespace-nowrap">
-                          {item.date}
-                        </span>
-                      </div>
-                      <p className="text-sm text-[#525252] leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+          {/* Right column - Separate Work & Education tracks */}
+          <div className="lg:col-span-8 space-y-14">
+            <TimelineTrack
+              label="Experience"
+              icon={<Briefcase size={14} />}
+              items={workItems}
+            />
+            <TimelineTrack
+              label="Education"
+              icon={<GraduationCap size={14} />}
+              items={educationItems}
+            />
           </div>
         </div>
       </div>
