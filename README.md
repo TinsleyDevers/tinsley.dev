@@ -1,8 +1,8 @@
 # tinsley.dev
 
-My personal portfolio website built with Next.js 14, TypeScript, and Tailwind CSS. A minimalist, Swiss-style design with smooth animations and live data integrations.
+My personal portfolio website built with Next.js 16, TypeScript, and Tailwind CSS. A minimalist, Swiss-style design with smooth animations and live data integrations.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)
 
@@ -10,7 +10,7 @@ My personal portfolio website built with Next.js 14, TypeScript, and Tailwind CS
 
 - **Minimalist Design** — Clean, monochrome aesthetic with intentional typography and spacing
 - **Smooth Animations** — Framer Motion powered transitions and micro-interactions
-- **Live Data** — Real-time Last.fm top tracks and GitHub commit activity
+- **Live Data** — Last.fm top tracks and GitHub commit activity, fetched server-side and refreshed every 30 minutes
 - **Responsive** — Optimized for all screen sizes
 - **Scroll Progress** — Visual indicator showing page scroll position
 - **Section Navigation** — Header highlights current section while scrolling
@@ -18,7 +18,7 @@ My personal portfolio website built with Next.js 14, TypeScript, and Tailwind CS
 
 ## 🛠️ Tech Stack
 
-- **Framework:** Next.js 14 (App Router)
+- **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 - **Animations:** Framer Motion
@@ -52,12 +52,14 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ### Environment Variables
 
-Create a `.env.local` file in the root directory:
+Create a `.env.local` file in the root directory. These are read server-side only, so the Last.fm API key never ships to the browser:
 
 ```env
-NEXT_PUBLIC_LASTFM_API_KEY=your_lastfm_api_key
-NEXT_PUBLIC_LASTFM_USERNAME=your_lastfm_username
-NEXT_PUBLIC_GITHUB_USERNAME=your_github_username
+LASTFM_API_KEY=your_lastfm_api_key
+LASTFM_USERNAME=your_lastfm_username
+GITHUB_USERNAME=your_github_username
+# Optional: raises the GitHub API rate limit
+GITHUB_TOKEN=your_github_token
 ```
 
 ## 📁 Project Structure
@@ -69,14 +71,18 @@ app/
 │   ├── Hero.tsx          # Landing section with bio
 │   ├── Projects.tsx      # Project showcase with visual previews
 │   ├── Timeline.tsx      # Education & work experience
-│   ├── Spotify.tsx       # Last.fm + GitHub activity feed
+│   ├── LiveActivity.tsx  # Last.fm + GitHub activity feed (presentational)
 │   ├── About.tsx         # Bio and skills grid
 │   ├── Footer.tsx        # Contact links
-│   ├── ScrollProgress.tsx
+│   ├── MotionProvider.tsx # LazyMotion + reduced-motion config
 │   └── BackToTop.tsx
+├── lib/
+│   ├── activity.ts       # Server-side Last.fm + GitHub fetchers
+│   └── projects.ts       # Project data (single source of truth)
 ├── projects/
 │   └── [slug]/
-│       └── page.tsx      # Dynamic project detail pages
+│       ├── page.tsx      # Static project detail pages + per-page metadata
+│       └── ProjectDetail.tsx
 ├── globals.css
 ├── layout.tsx
 ├── page.tsx

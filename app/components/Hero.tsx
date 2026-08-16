@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowDown, MapPin } from "lucide-react";
 
 export default function Hero() {
@@ -10,7 +10,7 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left side - Main content */}
           <div className="lg:col-span-7">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -30,9 +30,9 @@ export default function Hero() {
                 <br />
                 Devers
               </h1>
-            </motion.div>
+            </m.div>
 
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -52,9 +52,9 @@ export default function Hero() {
                 real-world issues
               </span>
               .
-            </motion.p>
+            </m.p>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -76,11 +76,11 @@ export default function Hero() {
               >
                 Get in Touch
               </a>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right side - Stats/Info (Desktop) */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -92,7 +92,8 @@ export default function Hero() {
                   Currently
                 </p>
                 <a
-                  className="text-sm text-[#525252] inline-flex items-center gap-1 group"
+                  href="#connect"
+                  className="text-sm text-[#525252] inline-flex items-center gap-1 hover:text-[#171717] transition-colors"
                 >
                   Open to new opportunities
                 </a>
@@ -123,11 +124,11 @@ export default function Hero() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Mobile Stats */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -137,11 +138,7 @@ export default function Hero() {
             <p className="text-[10px] uppercase tracking-widest text-[#a3a3a3] mb-1">
               Currently
             </p>
-            <a
-              className="text-sm text-[#525252]"
-            >
-              Open to new roles
-            </a>
+            <p className="text-sm text-[#525252]">Open to new roles</p>
           </div>
           <div className="p-4 border border-[#e5e5e5]">
             <p className="text-[10px] uppercase tracking-widest text-[#a3a3a3] mb-1">
@@ -149,9 +146,9 @@ export default function Hero() {
             </p>
             <p className="text-sm text-[#525252]">Baruch College</p>
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}

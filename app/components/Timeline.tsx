@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Briefcase, GraduationCap } from "lucide-react";
 
 interface TimelineItem {
@@ -85,7 +85,7 @@ const itemVariants = {
 
 function TimelineCard({ item, index }: { item: TimelineItem; index: number }) {
   return (
-    <motion.div
+    <m.div
       key={`${item.title}-${index}`}
       variants={itemVariants}
       className="relative grid grid-cols-1 md:grid-cols-[24px_1fr] gap-4 md:gap-6"
@@ -145,7 +145,7 @@ function TimelineCard({ item, index }: { item: TimelineItem; index: number }) {
           {item.description}
         </p>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -159,7 +159,7 @@ function TimelineTrack({
   items: TimelineItem[];
 }) {
   return (
-    <motion.div
+    <m.div
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -183,7 +183,7 @@ function TimelineTrack({
           ))}
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -197,7 +197,7 @@ export default function Timeline() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Left column - Header */}
           <div className="lg:col-span-4">
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -213,7 +213,7 @@ export default function Timeline() {
                 From IT Support to managing warehouse operations, my path
                 has been defined by solving problems and shipping solutions.
               </p>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right column - Separate Work & Education tracks */}

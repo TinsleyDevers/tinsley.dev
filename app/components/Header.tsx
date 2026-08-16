@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState, useCallback } from "react";
 import { FileText } from "lucide-react";
@@ -31,8 +31,21 @@ export default function Header() {
     };
   }, [mobileOpen]);
 
+  // Close the mobile menu with Escape
   useEffect(() => {
-    const handleScroll = () => {
+    if (!mobileOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
       const sections = navItems.map((item) => item.href.replace("#", ""));
       const scrollPosition = window.scrollY + 100;
 
@@ -54,8 +67,15 @@ export default function Header() {
       setActiveSection("");
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    update();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -65,7 +85,7 @@ export default function Header() {
 
   return (
     <>
-      <motion.header
+      <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -88,6 +108,7 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  aria-current={isActive ? "true" : undefined}
                   className={`text-sm px-3 py-1.5 transition-all duration-200 ${
                     isActive
                       ? "text-[#171717] bg-[#f5f5f5] font-medium"
@@ -114,10 +135,12 @@ export default function Header() {
             onClick={() => setMobileOpen((prev) => !prev)}
             className="md:hidden relative z-50 py-1.5 px-3 border border-[#e5e5e5] hover:border-[#171717] transition-colors duration-200"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileOpen ? (
-                <motion.span
+                <m.span
                   key="close"
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -126,9 +149,9 @@ export default function Header() {
                   className="text-[10px] uppercase tracking-widest font-medium text-[#171717] block"
                 >
                   Close
-                </motion.span>
+                </m.span>
               ) : (
-                <motion.span
+                <m.span
                   key="menu"
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -137,17 +160,18 @@ export default function Header() {
                   className="text-[10px] uppercase tracking-widest font-medium text-[#737373] block"
                 >
                   Menu
-                </motion.span>
+                </m.span>
               )}
             </AnimatePresence>
           </button>
         </div>
-      </motion.header>
+      </m.header>
 
       {/* Mobile menu overlay */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
+          <m.div
+            id="mobile-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -156,7 +180,7 @@ export default function Header() {
           >
             {/* Content area — offset below header */}
             <div className="flex-1 flex flex-col justify-center px-8 pb-16">
-              <motion.nav
+              <m.nav
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
@@ -173,7 +197,7 @@ export default function Header() {
                   const sectionId = item.href.replace("#", "");
                   const isActive = activeSection === sectionId;
                   return (
-                    <motion.div
+                    <m.div
                       key={item.name}
                       variants={{
                         hidden: { opacity: 0, x: -20 },
@@ -190,6 +214,7 @@ export default function Header() {
                       <Link
                         href={item.href}
                         onClick={handleNavClick}
+                        aria-current={isActive ? "true" : undefined}
                         className={`block py-3 border-b border-[#e5e5e5] transition-colors duration-200 ${
                           isActive
                             ? "text-[#171717]"
@@ -207,12 +232,12 @@ export default function Header() {
                           )}
                         </span>
                       </Link>
-                    </motion.div>
+                    </m.div>
                   );
                 })}
 
                 {/* Resume link */}
-                <motion.div
+                <m.div
                   variants={{
                     hidden: { opacity: 0, x: -20 },
                     visible: {
@@ -236,12 +261,12 @@ export default function Header() {
                     <FileText size={14} />
                     Resume
                   </a>
-                </motion.div>
-              </motion.nav>
+                </m.div>
+              </m.nav>
             </div>
 
             {/* Bottom info */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.4 }}
@@ -253,8 +278,8 @@ export default function Header() {
               <span className="text-xs text-[#a3a3a3]">
                 contact@tinsley.dev
               </span>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

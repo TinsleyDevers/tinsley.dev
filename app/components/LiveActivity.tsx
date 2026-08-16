@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import Image from "next/image";
 import {
   Music2,
   GitCommit,
@@ -8,34 +9,15 @@ import {
   ExternalLink,
   GitBranch,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import type { Song, Commit } from "../lib/activity";
 
-interface Song {
-  title: string;
-  artist: string;
-  playcount: string;
-  url: string;
-  image: string;
-}
-
-interface Commit {
-  message: string;
-  repo: string;
-  time: string;
-  url: string;
-  sha: string;
-}
-
-// Credentials from .env.local
-const LASTFM_API_KEY = process.env.NEXT_PUBLIC_LASTFM_API_KEY!;
-const LASTFM_USERNAME = process.env.NEXT_PUBLIC_LASTFM_USERNAME!;
-const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USERNAME!;
+const GITHUB_URL = "https://github.com/tinsleydevers";
 
 function SoundBars() {
   return (
-    <div className="flex items-end gap-[2px] h-3">
+    <div className="flex items-end gap-[2px] h-3" aria-hidden="true">
       {[0, 1, 2, 3].map((i) => (
-        <motion.div
+        <m.div
           key={i}
           animate={{
             height: ["40%", "100%", "60%", "90%", "40%"],
@@ -53,190 +35,37 @@ function SoundBars() {
   );
 }
 
-// Helper to fetch album image from Last.fm
-async function fetchAlbumImage(artist: string, track: string): Promise<string> {
-  try {
-    const response = await fetch(
-      `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${LASTFM_API_KEY}&artist=${encodeURIComponent(
-        artist
-      )}&track=${encodeURIComponent(track)}&format=json`
-    );
-    const data = await response.json();
-
-    // Try to get album image
-    if (data.track?.album?.image) {
-      const images = data.track.album.image;
-      const large = images.find(
-        (img: { size: string; "#text": string }) => img.size === "large"
-      );
-      const medium = images.find(
-        (img: { size: string; "#text": string }) => img.size === "medium"
-      );
-      const extralarge = images.find(
-        (img: { size: string; "#text": string }) => img.size === "extralarge"
-      );
-
-      const imageUrl =
-        extralarge?.["#text"] || large?.["#text"] || medium?.["#text"] || "";
-      if (imageUrl && !imageUrl.includes("2a96cbd8b46e442fc41c2b86b821562f")) {
-        return imageUrl;
-      }
-    }
-    return "";
-  } catch {
-    return "";
-  }
+function timeAgo(iso: string): string {
+  const diffMs = Date.now() - new Date(iso).getTime();
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays > 0) return `${diffDays}d ago`;
+  if (diffHours > 0) return `${diffHours}h ago`;
+  if (diffMins > 0) return `${diffMins}m ago`;
+  return "Just now";
 }
 
-export default function Spotify() {
-  const [songs, setSongs] = useState<Song[]>([]);
-  const [commits, setCommits] = useState<Commit[]>([]);
-  const [loadingSongs, setLoadingSongs] = useState(true);
-  const [loadingCommits, setLoadingCommits] = useState(true);
+// Fallback background when a track has no album art
+const getColor = (index: number) => {
+  const colors = ["#171717", "#404040", "#525252"];
+  return colors[index % colors.length];
+};
 
-  // Fetch Last.fm top tracks
-  useEffect(() => {
-    async function fetchTopTracks() {
-      try {
-        const response = await fetch(
-          `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USERNAME}&api_key=${LASTFM_API_KEY}&period=1month&limit=3&format=json`
-        );
-        const data = await response.json();
-
-        if (data.toptracks?.track && data.toptracks.track.length > 0) {
-          // map basic track info
-          const basicTracks = data.toptracks.track.map(
-            (track: {
-              name: string;
-              artist: { name: string };
-              playcount: string;
-              url: string;
-            }) => ({
-              title: track.name,
-              artist: track.artist.name,
-              playcount: track.playcount,
-              url: track.url,
-              image: "",
-            })
-          );
-
-          // fetch album images for each track
-          const tracksWithImages = await Promise.all(
-            basicTracks.map(async (track: Song) => {
-              const albumImage = await fetchAlbumImage(
-                track.artist,
-                track.title
-              );
-              return { ...track, image: albumImage };
-            })
-          );
-
-          setSongs(tracksWithImages);
-        } else {
-          setSongs([]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch Last.fm tracks:", error);
-        setSongs([]);
-      } finally {
-        setLoadingSongs(false);
-      }
-    }
-
-    fetchTopTracks();
-  }, []);
-
-  // Fetch GitHub commits from recent repos
-  useEffect(() => {
-    async function fetchCommits() {
-      try {
-        // Fetch recent repos to get their latest commits
-        const reposResponse = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=5`
-        );
-        const repos = await reposResponse.json();
-
-        if (!Array.isArray(repos)) {
-          setCommits([]);
-          return;
-        }
-
-        const recentCommits: Commit[] = [];
-
-        // Fetch commits from each recent repo
-        for (const repo of repos) {
-          if (recentCommits.length >= 3) break;
-
-          try {
-            const commitsResponse = await fetch(
-              `https://api.github.com/repos/${repo.full_name}/commits?per_page=3`
-            );
-            const repoCommits = await commitsResponse.json();
-
-            if (!Array.isArray(repoCommits)) continue;
-
-            for (const commit of repoCommits) {
-              if (recentCommits.length >= 3) break;
-
-              // Calculate relative time
-              const commitDate = new Date(commit.commit.author.date);
-              const now = new Date();
-              const diffMs = now.getTime() - commitDate.getTime();
-              const diffMins = Math.floor(diffMs / (1000 * 60));
-              const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-              const diffDays = Math.floor(diffHours / 24);
-
-              let timeAgo = "";
-              if (diffDays > 0) {
-                timeAgo = `${diffDays}d ago`;
-              } else if (diffHours > 0) {
-                timeAgo = `${diffHours}h ago`;
-              } else if (diffMins > 0) {
-                timeAgo = `${diffMins}m ago`;
-              } else {
-                timeAgo = "Just now";
-              }
-
-              recentCommits.push({
-                message: commit.commit.message.split("\n")[0],
-                repo: repo.name,
-                time: timeAgo,
-                url: commit.html_url,
-                sha: commit.sha.substring(0, 7),
-              });
-            }
-          } catch {
-            // Skip repo if commits can't be fetched
-            continue;
-          }
-        }
-
-        // Sort by date (most recent first) and take top 3
-        setCommits(recentCommits.slice(0, 3));
-      } catch (error) {
-        console.error("Failed to fetch GitHub commits:", error);
-        setCommits([]);
-      } finally {
-        setLoadingCommits(false);
-      }
-    }
-
-    fetchCommits();
-  }, []);
-
-  // Generate a color based on song index for fallback
-  const getColor = (index: number) => {
-    const colors = ["#171717", "#404040", "#525252"];
-    return colors[index % colors.length];
-  };
-
+export default function LiveActivity({
+  songs,
+  commits,
+}: {
+  songs: Song[];
+  commits: Commit[];
+}) {
   return (
     <section className="py-24 px-8 md:px-12">
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Left column - Header */}
           <div className="lg:col-span-4">
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -248,16 +77,16 @@ export default function Spotify() {
                 What I&apos;m Up To
               </h2>
               <p className="text-[#737373] leading-relaxed">
-                Live data from Spotify and GitHub showing what I&apos;m
-                listening to and building.
+                What I&apos;ve been listening to and building lately, pulled
+                from Last.fm and GitHub.
               </p>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right column - Cards */}
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Last.fm Section */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -277,25 +106,7 @@ export default function Spotify() {
 
               {/* Songs list */}
               <div className="divide-y divide-[#e5e5e5] flex-1">
-                {loadingSongs ? (
-                  // Loading skeleton with staggered animation
-                  Array.from({ length: 3 }).map((_, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-4 p-4"
-                    >
-                      <div className="w-12 h-12 bg-[#f5f5f5] animate-pulse" />
-                      <div className="flex-1">
-                        <div className="h-4 bg-[#f5f5f5] rounded w-3/4 mb-2 animate-pulse" />
-                        <div className="h-3 bg-[#f5f5f5] rounded w-1/2 animate-pulse" />
-                      </div>
-                    </motion.div>
-                  ))
-                ) : songs.length === 0 ? (
-                  // Empty state
+                {songs.length === 0 ? (
                   <div className="flex items-center justify-center h-full min-h-[180px]">
                     <div className="text-center">
                       <Music2
@@ -309,7 +120,7 @@ export default function Spotify() {
                   </div>
                 ) : (
                   songs.map((song, index) => (
-                    <motion.a
+                    <m.a
                       key={`${song.title}-${index}`}
                       href={`https://open.spotify.com/search/${encodeURIComponent(
                         song.title + " " + song.artist
@@ -317,7 +128,8 @@ export default function Spotify() {
                       target="_blank"
                       rel="noopener noreferrer"
                       initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
                       transition={{ delay: index * 0.1, duration: 0.3 }}
                       className="group flex items-center gap-4 p-4 cursor-pointer"
                     >
@@ -327,9 +139,11 @@ export default function Spotify() {
                         style={{ backgroundColor: getColor(index) }}
                       >
                         {song.image ? (
-                          <img
+                          <Image
                             src={song.image}
                             alt={`${song.title} by ${song.artist}`}
+                            width={48}
+                            height={48}
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -362,7 +176,7 @@ export default function Spotify() {
                         </span>
                         <p className="text-[9px] text-[#d4d4d4]">plays</p>
                       </div>
-                    </motion.a>
+                    </m.a>
                   ))
                 )}
               </div>
@@ -373,10 +187,10 @@ export default function Spotify() {
                   Last 30 days • via Last.fm
                 </p>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* GitHub Commits Section */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -392,7 +206,7 @@ export default function Spotify() {
                   </span>
                 </div>
                 <a
-                  href={`https://github.com/${GITHUB_USERNAME}`}
+                  href={GITHUB_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center gap-1 text-xs text-[#737373] hover:text-[#171717] transition-colors"
@@ -407,25 +221,7 @@ export default function Spotify() {
 
               {/* Commits list */}
               <div className="divide-y divide-[#e5e5e5] flex-1">
-                {loadingCommits ? (
-                  // Loading skeleton with staggered animation
-                  Array.from({ length: 3 }).map((_, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-4 p-4"
-                    >
-                      <div className="w-12 h-12 bg-[#f5f5f5] animate-pulse" />
-                      <div className="flex-1">
-                        <div className="h-4 bg-[#f5f5f5] rounded w-3/4 mb-2 animate-pulse" />
-                        <div className="h-3 bg-[#f5f5f5] rounded w-1/2 animate-pulse" />
-                      </div>
-                    </motion.div>
-                  ))
-                ) : commits.length === 0 ? (
-                  // Empty state
+                {commits.length === 0 ? (
                   <div className="flex items-center justify-center h-full min-h-[180px]">
                     <div className="text-center">
                       <GitCommit
@@ -439,20 +235,20 @@ export default function Spotify() {
                   </div>
                 ) : (
                   commits.map((commit, index) => (
-                    <motion.a
-                      key={index}
+                    <m.a
+                      key={commit.sha}
                       href={commit.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
                       transition={{ delay: index * 0.1, duration: 0.3 }}
                       className="group flex items-center gap-4 p-4 cursor-pointer"
                     >
                       {/* Commit indicator */}
                       <div className="relative w-12 h-12 flex-shrink-0 bg-[#171717] flex items-center justify-center">
                         <GitCommit size={18} className="text-white" />
-                        {/* Pulse animation on hover */}
                         <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
 
@@ -480,20 +276,25 @@ export default function Spotify() {
 
                       {/* Time */}
                       <div className="text-right flex-shrink-0">
-                        <span className="text-xs text-[#a3a3a3]">
-                          {commit.time}
+                        <span
+                          className="text-xs text-[#a3a3a3]"
+                          suppressHydrationWarning
+                        >
+                          {timeAgo(commit.date)}
                         </span>
                       </div>
-                    </motion.a>
+                    </m.a>
                   ))
                 )}
               </div>
 
               {/* Footer */}
               <div className="px-4 py-3 border-t border-[#e5e5e5] bg-[#fafafa] mt-auto">
-                <p className="text-[10px] text-[#a3a3a3]">Live from GitHub</p>
+                <p className="text-[10px] text-[#a3a3a3]">
+                  Refreshed every 30 minutes • via GitHub
+                </p>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </div>

@@ -11,13 +11,6 @@ export default function ConsoleEasterEgg() {
       "line-height: 1.4",
     ].join(";");
 
-    const linkStyles = [
-      "color: #2563eb",
-      "font-size: 14px",
-      "font-family: monospace",
-      "text-decoration: underline",
-    ].join(";");
-
     const asciiArt = `
 %c
   ████████╗██╗███╗   ██╗███████╗██╗     ███████╗██╗   ██╗

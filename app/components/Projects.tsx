@@ -1,51 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-
-export interface Project {
-  slug: string;
-  title: string;
-  description: string;
-  year: string;
-  tags: string[];
-}
-
-export const projects: Project[] = [
-  {
-    slug: "calhoun-rmp",
-    title: "CalhounRMP",
-    description:
-      "Chrome extension that displays Rate My Professors ratings directly on the Calhoun Community College class registration page, helping students make informed decisions.",
-    year: "2025",
-    tags: ["JavaScript", "Chrome Extension", "User Research"],
-  },
-  {
-    slug: "excelbnb",
-    title: "Excelbnb",
-    description:
-      "Turns Airbnb pages into an Excel spreadsheet to easily sort through listings, streamlining the property research process for users.",
-    year: "2024",
-    tags: ["Python", "Data Processing", "Automation"],
-  },
-  {
-    slug: "zone7-utility",
-    title: "Zone7 Utility",
-    description:
-      "Minecraft Java plugin built for the Zone7 server (zone7.apexmc.co), enhancing player experience with custom utilities.",
-    year: "2023",
-    tags: ["Java", "Plugin Development", "User Experience"],
-  },
-  {
-    slug: "tinsley-dev",
-    title: "tinsley.dev",
-    description:
-      "Personal portfolio website showcasing projects and skills with a focus on clean design and smooth user experience.",
-    year: "2026",
-    tags: ["Next.js", "TypeScript", "Framer Motion"],
-  },
-];
+import { projects } from "../lib/projects";
 
 // CalhounRMP Chrome Extension Visual
 function RMPVisual() {
@@ -97,7 +55,7 @@ function RMPVisual() {
           </span>
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <motion.div
+          <m.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             transition={{ delay: 0.3, type: "spring" }}
@@ -105,7 +63,7 @@ function RMPVisual() {
           >
             <span className="text-[8px] text-white font-medium">RMP</span>
             <span className="text-[7px] text-white/80">Active</span>
-          </motion.div>
+          </m.div>
         </div>
       </div>
 
@@ -130,7 +88,7 @@ function RMPVisual() {
         {/* Course rows */}
         <div className="space-y-1">
           {courses.map((course, i) => (
-            <motion.div
+            <m.div
               key={course.code}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -141,7 +99,7 @@ function RMPVisual() {
                 {course.code}
               </div>
               <div className="col-span-3 text-[#666]">{course.prof}</div>
-              <motion.div
+              <m.div
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
                 transition={{ delay: 0.4 + i * 0.1, type: "spring" }}
@@ -158,7 +116,7 @@ function RMPVisual() {
                 >
                   ★ {course.rating}
                 </span>
-              </motion.div>
+              </m.div>
               <div className="col-span-2 text-center text-[#666]">
                 {course.difficulty}
               </div>
@@ -175,13 +133,13 @@ function RMPVisual() {
                   {course.takeAgain}
                 </span>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
 
       {/* Extension popup hint */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
@@ -194,7 +152,7 @@ function RMPVisual() {
           <span className="text-[8px] font-semibold">CalhounRMP</span>
         </div>
         <div className="text-[7px] text-[#666]">Ratings shown!</div>
-      </motion.div>
+      </m.div>
     </div>
   );
 }
@@ -250,7 +208,7 @@ function ExcelVisual() {
 
         {/* Data rows */}
         {data.map((row, rowIdx) => (
-          <motion.div
+          <m.div
             key={rowIdx}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -271,7 +229,7 @@ function ExcelVisual() {
                 {cell}
               </div>
             ))}
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </div>
@@ -323,7 +281,7 @@ function MinecraftVisual() {
           { top: 22, left: 65, delay: 1.8 },
           { top: 40, left: 45, delay: 2.1 },
         ].map((star, i) => (
-          <motion.div
+          <m.div
             key={i}
             initial={{ opacity: 0.3 }}
             animate={{ opacity: [0.3, 1, 0.3] }}
@@ -341,20 +299,20 @@ function MinecraftVisual() {
         ))}
 
         {/* Moon */}
-        <motion.div
+        <m.div
           animate={{ y: [0, -3, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-8 right-10 w-12 h-12 bg-[#e8e8e0] rounded-full shadow-[0_0_30px_rgba(232,232,224,0.4)]"
         >
           <div className="absolute top-2 left-2 w-3 h-3 bg-[#d0d0c8] rounded-full opacity-60" />
           <div className="absolute top-5 right-3 w-2 h-2 bg-[#d0d0c8] rounded-full opacity-40" />
-        </motion.div>
+        </m.div>
 
         {/* Chat overlay */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
           <div className="space-y-0.5">
             {chatMessages.map((msg, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -380,12 +338,12 @@ function MinecraftVisual() {
                 {msg.type === "system" && (
                   <span className="text-[#55ff55]">{msg.msg}</span>
                 )}
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
           {/* Chat input */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 1 }}
@@ -395,12 +353,12 @@ function MinecraftVisual() {
             <span className="text-[10px] text-white/80 font-mono ml-1">
               /z7{" "}
             </span>
-            <motion.span
+            <m.span
               animate={{ opacity: [1, 0] }}
               transition={{ duration: 0.8, repeat: Infinity }}
               className="w-1.5 h-3 bg-white/80 ml-0.5"
             />
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </div>
@@ -444,7 +402,7 @@ function TerminalVisual() {
       {/* Code content */}
       <div className="p-3 font-mono text-[10px] leading-relaxed flex-1">
         {codeLines.map((line, i) => (
-          <motion.div
+          <m.div
             key={i}
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -455,9 +413,9 @@ function TerminalVisual() {
               {i + 1}
             </span>
             <span style={{ color: line.color }}>{line.text}</span>
-          </motion.div>
+          </m.div>
         ))}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
@@ -467,12 +425,12 @@ function TerminalVisual() {
             11
           </span>
           <span className="text-[#D4D4D4]"> </span>
-          <motion.span
+          <m.span
             animate={{ opacity: [1, 0] }}
             transition={{ duration: 0.8, repeat: Infinity }}
             className="w-[2px] h-3 bg-[#aeafad]"
           />
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Status bar */}
@@ -515,7 +473,7 @@ export default function Projects() {
     <section id="work" className="py-24 px-8 md:px-12">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex items-end justify-between mb-12">
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -524,18 +482,18 @@ export default function Projects() {
               Selected Work
             </span>
             <h2 className="text-3xl font-bold tracking-tight">Projects</h2>
-          </motion.div>
-          <motion.p
+          </m.div>
+          <m.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="text-sm text-[#737373] max-w-sm text-right hidden md:block"
           >
             A selection of projects focused on solving real user problems
-          </motion.p>
+          </m.p>
         </div>
 
-        <motion.div
+        <m.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -547,7 +505,7 @@ export default function Projects() {
             const isWide = index === 0 || index === 3; // First (CalhounRMP) and last (tinsley.dev) are wide
             const isReversed = index === 3; // tinsley.dev has reversed layout (content left, visual right)
             return (
-              <motion.div
+              <m.div
                 key={project.slug}
                 variants={itemVariants}
                 className={isWide ? "lg:col-span-2" : ""}
@@ -593,7 +551,7 @@ export default function Projects() {
                         </span>
                       </div>
                       <p className="text-[#737373] leading-relaxed mb-4 flex-1">
-                        {project.description}
+                        {project.summary}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {project.tags.map((tag) => (
@@ -608,10 +566,10 @@ export default function Projects() {
                     </div>
                   </article>
                 </Link>
-              </motion.div>
+              </m.div>
             );
           })}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const skills = {
   "Endpoint & MDM": [
@@ -58,24 +58,24 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
           {/* Left column - About text */}
           <div className="lg:col-span-5">
-            <motion.span
+            <m.span
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="text-xs uppercase tracking-widest text-[#737373] mb-3 block"
             >
               About
-            </motion.span>
-            <motion.h2
+            </m.span>
+            <m.h2
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="text-3xl font-bold tracking-tight mb-8"
             >
               A bit about me
-            </motion.h2>
+            </m.h2>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -105,29 +105,29 @@ export default function About() {
                 and a bias for action. Currently pursuing my degree at Baruch
                 College while building in NYC.
               </p>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right column - Skills */}
           <div className="lg:col-span-7">
-            <motion.span
+            <m.span
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="text-xs uppercase tracking-widest text-[#737373] mb-3 block"
             >
               Skills
-            </motion.span>
-            <motion.h2
+            </m.span>
+            <m.h2
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               className="text-3xl font-bold tracking-tight mb-8"
             >
               What I work with
-            </motion.h2>
+            </m.h2>
 
-            <motion.div
+            <m.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
@@ -135,7 +135,7 @@ export default function About() {
               className="grid grid-cols-2 md:grid-cols-4 gap-8"
             >
               {Object.entries(skills).map(([category, items]) => (
-                <motion.div key={category} variants={itemVariants}>
+                <m.div key={category} variants={itemVariants}>
                   <h4 className="font-bold tracking-tight mb-4 text-sm">
                     {category}
                   </h4>
@@ -150,9 +150,9 @@ export default function About() {
                       </li>
                     ))}
                   </ul>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </div>

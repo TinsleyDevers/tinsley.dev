@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 
 const links = [
@@ -50,7 +50,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
           {/* Left column */}
           <div className="lg:col-span-6">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -67,12 +67,12 @@ export default function Footer() {
                 Open to new opportunities across IT, systems, and tech.
                 Let&apos;s chat about how I can help your team.
               </p>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right column - Links */}
           <div className="lg:col-span-6 flex items-end">
-            <motion.div
+            <m.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
@@ -80,7 +80,7 @@ export default function Footer() {
               className="flex flex-wrap gap-4"
             >
               {links.map((link) => (
-                <motion.a
+                <m.a
                   key={link.name}
                   href={link.href}
                   target={link.href.startsWith("mailto") ? undefined : "_blank"}
@@ -98,13 +98,13 @@ export default function Footer() {
                     size={14}
                     className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   />
-                </motion.a>
+                </m.a>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         </div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -117,7 +117,7 @@ export default function Footer() {
           <p className="text-sm text-[#a3a3a3]">
             Built with Next.js, TypeScript & Tailwind
           </p>
-        </motion.div>
+        </m.div>
       </div>
     </footer>
   );

@@ -18,8 +18,10 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -83,11 +85,3 @@ button:focus-visible {
   top: 1rem;
 }
 
-img {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-img[loading] {
-  opacity: 0;
-}
