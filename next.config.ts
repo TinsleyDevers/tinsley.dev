@@ -6,7 +6,7 @@ const csp = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://lastfm.freetls.fastly.net",
+  "img-src 'self' data: https://lastfm.freetls.fastly.net https://lastfm-img.freetls.fastly.net",
   "font-src 'self'",
   "connect-src 'self'",
   "object-src 'none'",
@@ -38,6 +38,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "lastfm.freetls.fastly.net",
+      },
+      {
+        protocol: "https",
+        hostname: "lastfm-img.freetls.fastly.net",
       },
     ],
   },
