@@ -8,7 +8,7 @@ My personal portfolio website built with Next.js 16, TypeScript, and Tailwind CS
 
 ## 📄 License
 
-MIT License — feel free to use this as inspiration for your own portfolio!
+MIT License - feel free to use this as inspiration for your own portfolio!
 
 ## 🔗 Links
 
